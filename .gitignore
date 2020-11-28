@@ -1,1 +1,7 @@
+#Git
 README.md
+
+#Django
+*.log
+*.pyc
+__pycache__
