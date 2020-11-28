@@ -1,13 +1,37 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
-    
-    <head>
-        <meta charset="UTF-8" />
-        <title>Walk For The Dog</title>
-    </head>
+<head>
+	<title>Walk For The Dog</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'start_page/start_page.css' %}">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+</head>
+	<body>
+		<div id="container">
+			<div class = "round-img">
+				<img src="{% static 'start_page/Bordercolie1.svg' %}" class="dog-pic">
+			</div>
+		</div>
+		<div id="info">
+			<div id="logo">
 
-    <body>
-        <!-- to do -->
-    </body>
-
+				<img id="logo-im" src="{% static 'start_page/logo.jpg' %}">
+				<br><br>
+			</div>
+			<span><b>Walk For The Dog</b> is a web app that allows people to help other people in difficult times.
+			When you're on quarantine and can't take a dog for a walk someone can help you with it.
+			<br>Just create your account, load your location, the app will show you a list of users in your neighborhood 
+			with their free time and allow you to contact with them. 
+			People offering help can also load their calendar or write their spare time manually.<br> If you're looking for a help or you want to help others, join us today!</span>
+			<br><br>
+			<div class="buttons" align="center"><a class="reg_log_btn" href="#">REGISTER NOW</a>
+			<a class="reg_log_btn" href="#">LOGIN</a>
+			</div>	
+		</div>
+	</body>
+<footer>
+	<div>Logo made by <a href="https://www.designevo.com/logo-maker/" title="Free Online Logo Maker">DesignEvo free logo creator</a>
+	<br><a href="https://www.vecteezy.com/free-vector/border">Border Vectors by Vecteezy</a></div>
+</footer>
 </html>
