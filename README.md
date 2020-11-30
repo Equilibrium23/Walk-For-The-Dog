@@ -84,7 +84,8 @@ synchronization )
 
 #### Week 8 (11.01 - 17.01)
 - Testing
-- Clean codeWeek 9 (18.01 - 24.01)
+- Clean code
+#### Week 9 (18.01 - 24.01)
 - Final touches
 
 #### Week 10 (25.01 - 30.01) ​ 30.01 DEADLINE
