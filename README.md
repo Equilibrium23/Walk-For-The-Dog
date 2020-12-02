@@ -84,7 +84,7 @@ synchronization )
 
 #### Week 8 (11.01 - 17.01)
 - Testing
-- Clean code
+- Clean codeWeek 
 #### Week 9 (18.01 - 24.01)
 - Final touches
 
