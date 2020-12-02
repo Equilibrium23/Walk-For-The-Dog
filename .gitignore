@@ -4,4 +4,3 @@
 #Django
 *.log
 *.pyc
-__pycache__/*
