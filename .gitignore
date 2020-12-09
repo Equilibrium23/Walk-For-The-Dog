@@ -3,6 +3,7 @@ README.md
 __pycache__/
 *.py[cod]
 *$py.class
+.idea/
 
 #Django
 *.log
