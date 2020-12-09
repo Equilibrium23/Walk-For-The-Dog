@@ -30,9 +30,10 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='register_and_login/login.html'), name = "login"),
     path('logout/', auth_views.LogoutView.as_view(template_name='register_and_login/logout.html'), name = "logout"),
     path('register/', register_and_login_views.register, name = "register"),
-	path('profile/', users_views.profile, name = "profile"),
+    path('profile/', users_views.profile, name = "profile"),
     path('add_dog/', register_and_login_views.add_dog, name = "add_dog"),
     path('update/', register_and_login_views.update, name = "update"),
+    path('change_ac_type/', register_and_login_views.change_ac_type, name = "change_ac_type"),
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,28 @@
+{% extends "start_page/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1>Update</h1>
+
+    <div class="content-section">
+
+        <form method="POST">
+            {% csrf_token %}
+
+            {{ ca_form|crispy }}
+
+            {% if user.profile.account_type == 1 %}
+                Your quarantine has ended? Now you want to help others? Change the type of your profile, update info and help!
+            {% else %}
+                Now you need the help you gave to others? Change the type of your profile, update info and find your helper!
+            {% endif %}
+
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit"> Change! </button>
+        </div>
+
+        </form>
+
+    </div>
+{% endblock content %}
+

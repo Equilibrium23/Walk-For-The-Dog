@@ -23,16 +23,17 @@ class UserRegisterForm(UserCreationForm):
 
 class AddDogForm(forms.ModelForm):
 
+	DOG_SIZE = [('S', 'small'), ('M', 'medium'), ('B', 'big')]
+
 	dog_name = forms.CharField(max_length=50)
 	breed = forms.CharField(max_length=100)
-	size = forms.CharField(max_length=100)
+	size = forms.ChoiceField(choices=DOG_SIZE)
 	short_description = forms.CharField(max_length=300)
 	image = forms.ImageField(required=False)
 
 	class Meta:
 		model = User
 		fields = ['dog_name', 'breed', 'size', 'short_description', 'image']
-
 
 class UserUpdateForm(forms.ModelForm):
 	email = forms.EmailField()
@@ -41,9 +42,26 @@ class UserUpdateForm(forms.ModelForm):
 		model = User
 		fields = ['email']
 
-
 class ProfileUpdateForm(forms.ModelForm):
 	
 	class Meta:
 		model = Profile
 		fields = ['name', 'location', 'image']
+
+class NeedyForm(forms.ModelForm):
+	
+	class Meta:
+		model = Profile
+		fields = ['quarantine_time']
+
+class HelperForm(forms.ModelForm):
+
+	class Meta:
+		model = Profile
+		fields = ['helping_radius', 'max_dog_amount', 'max_dog_size']	
+
+class ChangeAccountForm(forms.ModelForm):
+
+	class Meta:
+		model = Profile
+		fields = ['account_type']
