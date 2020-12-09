@@ -1,6 +1,9 @@
 asgiref==3.3.1
+<<<<<<< HEAD
 Django==3.1.4
 gunicorn==20.0.4
 pytz==2020.4
 sqlparse==0.4.1
 whitenoise==5.2.0
+=======
+>>>>>>> aacd65ffc7d80d968ec66bba2e29020ce42da1f7
