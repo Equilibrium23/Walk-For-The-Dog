@@ -9,11 +9,13 @@
 
 <div class="container">
   <br>
-  <h4 style="text-align: center;">Your profile</h4>
+  <h4 style="text-align: center;"> Look through your profile {{ user.profile.name }}! </h4>
   <div class="card mb-3" style="max-width: 540px;">
     <div class="row no-gutters">
       <div class="col-md-4">
-        <img src="https://i.picsum.photos/id/1006/3000/2000.jpg?hmac=x83pQQ7LW1UTo8HxBcIWuRIVeN_uCg0cG6keXvNvM8g" class="card-img" alt="avatar">
+      <!-- <img src="https://i.picsum.photos/id/1006/3000/2000.jpg?hmac=x83pQQ7LW1UTo8HxBcIWuRIVeN_uCg0cG6keXvNvM8g" class="card-img" alt="avatar"> -->
+      <img src="{{ user.profile.image.url }}" class="card-img" alt="avatar">
+      
       </div>
       <div class="col-md-8">
         <div class="card-body">
@@ -24,26 +26,34 @@
               <p>
                 <span class="glyphicon glyphicon-user one" style="width:50px;">
                 </span>
-                Username
+                {{ user.username }}
               </p>
             </li>
             <li>
               <p>
                 <span class="glyphicon glyphicon-envelope one" style="width:50px;">
                 </span>
-                user@email.com
+                </span>
+               {{ user.email }}
               </p>
             </li>
             <li>
               <p>
                 <span class="glyphicon glyphicon-calendar" style="width:50px;">
                 </span>
-                Date Of Joining: 04 Dec 2020
+                Date Of Joining: {{ user.profile.joining_date }}
               </p>
             </li>
             <li>
               <p>
-                <a href="#" style="text-decoration:none; color: black;">
+                <span class="glyphicon glyphicon-calendar" style="width:50px;">
+                </span>
+                Location: {{ user.profile.location }}
+              </p>
+            </li>
+            <li>
+              <p>
+                <a href="../update" style="text-decoration:none; color: black;">
                   <span class="glyphicon glyphicon-edit" style="width:50px;"></span>
                   Edit your profile
                 </a>
@@ -51,7 +61,7 @@
             </li>
             <li>
               <p>
-                <a href="#" style="text-decoration:none;color: black;">
+                <a href="../add_dog" style="text-decoration:none;color: black;">
                   <span class="glyphicon glyphicon-plus" style="width:50px;"></span>
                   Add dog
                 </a>
