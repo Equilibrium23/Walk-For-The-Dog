@@ -12,6 +12,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-t6I8D5dJmMXjCsRLhSzCltuhNZg6P10kE0m0nAncLUjH6GeYLhRU1zfLoW3QNQDF" crossorigin="anonymous"></script>
         <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="https://use.fontawesome.com/49b98aaeb5.js"></script>
+        {% block stylesheet %}{% endblock %}
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 		<link rel="shortcut icon" type="image/svg" href="{% static 'start_page/paw-print.svg' %}">
         {% if title %}
@@ -37,9 +38,9 @@
                             <div class="vertical-nav" >
                                 <div class="py-4 px-3 mb-4">
                                     <div class="media d-flex align-items-center">
-                                        <img src="https://res.cloudinary.com/mhmd/image/upload/v1556074849/avatar-1_tcnd60.png" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+                                        <img src="{{ user.profile.image.url }}" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
                                         <div class="media-body">
-                                            <h4 class="m-0"> Username {{ user.username }}</h4>
+                                            <h4 class="m-0">{{ user.username }}</h4>
                                             <p class="font-weight-light text-muted mb-0"> 
                                             {% if user.profile.account_type == 1 %}
                                                 Helper
