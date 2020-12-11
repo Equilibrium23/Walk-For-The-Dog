@@ -1,0 +1,111 @@
+.calendarmonth, .calendarweek, .calendarday {
+  width: unset;
+  width: 100%;
+  padding: 2%;
+  height: 100%;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.calendartitle {
+  font-size: 3rem;
+  padding: 2rem;
+}
+
+.calendarmonth th, .calendarweek th, .calendarday th{
+  text-transform: uppercase;
+}
+/* 
+CALENDAR MONTH VIEW
+*/
+
+.calendarmonth td, .calendarmonth th{
+  float: left;
+  width: 14.28571428571%;
+}
+
+.calendarmonth .days td {
+  min-height: 8rem;
+}
+
+.calendarmonth .days td .date {
+  padding: 0.5rem;
+}
+
+.calendarmonth .days td .event {
+  font-size: 0.75rem;
+  padding: 0.4rem;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-radius: 4rem;
+  margin-bottom: 1px;
+}
+
+/* 
+CALENDAR WEEK VIEW
+*/
+.calendarweek td, .calendarweek th{
+  float: left;
+  width: 13%;
+}
+
+.calendarweek tbody .days{
+  font-size: 1rem;
+}
+
+.calendarweek .days td {
+  min-height: 3.7rem;
+}
+
+.calendarweek .days td .event {
+  font-size: 0.75rem;
+  padding: 0.4rem;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-radius: 4rem;
+  margin-bottom: 1px;
+}
+
+.calendarweek td:first-child, .calendarweek th:first-child{
+  width: 9%;
+}
+
+/* 
+CALENDAR DAY VIEW
+*/
+
+.calendarday td, .calendarday th{
+  float: left;
+  border: none;
+  width: 85%;
+}
+
+.calendarday tbody .days{
+  font-size: 1rem;
+}
+
+.calendarday .days td {
+  min-height: 3.7rem;
+}
+
+.calendarday .days td .event {
+  font-size: 1rem;
+  white-space: nowrap;
+  color: white;
+  text-overflow: ellipsis;
+  border-radius: 2rem;
+  height: 100%;
+  width: 100%;
+}
+
+.calendarday td:first-child, .calendarday th:first-child{
+  width: 15%;
+}
+
+#notmonth td:first-child, #notmonth th:first-child{
+  width: 15%;
+}

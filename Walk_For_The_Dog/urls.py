@@ -20,7 +20,7 @@ from register_and_login import views as register_and_login_views
 from users import views as users_views
 from django.conf import settings
 from django.conf.urls.static import static
-
+from django.conf.urls import url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,6 +31,10 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='register_and_login/logout.html'), name = "logout"),
     path('register/', register_and_login_views.register, name = "register"),
     path('profile/', users_views.profile, name = "profile"),
+    path('profile/calendar/', users_views.CalendarView.as_view(), name = "calendar"),
+    #url(r'^calendar/$', users_views.CalendarView.as_view(), name = "calendar"),
+    #path('profile/calendar/new/', users_views.event, name='event_new'), -> future
+    #path('profile/calendar/edit/(<event_id>\d+)/', users_views.event, name='event_edit'), -> future
     path('add_dog/', register_and_login_views.add_dog, name = "add_dog"),
     path('update/', register_and_login_views.update, name = "update"),
     path('change_ac_type/', register_and_login_views.change_ac_type, name = "change_ac_type"),
