@@ -50,8 +50,7 @@ class Calendar(HTMLCalendar):
 			week += self.formatday(d, events)
 		return f'<tr>{week}</tr>'
 
-	def formatmonth(self, user, withyear=True):
-		ev = TimePeriod.objects.filter(person=user)
+	def formatmonth(self, ev, withyear=True):
 		events = ev.filter(day__year=self.year, day__month=self.month)
 
 		cal = f'<div class="d-flex align-items-center"><i class="fa fa-calendar fa-3x mr-3"></i>'
@@ -65,8 +64,7 @@ class Calendar(HTMLCalendar):
 		cal += f'</tbody></table>'
 		return cal
 
-	def formatbyweek(self, user, withyear=True):
-		ev = TimePeriod.objects.filter(person=user)
+	def formatbyweek(self, ev, withyear=True):
 		dt = date(self.year, self.month, self.day)
 		start = dt - timedelta(days=dt.weekday())
 		end = start + timedelta(days=6)
@@ -110,9 +108,7 @@ class Calendar(HTMLCalendar):
 
 		return cal
 
-	def formatbyday(self, user, withyear=True):
-		ev = TimePeriod.objects.filter(person=user)
-
+	def formatbyday(self, ev, withyear=True):
 		dt = date(self.year, self.month, self.day)
 
 		events = ev.filter(day__year=self.year, day__month=self.month, day__day=self.day)

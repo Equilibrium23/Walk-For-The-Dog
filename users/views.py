@@ -21,24 +21,25 @@ from .utils import Calendar
 class CalendarView(generic.ListView):
     model = TimePeriod
     template_name = 'users/calendar.html'
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         view = self.request.GET.get('view', None)
         date = self.request.GET.get('date', None)
         user = self.request.user
+        events = TimePeriod.objects.filter(person=user)
         d = get_date(date)
         cal = Calendar(d.year, d.month, d.day)
         if view=='day':
-            html_cal = cal.formatbyday(user, withyear=True)
+            html_cal = cal.formatbyday(events, withyear=True)
             context['prev_view'] = prev_day(d)
             context['next_view'] = next_day(d)
         elif view=='week':
-            html_cal = cal.formatbyweek(user, withyear=True)
+            html_cal = cal.formatbyweek(events, withyear=True)
             context['prev_view'] = prev_week(d)
             context['next_view'] = next_week(d)
         else:
-            html_cal = cal.formatmonth(user, withyear=True)
+            html_cal = cal.formatmonth(events, withyear=True)
             context['prev_view'] = prev_month(d)
             context['next_view'] = next_month(d)
 
