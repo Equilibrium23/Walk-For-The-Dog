@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
 import datetime
-from .models import Profile
+from .models import Profile, Dog, TimePeriod
 
 class UserRegisterForm(UserCreationForm):
 
@@ -25,14 +25,8 @@ class AddDogForm(forms.ModelForm):
 
 	DOG_SIZE = [('S', 'small'), ('M', 'medium'), ('B', 'big')]
 
-	dog_name = forms.CharField(max_length=50)
-	breed = forms.CharField(max_length=100)
-	size = forms.ChoiceField(choices=DOG_SIZE)
-	short_description = forms.CharField(max_length=300)
-	image = forms.ImageField(required=False)
-
 	class Meta:
-		model = User
+		model = Dog
 		fields = ['dog_name', 'breed', 'size', 'short_description', 'image']
 
 class UserUpdateForm(forms.ModelForm):
@@ -65,3 +59,20 @@ class ChangeAccountForm(forms.ModelForm):
 	class Meta:
 		model = Profile
 		fields = ['account_type']
+
+class AddTimePeriodForm(forms.ModelForm):
+
+	DATE_CHOICE = [ ((datetime.datetime.now() + datetime.timedelta(days=i)).date(), ((datetime.datetime.now() 
+					+ datetime.timedelta(days=i)).date()).strftime("%d-%m-%Y")) for i in range(0,8) ]
+
+	HOUR_CHOICE = [ ((datetime.datetime.combine(datetime.date(1,1,1),datetime.time(6,00,00)) + datetime.timedelta(minutes=i)).time(), 
+					((datetime.datetime.combine(datetime.date(1,1,1),datetime.time(6,00,00)) + datetime.timedelta(minutes=i)).time()).strftime("%H:%M")) 
+					for i in range(0,1080,30) ]
+
+	day = forms.DateField(widget=forms.Select(choices=DATE_CHOICE))
+	start_hour = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICE))
+
+
+	class Meta:
+		model = TimePeriod
+		fields = ['day', 'start_hour']

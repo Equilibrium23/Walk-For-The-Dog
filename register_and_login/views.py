@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import UserRegisterForm, AddDogForm, UserUpdateForm, ProfileUpdateForm, NeedyForm, HelperForm, ChangeAccountForm
+from .forms import UserRegisterForm, AddDogForm, UserUpdateForm, ProfileUpdateForm
+from .forms import NeedyForm, HelperForm, ChangeAccountForm, AddTimePeriodForm
 from django.contrib.auth.decorators import login_required
-from .models import Profile, Dog
+from .models import Profile, Dog, TimePeriod
 from django.contrib.auth.models import User
+from django.db import connection
+import datetime
 
 
 def login(request):
@@ -13,7 +16,7 @@ def login(request):
 def register(request):
     
     if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
+        form = UserRegisterForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
             user.refresh_from_db()
@@ -21,7 +24,9 @@ def register(request):
             user.profile.account_type = form.cleaned_data['account_type']
             user.profile.location = form.cleaned_data['location']
             user.profile.joining_date = form.cleaned_data['joining_date']
+            user.profile.image = form.cleaned_data['image']
             user.save()
+            close_old_connections()
             
             return redirect('login')
             
@@ -33,16 +38,18 @@ def register(request):
 def add_dog(request):
 
     if request.method == 'POST':
-        form = AddDogForm(request.POST)
+        form = AddDogForm(request.POST, request.FILES)
         if form.is_valid():
             dog_name = form.cleaned_data['dog_name']
             breed = form.cleaned_data['breed']
             size = form.cleaned_data['size']
             short_description = form.cleaned_data['short_description']
+            image = form.cleaned_data['image']
             cur_user = request.user
-            d = Dog(dog_name=dog_name, breed=breed, size=size, short_description=short_description, owner_id=cur_user.id)
+            d = Dog(dog_name=dog_name, breed=breed, size=size, short_description=short_description, image=image, owner_id=cur_user.id)
             d.save()
             messages.success(request, f'Your dog has been added!!')
+            close_old_connections()
             return redirect('profile')
     else:
         form = AddDogForm()
@@ -64,6 +71,7 @@ def update(request):
             n_form.save()
             h_form.save()
             messages.success(request, f'Your account has been updated!')
+            close_old_connections()
             return redirect('profile')
 
     else:
@@ -89,8 +97,30 @@ def change_ac_type(request):
         if ca_form.is_valid():
             ca_form.save()
             messages.success(request, f'Your account type has been changed!')
+            close_old_connections()
             return redirect('profile')
     else:
         ca_form = ChangeAccountForm(instance=request.user.profile)
-
     return render(request, 'register_and_login/change_ac_type.html', {'ca_form':ca_form})
+
+
+@login_required
+def add_time_period(request):
+
+    if request.method == 'POST':
+        form = AddTimePeriodForm(request.POST)
+        if form.is_valid():
+            day = form.cleaned_data['day']
+            start_hour = form.cleaned_data['start_hour']
+            delta = datetime.timedelta(minutes=30)
+            end_hour = (datetime.datetime.combine(datetime.date(1,1,1),start_hour)+delta).time()
+            person = request.user
+            tp = TimePeriod(person=person, day=day, start_hour=start_hour, end_hour=end_hour)
+            tp.save()
+            messages.success(request, f'Your time period has been added!!')
+            close_old_connections()
+            return redirect('add_time_period')
+    else:
+        form = AddTimePeriodForm()
+
+    return render(request, 'register_and_login/add_time_period.html', {'form':form})
