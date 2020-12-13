@@ -1,11 +1,14 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from register_and_login.models import Dog
 
-# Create your views here.
 
 @login_required
 def profile(request):
-    return render(request,'users/profile.html') 
+    context = { 'dogs' : Dog.objects.all().filter(owner_id=request.user) }
+
+    return render(request, 'users/profile.html', context) 
+
 
 from datetime import datetime, timedelta, date
 from django.shortcuts import get_object_or_404

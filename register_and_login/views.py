@@ -118,9 +118,14 @@ def add_time_period(request):
             tp = TimePeriod(person=person, day=day, start_hour=start_hour, end_hour=end_hour)
             tp.save()
             messages.success(request, f'Your time period has been added!!')
-            close_old_connections()
+            #close_old_connections()
             return redirect('add_time_period')
     else:
         form = AddTimePeriodForm()
 
     return render(request, 'register_and_login/add_time_period.html', {'form':form})
+
+
+
+
+
