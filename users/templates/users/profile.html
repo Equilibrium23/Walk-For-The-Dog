@@ -86,7 +86,7 @@
 
   <br>
   <h4 style="text-align: center;">Your dogs</h4>
-  <!--narazie testowe 3 slajdy -->
+
   <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
       <!--<li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
@@ -134,77 +134,17 @@
           </ul>
         </div><br> 
       </div>
-	  {% endfor %}
 
-      <!--<div class="carousel-item">
-        <img src="https://placedog.net/540/320" class="d-block w-100" alt="pic2" style="border-radius: 10px;">
-        <div class="carousel-caption d-none d-md-block">
-        </div>
-        <br>
-          <ul class="container details" >
-            <li>
-              <p>
-                <span class="fas fa-paw fa-3px mr-3 text-primary fa-fw" style="width:20px;"></span>
-                Name
-              </p>
-            </li>
-            <li>
-              <p>
-                <span class="glyphicon glyphicon-pencil mr-3 text-primary fa-fw" style="width:20px;"></span>
-                Dog likes long walks, playing with children. Walk two times per day. Do not feed him during the walk. Please keep dog on a lead.
-              </p>
-            </li>
-            <li>
-              <p>
-                <span class="fas fa-dog fa-3px mr-3 text-primary fa-fw" style="width:20px;"></span>
-                Breed
-              </p>
-            </li>
-            <li>
-              <p>
-                <a href="#" style="text-decoration:none;color: black;">
-                  <span class="glyphicon glyphicon-edit mr-3 text-primary fa-fw" style="width:20px;"></span>
-                  Edit profile
-                </a>
-              </p>
-            </li>
-          </ul>
-          <br>
-      </div>
-      <div class="carousel-item">
-        <img src="https://placedog.net/210/167" class="d-block w-100"  alt="pic3" style="border-radius: 10px;">
-        <div class="carousel-caption d-none d-md-block">
-        </div>
-        <br>
-        <ul class="container details" >
-            <li>
-              <p>
-                <span class="fas fa-paw fa-3px mr-3 text-primary fa-fw" style="width:20px;"></span>
-                Name
-              </p>
-            </li>
-            <li>
-              <p>
-                <span class="glyphicon glyphicon-pencil mr-3 text-primary fa-fw" style="width:20px;"></span>
-                Dog likes long walks, playing with children. Walk two times per day. Do not feed him during the walk. Please keep dog on a lead.
-              </p>
-            </li>
-            <li>
-              <p>
-                <span class="fas fa-dog fa-3px mr-3 text-primary fa-fw" style="width:20px;"></span>
-                Chow chow
-              </p>
-            </li>
-            <li>
-              <p>
-                <a href="#" style="text-decoration:none;color: black;">
-                  <span class="glyphicon glyphicon-edit mr-3 text-primary fa-fw" style="width:20px;"></span>
-                  Edit profile
-                </a>
-              </p>
-            </li>
-        </ul><br>
-      </div>-->
+    {% empty %}
+      You have not added any dog yet! Do it now!  </br>
+      <p>
+        <a href="../add_dog" style="text-decoration:none;color: black;">
+        </br> </br>
+          <span class="glyphicon glyphicon-plus" style="width:50px;"></span>
+              Add dog
+        </a>
+      </p>
+	  {% endfor %}
   
       <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>

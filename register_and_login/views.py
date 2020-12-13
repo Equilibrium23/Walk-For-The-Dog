@@ -26,7 +26,7 @@ def register(request):
             user.profile.joining_date = form.cleaned_data['joining_date']
             user.profile.image = form.cleaned_data['image']
             user.save()
-            close_old_connections()
+            #close_old_connections()
             
             return redirect('login')
             
@@ -71,7 +71,7 @@ def update(request):
             n_form.save()
             h_form.save()
             messages.success(request, f'Your account has been updated!')
-            close_old_connections()
+            #close_old_connections()
             return redirect('profile')
 
     else:
@@ -97,7 +97,7 @@ def change_ac_type(request):
         if ca_form.is_valid():
             ca_form.save()
             messages.success(request, f'Your account type has been changed!')
-            close_old_connections()
+            #close_old_connections()
             return redirect('profile')
     else:
         ca_form = ChangeAccountForm(instance=request.user.profile)
@@ -112,12 +112,40 @@ def add_time_period(request):
         if form.is_valid():
             day = form.cleaned_data['day']
             start_hour = form.cleaned_data['start_hour']
+            time_length = form.cleaned_data['time_length']
+
             delta = datetime.timedelta(minutes=30)
-            end_hour = (datetime.datetime.combine(datetime.date(1,1,1),start_hour)+delta).time()
             person = request.user
+            end_hour = (datetime.datetime.combine(datetime.date(1,1,1),start_hour)+delta).time()
             tp = TimePeriod(person=person, day=day, start_hour=start_hour, end_hour=end_hour)
             tp.save()
-            messages.success(request, f'Your time period has been added!!')
+
+            if time_length == 60 or time_length == 90 or time_length == 120:
+                d1 = datetime.timedelta(minutes=30)
+                sh1 = (datetime.datetime.combine(datetime.date(1,1,1),start_hour)+d1).time()
+                eh1 = (datetime.datetime.combine(datetime.date(1,1,1),sh1)+delta).time()
+                tp1 = TimePeriod(person=person, day=day, start_hour=sh1, end_hour=eh1)
+                tp1.save()
+
+            if time_length == 90 or time_length == 120:
+                d1 = datetime.timedelta(minutes=60)
+                sh1 = (datetime.datetime.combine(datetime.date(1,1,1),start_hour)+d1).time()
+                eh1 = (datetime.datetime.combine(datetime.date(1,1,1),sh1)+delta).time()
+                tp1 = TimePeriod(person=person, day=day, start_hour=sh1, end_hour=eh1)
+                tp1.save()
+
+            if(time_length == 120):
+                d1 = datetime.timedelta(minutes=90)
+                sh1 = (datetime.datetime.combine(datetime.date(1,1,1),start_hour)+d1).time()
+                eh1 = (datetime.datetime.combine(datetime.date(1,1,1),sh1)+delta).time()
+                tp1 = TimePeriod(person=person, day=day, start_hour=sh1, end_hour=eh1)
+                tp1.save()
+            
+            if time_length == 30:
+                messages.success(request, f'Your time period has been added!!')
+            else:
+                messages.success(request, f'Your time periods have been added!!')
+
             #close_old_connections()
             return redirect('add_time_period')
     else:

@@ -69,8 +69,11 @@ class AddTimePeriodForm(forms.ModelForm):
 					((datetime.datetime.combine(datetime.date(1,1,1),datetime.time(6,00,00)) + datetime.timedelta(minutes=i)).time()).strftime("%H:%M")) 
 					for i in range(0,1080,30) ]
 
+	TIME_DELTA_CHOICE = [ (30, "30 min"), (60, "60 min"), (90, "90 min"), (120, "120 min")]
+
 	day = forms.DateField(widget=forms.Select(choices=DATE_CHOICE))
 	start_hour = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICE))
+	time_length = forms.IntegerField(widget=forms.Select(choices=TIME_DELTA_CHOICE))
 
 
 	class Meta:

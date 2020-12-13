@@ -13,7 +13,7 @@
                 {{ u_form|crispy }}
                 {{ p_form|crispy }}
                 
-                {% if user.profile.account_type == 1 %}
+                {% if user.profile.account_type == 'H' %}
                     {{h_form|crispy}}
                 {% else %}
                     {{n_form|crispy}}
