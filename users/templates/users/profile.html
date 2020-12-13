@@ -2,6 +2,9 @@
 {% load static %}
 
 {% block stylesheet %}
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="https://use.fontawesome.com/49b98aaeb5.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="{% static 'users/profile.css' %}">
 {% endblock stylesheet %}
 
@@ -45,7 +48,7 @@
             </li>
             <li>
               <p>
-                <span class="glyphicon glyphicon-calendar" style="width:50px;">
+                <span class="fas fa-map-marker-alt" style="width:50px;">
                 </span>
                 Location: {{ user.profile.location }}
               </p>
@@ -86,14 +89,17 @@
   <!--narazie testowe 3 slajdy -->
   <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
-      <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+      <!--<li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
       <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
-      <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+      <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>-->
+	  {% for dog in dogs %}
+	  <li data-target="#carouselExampleCaptions" data-slide-to="{{forloop.counter}}" class="{% if forloop.counter == 1 %}active{% endif %}">
+	  {% endfor %}
     </ol>
     <div class="carousel-inner">
-     
-      <div class="carousel-item active">
-        <img src="https://placedog.net/200/262" class="d-block w-100" alt="pic1" style="border-radius: 10px;">
+     {% for dog in dogs%}
+      <div class="carousel-item {% if forloop.counter == 1 %}active{% endif %}">
+        <img src="{{ dog.image.url }}" class="d-block w-100" alt="pic1" style="border-radius: 10px;">
         <div class="carousel-caption d-none d-md-block">
         </div>
         <div class="dog-desc">
@@ -102,19 +108,19 @@
             <li>
               <p>
                 <span class="fas fa-paw fa-3px mr-3 text-primary fa-fw" style="width:20px;color:#F7934C"></span>
-                Name
+                {{dog.dog_name}}
               </p>
             </li>
             <li>
               <p>
                 <span class="glyphicon glyphicon-pencil mr-3 text-primary fa-fw" style="width:20px;"></span>
-                Dog likes long walks, playing with children. Walk two times per day. Do not feed him during the walk. Please keep dog on a lead.
+                {{dog.short_description}}
               </p>
             </li>
             <li>
               <p>
                 <span class="fas fa-dog fa-3px mr-3 text-primary fa-fw" style="width:20px;"></span>
-                Breed
+                {{dog.breed}}
               </p>
             </li>
             <li>
@@ -128,8 +134,9 @@
           </ul>
         </div><br> 
       </div>
+	  {% endfor %}
 
-      <div class="carousel-item">
+      <!--<div class="carousel-item">
         <img src="https://placedog.net/540/320" class="d-block w-100" alt="pic2" style="border-radius: 10px;">
         <div class="carousel-caption d-none d-md-block">
         </div>
@@ -197,7 +204,7 @@
               </p>
             </li>
         </ul><br>
-      </div>
+      </div>-->
   
       <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>

@@ -49,7 +49,7 @@ def add_dog(request):
             d = Dog(dog_name=dog_name, breed=breed, size=size, short_description=short_description, image=image, owner_id=cur_user.id)
             d.save()
             messages.success(request, f'Your dog has been added!!')
-            close_old_connections()
+            #close_old_connections()
             return redirect('profile')
     else:
         form = AddDogForm()
