@@ -90,7 +90,7 @@ DATABASES = {
         'PORT': '5432'
         # 'TEST': {
         #     'NAME': 'mytestdatabase',
-        # } #this may help with testing
+        # } #this may help with testing jj
     }
 }
 
