@@ -1,14 +1,20 @@
 {% extends "start_page/base.html" %}
 {% load crispy_forms_tags %}
+{% load static %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="{% static 'register_and_login/reg_log.css' %}">
+
+{% endblock stylesheet %}
 
 {% block content %}
-<h1>register</h1>
+
 
 	<div class="content-section">
     	<form method="POST" enctype="multipart/form-data">
     		{% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Join Today</legend>
+                <legend class="mb-4">Join Today</legend>
+                <hr/>
                 {{ form|crispy }}
             </fieldset>
             <div class="form-group">
@@ -16,7 +22,8 @@
             </div>
     	</form>	
 
-    	<div class="border-top pt-3">
+    	<div class="pt-3">
+            <hr/>
     		<small class="text-muted">
     			Already Have An Account? <a class="ml-2" href="{% url 'login' %}"> Sign In </a>
     		</small>

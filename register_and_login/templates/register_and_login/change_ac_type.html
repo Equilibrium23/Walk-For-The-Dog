@@ -1,15 +1,17 @@
 {% extends "start_page/base.html" %}
+{% load static %}
 {% load crispy_forms_tags %}
 
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="{% static 'register_and_login/reg_log.css' %}">
+{% endblock stylesheet %}
+
 {% block content %}
-<h1>Update</h1>
-
     <div class="content-section">
-
         <form method="POST">
             {% csrf_token %}
-
-            </br>
+			 <legend class="mb-4"><h2>Update your account type!</h2></legend>
+			 <hr/>
             
             {% if user.profile.account_type == 'N' %}
                 Your quarantine has ended? Now you want to help others? Change the type of your profile, update info and help!

@@ -1,11 +1,15 @@
 {% extends "start_page/base.html" %}
+{% load static %}
+
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="{% static 'register_and_login/reg_log.css' %}">
+{% endblock stylesheet %}
 
 {% block content %}
-<h1>logout</h1>
-
+<br>
 	<h2> You have been logged out! </h2>
-
-    	<div class="border-top pt-3">
+    	<div class="pt-3">
+		<hr/>
     		<small class="text-muted">
     			<a class="ml-2" href="{% url 'login' %}"> Log In Again </a>
     		</small>

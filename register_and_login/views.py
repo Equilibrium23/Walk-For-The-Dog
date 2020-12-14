@@ -65,11 +65,15 @@ def update(request):
         n_form = NeedyForm(request.POST, instance=request.user.profile)
         h_form = HelperForm(request.POST, instance=request.user.profile)
 
-        if u_form.is_valid() and p_form.is_valid() and n_form.is_valid() and h_form.is_valid():
+        if u_form.is_valid() and p_form.is_valid():
+            if n_form.is_valid():
+                n_form.save()
+            elif h_form.is_valid():
+                h_form.save()
+
             u_form.save()
             p_form.save()
-            n_form.save()
-            h_form.save()
+                   
             messages.success(request, f'Your account has been updated!')
             #close_old_connections()
             return redirect('profile')
@@ -150,7 +154,6 @@ def add_time_period(request):
             return redirect('add_time_period')
     else:
         form = AddTimePeriodForm()
-
     return render(request, 'register_and_login/add_time_period.html', {'form':form})
 
 
