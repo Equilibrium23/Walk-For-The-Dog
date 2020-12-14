@@ -51,8 +51,8 @@ class Calendar(HTMLCalendar):
 	def formatmonth(self, ev, withyear=True):
 		events = ev.filter(day__year=self.year, day__month=self.month)
 
-		cal = f'<div class="d-flex align-items-center"><i class="fa fa-calendar fa-3x mr-3"></i>'
-		cal += f'<h2 class="font-weight-bold mb-1 text-uppercase">'
+		cal = f'<div class="d-flex align-items-center justify-content-center mb-2"><i class="fa fa-calendar fa-3x mr-3"></i>'
+		cal += f'<h2 class="font-weight-bold text-uppercase">'
 		cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}</h2></div>\n'
 		cal += f'<table class="table table-hover table-striped table-borderless p-2 mb-0 calendarmonth">'
 		cal += f'{self.formatweekheader()}\n'
@@ -78,10 +78,10 @@ class Calendar(HTMLCalendar):
 		dt = date(self.year, self.month, self.day)
 		start = dt - timedelta(days=dt.weekday())
 		end = start + timedelta(days=6)
-		cal = f'<div class="d-flex align-items-center"><i class="fa fa-calendar fa-3x mr-3"></i>'
-		cal += f'<h2 class="calendartitle font-weight-bold mb-0 text-uppercase">'
+		cal = f'<div class="d-flex align-items-center justify-content-center mb-2"><i class="fa fa-calendar fa-3x mr-3"></i>'
+		cal += f'<h2 class="font-weight-bold text-uppercase">'
 		cal += f'{start.strftime("%d %b")} - {end.strftime("%d %b")} </h2></div>\n'
-		cal += f'<table class="table table-hover table-striped table-borderless p-5 small text-center">'
+		cal += f'<table class="table table-hover table-striped table-borderless p-5 small text-center calendarweek">'
 		cal += f'{self.formatweekheaderforweek(start)}\n'
 		cal += f'<tbody>'
 
@@ -90,7 +90,7 @@ class Calendar(HTMLCalendar):
 		dates = [start + timedelta(days=n) for n in range(7)]
 
 		for hour in hourly_it(starthour, finishhour):
-			cal += f'<tr><th scope="row">{hour.strftime("%H:%M")}</th>'
+			cal += f'<tr class="d-flex"><th scope="row">{hour.strftime("%H:%M")}</th>'
 			for day in dates:
 				events_per_day = ev.filter(day__year=day.year, day__month=day.month, day__day=day.day)
 				for event in events_per_day:
@@ -105,18 +105,18 @@ class Calendar(HTMLCalendar):
 	def formatbyday(self, ev, withyear=True):
 		dt = date(self.year, self.month, self.day)
 		events = ev.filter(day__year=self.year, day__month=self.month, day__day=self.day)
-		cal = f'<div class="d-flex align-items-center"><i class="fa fa-calendar fa-3x mr-3"></i>'
-		cal += f'<h2 class="font-weight-bold mb-0 text-uppercase">'
+		cal = f'<div class="d-flex align-items-center justify-content-center mb-2"><i class="fa fa-calendar fa-3x mr-3"></i>'
+		cal += f'<h2 class="font-weight-bold text-uppercase">'
 		cal += f'{dt.strftime("%A, %d %b %Y")} </h2></div>\n'
-		cal += f'<table class="table table-hover table-striped table-borderless p-5 small text-center">'
-		cal += f'<thead><tr class="text-uppercase"><th class="w-25" span="col">time</th><th class="w-75" span="col">Events</th></tr></thead>'
+		cal += f'<table class="table table-hover table-striped table-borderless p-5 small text-center calendarday">'
+		cal += f'<thead><tr class="text-uppercase"><th span="col">time</th><th span="col">Events</th></tr></thead>'
 		cal += f'<tbody>'
 
 		starthour = datetime(year=self.year, month=self.month, day=self.day, hour = 5, minute=0)
 		finishhour = datetime(year=self.year, month=self.month, day=self.day, hour = 23, minute=0)
 
 		for hour in hourly_it(starthour, finishhour):
-			cal += f'<tr><th scope="row">{hour.strftime("%H:%M")}</th>'
+			cal += f'<tr class="d-flex"><th scope="row">{hour.strftime("%H:%M")}</th>'
 			for event in events:
 				if(event.start_hour.hour==hour.hour and event.start_hour.minute==hour.minute):
 					cal += f'<td class="bg-primary">dog time</td>'

@@ -2,3 +2,19 @@
   float: left;
   width: 14.28571428571%;
 }
+
+.calendarweek td, .calendarweek th{
+  width: 13%;
+}
+
+.calendarweek td:first-child(), .calendarweek th:first-child(){
+  width: 9%;
+}
+
+.calendarday td:nth-child(odd), .calendarday th:nth-child(odd){
+  width: 10%;
+}
+
+.calendarday td:nth-child(even), .calendarday th:nth-child(even){
+  width: 90%;
+}
