@@ -29,7 +29,7 @@ class Calendar(HTMLCalendar):
 		weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 		dates = [startdate + timedelta(days=n) for n in range(7)]
 		for weekday, d in zip(weekdays, dates):
-			header += f'<th span="col"> {weekday} {d.day} </th>\n'
+			header += f'<th span="col"><a href="../calendar/?view=day&date={d.year}-{d.month}-{d.day}"> {weekday} {d.day} </a></th>\n'
 		header += "</tr></thead>"
 		return header
 
@@ -60,7 +60,17 @@ class Calendar(HTMLCalendar):
 		cal += f'{self.formatweekheader()}\n'
 		cal += f'<tbody class="days">'
 		for week in self.monthdays2calendar(self.year, self.month):
-			cal += f'{self.formatweek(week, events)}\n'
+			cal += '<tr>'
+			for day, weekday in week:
+				events_per_day = events.filter(day__day=day)
+				if day != 0:
+					eventsdata=''
+					for event in events_per_day:
+						eventsdata += f'<div class="event bg-primary"> {event.start_hour.strftime("%H:%M")}-{event.end_hour.strftime("%H:%M")} </div>'
+					cal += f'<td><span class="date"><a href="../calendar/?view=day&date={self.year}-{self.month}-{day}">{day}</a></span>{eventsdata}</td>'
+				else:
+					cal += f'<td></td>'
+			cal += '</tr>'
 		cal += f'</tbody></table>'
 		return cal
 
@@ -87,21 +97,9 @@ class Calendar(HTMLCalendar):
 				events_per_day = ev.filter(day__year=day.year, day__month=day.month, day__day=day.day)
 				for event in events_per_day:
 					if(event.start_hour.hour==hour.hour and event.start_hour.minute==hour.minute):
-						then = datetime(2012, 3, 5, event.start_hour.hour, event.start_hour.minute)
-						now  = datetime(2012, 3, 5, event.end_hour.hour, event.end_hour.minute)
-						duration = now - then
-						duration_in_s = duration.total_seconds()
-						rows = int(divmod(duration_in_s, 1800)[0])
-						cal += f'<td rowspan="{rows}" style="background-color:black;color:white;" >{rows}</td>'
-						flag=True
-						break
+						cal += f'<td class="event bg-primary" >freetime</td>'
 				else:
-					if(flag and rows>1):
-						rows-=1
-					elif(flag and rows==1):
-						flag=False
-					else:
-						cal += '<td></td>'
+					cal += '<td></td>'
 			cal += '</tr>\n'
 
 		cal += f'</tbody></div></table></div>'
@@ -125,26 +123,15 @@ class Calendar(HTMLCalendar):
 
 		starthour = datetime(year=self.year, month=self.month, day=self.day, hour = 5, minute=0)
 		finishhour = datetime(year=self.year, month=self.month, day=self.day, hour = 23, minute=0)
-		flag=False
+
 		for hour in hourly_it(starthour, finishhour):
 			cal += f'<tr><th>{hour.strftime("%H:%M")}</th>'
 			for event in events:
 				if(event.start_hour.hour==hour.hour and event.start_hour.minute==hour.minute):
-					then = datetime(2012, 3, 5, event.start_hour.hour, event.start_hour.minute)
-					now  = datetime(2012, 3, 5, event.end_hour.hour, event.end_hour.minute)
-					duration = now - then
-					duration_in_s = duration.total_seconds()
-					rows = int(divmod(duration_in_s, 1800)[0])
-					cal += f'<td rowspan="{rows}" style="background-color:black;color:white;" >{rows}</td>'
-					flag=True
+					cal += f'<td class="event bg-primary" >freetime</td>'
 					break
 			else:
-				if(flag and rows>1):
-					rows-=1
-				elif(flag and rows==1):
-					flag=False
-				else:
-					cal += '<td></td>'
+				cal += '<td></td>'
 			cal += '</tr>\n'
 
 		cal += f'</tbody></div></table></div>'
