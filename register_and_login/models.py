@@ -56,5 +56,7 @@ class TimePeriod(models.Model):
 	start_hour = models.TimeField()
 	end_hour = models.TimeField()
 
+	class Meta:
+		unique_together = (("day", "start_hour"), ("day", "end_hour"), ("start_hour","end_hour"))
 	def __str__(self):
 		return f'{self.day} -> {self.start_hour} - {self.end_hour} '

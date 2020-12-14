@@ -154,7 +154,6 @@ def add_time_period(request):
             return redirect('add_time_period')
     else:
         form = AddTimePeriodForm()
-
     return render(request, 'register_and_login/add_time_period.html', {'form':form})
 
 
