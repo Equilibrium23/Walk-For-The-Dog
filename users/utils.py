@@ -9,6 +9,21 @@ def hourly_it(start, finish):
 		start = start + timedelta(minutes=30)
 		yield start
 
+def merge_time_ranges(data):
+	result = []
+	if(len(data)>0):
+		data.sort()
+		t_old = data[0]
+		for t in data[1:]:
+			if t_old[1] == t[0]:
+				t_old = ((min(t_old[0], t[0]), max(t_old[1], t[1])))
+			else:
+				result.append(t_old)
+				t_old = t
+		else:
+			result.append(t_old)
+	return result
+
 class Calendar(HTMLCalendar):
 	def __init__(self, year=None, month=None, day=None):
 		self.year = year
@@ -33,41 +48,26 @@ class Calendar(HTMLCalendar):
 		header += "</tr></thead>"
 		return header
 
-	def formatday(self, day, events):
-		events_per_day = events.filter(day__day=day)
-		d = ''
-		for event in events_per_day:
-			d += f'<div class="event bg-info"> {event.start_hour.strftime("%H:%M")}-{event.end_hour.strftime("%H:%M")} </div>'
-
-		if day != 0:
-			return f'<td><span class="date">{day}</span>{d}</td>'
-
-		return f'<td></td>'
-
-	def formatweek(self, theweek, events):
-		week = ''
-		for d, weekday in theweek:
-			week += self.formatday(d, events)
-		return f'<tr>{week}</tr>'
-
 	def formatmonth(self, ev, withyear=True):
 		events = ev.filter(day__year=self.year, day__month=self.month)
 
 		cal = f'<div class="d-flex align-items-center"><i class="fa fa-calendar fa-3x mr-3"></i>'
-		cal += f'<h2 class="calendartitle font-weight-bold mb-0 text-uppercase">'
+		cal += f'<h2 class="font-weight-bold mb-1 text-uppercase">'
 		cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}</h2></div>\n'
-		cal += f'<table class="table table-hover calendarmonth p-5">'
+		cal += f'<table class="table table-hover table-striped table-borderless p-2 mb-0 calendarmonth">'
 		cal += f'{self.formatweekheader()}\n'
-		cal += f'<tbody class="days">'
+		cal += f'<tbody>'
 		for week in self.monthdays2calendar(self.year, self.month):
-			cal += '<tr>'
+			cal += '<tr class="d-flex" style="min-height: 8rem;">'
 			for day, weekday in week:
-				events_per_day = events.filter(day__day=day)
 				if day != 0:
+					events_per_day = events.filter(day__day=day)
 					eventsdata=''
-					for event in events_per_day:
-						eventsdata += f'<div class="event bg-primary"> {event.start_hour.strftime("%H:%M")}-{event.end_hour.strftime("%H:%M")} </div>'
-					cal += f'<td><span class="date"><a href="../calendar/?view=day&date={self.year}-{self.month}-{day}">{day}</a></span>{eventsdata}</td>'
+					dates = [(event.start_hour.strftime("%H:%M"), event.end_hour.strftime("%H:%M")) for event in events_per_day]
+					e = merge_time_ranges(dates)
+					for evnt in e:
+						eventsdata += f'<div class="bg-primary"> {evnt[0]}-{evnt[1]} </div>'
+					cal += f'<td><a href="../calendar/?view=day&date={self.year}-{self.month}-{day}">{day}</a>{eventsdata}</td>'
 				else:
 					cal += f'<td></td>'
 			cal += '</tr>'
@@ -81,14 +81,12 @@ class Calendar(HTMLCalendar):
 		cal = f'<div class="d-flex align-items-center"><i class="fa fa-calendar fa-3x mr-3"></i>'
 		cal += f'<h2 class="calendartitle font-weight-bold mb-0 text-uppercase">'
 		cal += f'{start.strftime("%d %b")} - {end.strftime("%d %b")} </h2></div>\n'
-		cal += '<div class="table-responsive">\n'
-		cal += f'<table class="table table-hover borderless p-5" id="notmonth"><div class="calendarweek">'
+		cal += f'<table class="table table-hover table-striped table-borderless p-5 small text-center">'
 		cal += f'{self.formatweekheaderforweek(start)}\n'
-		cal += f'<tbody class="days" style="font-size: 1rem;">'
+		cal += f'<tbody>'
 
 		starthour = datetime(year=2020, month=12, day=11, hour = 5, minute=0)
 		finishhour = datetime(year=2020, month=12, day=11, hour = 23, minute=0)
-		flag=False
 		dates = [start + timedelta(days=n) for n in range(7)]
 
 		for hour in hourly_it(starthour, finishhour):
@@ -97,43 +95,34 @@ class Calendar(HTMLCalendar):
 				events_per_day = ev.filter(day__year=day.year, day__month=day.month, day__day=day.day)
 				for event in events_per_day:
 					if(event.start_hour.hour==hour.hour and event.start_hour.minute==hour.minute):
-						cal += f'<td class="event bg-primary" >freetime</td>'
+						cal += f'<td class="bg-primary">dog time</td>'
 				else:
 					cal += '<td></td>'
 			cal += '</tr>\n'
-
-		cal += f'</tbody></div></table></div>'
-
+		cal += f'</tbody></table>'
 		return cal
 
 	def formatbyday(self, ev, withyear=True):
 		dt = date(self.year, self.month, self.day)
-
 		events = ev.filter(day__year=self.year, day__month=self.month, day__day=self.day)
-
 		cal = f'<div class="d-flex align-items-center"><i class="fa fa-calendar fa-3x mr-3"></i>'
-		cal += f'<h2 class="calendartitle font-weight-bold mb-0 text-uppercase">'
-		cal += f'{dt.strftime("%d %b, %Y %A")} </h2></div>\n'
-		cal += '<div class="table-responsive">\n'
-		cal += f'<table class="table table-hover borderless p-5" id="notmonth"><div class="calendarday">'
-
-		cal += f'<thead class="font-weight-bold text-uppercase"><tr><th span="col">time</th><th span="col">Events</th></tr></thead>'
-
-		cal += f'<tbody class="days" style="font-size: 1rem;">'
+		cal += f'<h2 class="font-weight-bold mb-0 text-uppercase">'
+		cal += f'{dt.strftime("%A, %d %b %Y")} </h2></div>\n'
+		cal += f'<table class="table table-hover table-striped table-borderless p-5 small text-center">'
+		cal += f'<thead><tr class="text-uppercase"><th class="w-25" span="col">time</th><th class="w-75" span="col">Events</th></tr></thead>'
+		cal += f'<tbody>'
 
 		starthour = datetime(year=self.year, month=self.month, day=self.day, hour = 5, minute=0)
 		finishhour = datetime(year=self.year, month=self.month, day=self.day, hour = 23, minute=0)
 
 		for hour in hourly_it(starthour, finishhour):
-			cal += f'<tr><th>{hour.strftime("%H:%M")}</th>'
+			cal += f'<tr><th scope="row">{hour.strftime("%H:%M")}</th>'
 			for event in events:
 				if(event.start_hour.hour==hour.hour and event.start_hour.minute==hour.minute):
-					cal += f'<td class="event bg-primary" >freetime</td>'
+					cal += f'<td class="bg-primary">dog time</td>'
 					break
 			else:
 				cal += '<td></td>'
 			cal += '</tr>\n'
-
-		cal += f'</tbody></div></table></div>'
-
+		cal += f'</tbody></table>'
 		return cal

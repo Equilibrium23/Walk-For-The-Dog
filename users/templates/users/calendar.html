@@ -2,12 +2,13 @@
 {% load static %}
 
 {% block stylesheet %}
-<link rel="stylesheet" type="text/css" href="{% static 'users/calendar.css' %}">
+<link href="{% static 'users/calendar.css' %}" rel="stylesheet" type="text/css"/>
 {% endblock stylesheet %}
 
 
 {% block content %}
-    <div class="d-flex justify-content-between">
+
+    <div class="d-flex justify-content-between m-4">
         {% if request.GET.date %}
             {% with date_param=request.GET.date%}
                 <a href="{% url 'calendar' %}?view=month&date={{ date_param }}">
@@ -35,7 +36,7 @@
 
             {{ calendar }}
 
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between m-4">
         {% if request.GET.view %}
             {% with view_param=request.GET.view %}
                 <a href="{% url 'calendar' %}?view={{ view_param }}&date={{ prev_view }}">

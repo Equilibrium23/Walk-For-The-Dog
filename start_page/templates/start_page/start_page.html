@@ -8,11 +8,14 @@
 		<br>Just create your account, load your location, the app will show you a list of users in your neighborhood 
 		with their free time and allow you to contact with them. 
 		People offering help can also load their calendar or write their spare time manually.<br>
-		If you're looking for a help or you want to help others, join us today!<br><br>
-		<div class="buttons" align="center">
-			<a class="reg_log_btn" href="{% url 'register' %}">REGISTER NOW</a>
-			<a class="reg_log_btn" href="{% url 'login' %}">LOGIN</a>
-		</div>
+
+		{% if not user.is_authenticated %}
+			If you're looking for a help or you want to help others, join us today!<br><br>
+			<div class="buttons" align="center">
+				<a class="reg_log_btn" href="{% url 'register' %}">REGISTER NOW</a>
+				<a class="reg_log_btn" href="{% url 'login' %}">LOGIN</a>
+			</div>
+		{% endif %}	
 	</h3>
 
 {% endblock content %}
