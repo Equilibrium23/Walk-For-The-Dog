@@ -88,10 +88,10 @@ DATABASES = {
         'USER': 'idnrkogw',
         'PASSWORD': 'A0zqcSBOw9U_6z91ep6XQ_HhKmNBO6BR',
         'HOST': 'suleiman.db.elephantsql.com',
-        'PORT': '5432'
-        # 'TEST': {
-        #     'NAME': 'mytestdatabase',
-        # } #this may help with testing jj
+        'PORT': '5432',
+        'TEST': {
+            'NAME': 'idnrkogw',
+        } #this may help with testing jj
     }
 }
 
