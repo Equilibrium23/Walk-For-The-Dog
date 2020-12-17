@@ -5,10 +5,12 @@ __pycache__/
 *$py.class
 .idea/
 venv/
-staticfiles/*
 
 #Django
 *.log
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+staticfiles/*
+media/profile_pics/*
+
