@@ -14,3 +14,6 @@ db.sqlite3-journal
 staticfiles/*
 media/profile_pics/*
 
+#Test
+.coverage
+
