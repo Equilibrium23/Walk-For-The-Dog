@@ -27,5 +27,6 @@ jobs:
     - name: Test with django test
       run: |
         python manage.py collectstatic
+        yes
         coverage run --source='.' manage.py test --keepdb
         coverage report
