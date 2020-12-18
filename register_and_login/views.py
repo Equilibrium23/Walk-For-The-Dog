@@ -24,7 +24,9 @@ def register(request):
             user.profile.account_type = form.cleaned_data['account_type']
             user.profile.location = form.cleaned_data['location']
             user.profile.joining_date = form.cleaned_data['joining_date']
-            user.profile.image = form.cleaned_data['image']
+            
+            if form.cleaned_data['image']:
+                user.profile.image = form.cleaned_data['image']
             user.save()
             #close_old_connections()
             
@@ -55,6 +57,33 @@ def add_dog(request):
         form = AddDogForm()
 
     return render(request, 'register_and_login/add_dog.html', {'form':form})
+
+
+
+@login_required
+def edit_dog_profile(request):
+
+    request_dog_id = request.GET.get("request_dog_id", "")
+    dog = Dog.objects.all().filter(id=request_dog_id).first()
+
+    if request.method == 'POST':
+        form = AddDogForm(request.POST, request.FILES, instance=dog)
+        if form.is_valid():
+            
+            dog.dog_name = form.cleaned_data['dog_name']
+            dog.breed = form.cleaned_data['breed']
+            dog.size = form.cleaned_data['size']
+            dog.short_description = form.cleaned_data['short_description']
+            dog.image = form.cleaned_data['image']
+            dog.save()
+            messages.success(request, f'Your dog profile has been updated!!')
+            #close_old_connections()
+            
+            return redirect('profile')
+    else:
+        form = AddDogForm(instance=dog)
+
+    return render(request, 'register_and_login/edit_dog_profile.html', {'form':form})
 
 
 @login_required
@@ -105,7 +134,11 @@ def change_ac_type(request):
             return redirect('profile')
     else:
         ca_form = ChangeAccountForm(instance=request.user.profile)
-    return render(request, 'register_and_login/change_ac_type.html', {'ca_form':ca_form})
+
+    users = Profile.objects.all().filter(location__in=['Mielec', 'Tarnów', 'Kraków'])
+    us_am = Profile.objects.all().filter(location__in=['Mielec', 'Tarnów', 'Kraków']).count()
+   
+    return render(request, 'register_and_login/change_ac_type.html', context)
 
 
 @login_required
