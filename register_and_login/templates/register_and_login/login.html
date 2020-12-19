@@ -32,7 +32,12 @@
         		</small>
         	</div>
         {%else%}
-            You are logged!
+        {% block javascripts %}
+            <script type="text/javascript">
+                window.location.href = "{% url 'start_page' %}";
+            </script>
+        {% endblock javascripts %}
+        You are logged!
         {%endif%}
 
     </div>

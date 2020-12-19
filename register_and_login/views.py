@@ -14,7 +14,8 @@ def login(request):
 
 
 def register(request):
-    
+    if request.user.is_authenticated:
+        return redirect('start_page')
     if request.method == 'POST':
         form = UserRegisterForm(request.POST, request.FILES)
         if form.is_valid():
