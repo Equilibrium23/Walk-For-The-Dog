@@ -29,6 +29,7 @@ class AddDogForm(forms.ModelForm):
 		model = Dog
 		fields = ['dog_name', 'breed', 'size', 'short_description', 'image']
 
+
 class UserUpdateForm(forms.ModelForm):
 	email = forms.EmailField()
 

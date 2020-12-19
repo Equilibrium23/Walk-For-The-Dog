@@ -42,7 +42,7 @@ class Dog(models.Model):
 	size = models.CharField(max_length=1, choices=DOG_SIZE, default='S')
 	short_description = models.CharField(max_length=300)
 	image = models.ImageField(default='profile_pics/dog_default.jpg', upload_to='profile_pics/')
-	owner = models.ForeignKey(Profile, on_delete=models.CASCADE) 
+	owner = models.ForeignKey(User, on_delete=models.CASCADE) 
 	
 	def __str__(self):
 		return self.dog_name

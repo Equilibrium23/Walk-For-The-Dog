@@ -1,0 +1,45 @@
+{% extends "start_page/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="{% static 'register_and_login/reg_log.css' %}">
+
+{% endblock stylesheet %}
+
+{% block content %}
+    <div class="content-section">
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            Are you sure that you want to delete {{request_dog.dog_name}} Profile?
+
+            <div class="dog-desc">
+          <br>
+          <img src="{{ request_dog.image.url }}" class="d-block w-100" alt="pic1" style="border-radius: 10px;">
+          <br>
+          <ul class="container details" >
+            <li>
+              <p>
+                <span class="glyphicon glyphicon-pencil mr-3 text-primary fa-fw" style="width:20px;"></span>
+                {{request_dog.short_description}}
+              </p>
+            </li>
+            <li>
+              <p>
+                <span class="fas fa-dog fa-3px mr-3 text-primary fa-fw" style="width:20px;"></span>
+                {{request_dog.breed}}
+              </p>
+            </li>
+            
+          </ul>
+        </div><br> 
+
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Delete</button>
+            </div>
+        </form> 
+
+    </div>
+{% endblock content %}
