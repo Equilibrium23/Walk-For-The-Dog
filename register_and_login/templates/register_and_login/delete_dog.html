@@ -3,43 +3,47 @@
 {% load crispy_forms_tags %}
 
 {% block stylesheet %}
-<link rel="stylesheet" type="text/css" href="{% static 'register_and_login/reg_log.css' %}">
-
+<!--link rel="stylesheet" type="text/css" href="{% static 'register_and_login/reg_log.css' %}"!-->
 {% endblock stylesheet %}
 
 {% block content %}
-    <div class="content-section">
+<div class="row h-100 justify-content-center align-items-center text-center">
+  <form class="col-12" method="POST">
+      {% csrf_token %}
+      
+      <h2 class="text-danger">
+          Are you sure you want to delete the profile of <span class="font-weight-bold text-uppercase">{{request_dog.dog_name}}</span>?
+      </h2>
+      <p class="text-muted">
+        Deleting dog's profile is permanent and will remove all its content. <br/> Are you sure you want to delete it?
+      </p>
 
-        <form method="POST">
-            {% csrf_token %}
-            
-            Are you sure that you want to delete {{request_dog.dog_name}} Profile?
-
-            <div class="dog-desc">
-          <br>
-          <img src="{{ request_dog.image.url }}" class="d-block w-100" alt="pic1" style="border-radius: 10px;">
-          <br>
-          <ul class="container details" >
-            <li>
+      <div class="card mb-3 w-75 mx-auto bg-transparent border-0">
+        <div class="card-img-top d-flex justify-content-center align-items-center">
+            <div>
+                <img class="img-fluid" src="{{ request_dog.image.url }}" alt="{{request_dog.dog_name}}" style="border-radius: 20px;">
+            </div>
+            <div class="col p-2 m-0">
               <p>
-                <span class="glyphicon glyphicon-pencil mr-3 text-primary fa-fw" style="width:20px;"></span>
-                {{request_dog.short_description}}
+                <span class="fas fa-paw fa-3px mr-3 text-primary fa-fw" style="width:20px;"></span>
+                {{request_dog.dog_name}}
               </p>
-            </li>
-            <li>
               <p>
                 <span class="fas fa-dog fa-3px mr-3 text-primary fa-fw" style="width:20px;"></span>
                 {{request_dog.breed}}
               </p>
-            </li>
-            
-          </ul>
-        </div><br> 
-
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Delete</button>
+              <p>
+                <span class="fa fa-pencil mr-3 text-primary fa-fw" style="width:20px;"></span>
+                {{request_dog.short_description}}
+              </p>
             </div>
-        </form> 
+        </div>
+      </div>
 
-    </div>
+      <button class="btn btn-danger btn-lg" type="submit">
+          Yes, I am sure.<br/>
+          Delete it.
+      </button>
+  </form> 
+</div>
 {% endblock content %}

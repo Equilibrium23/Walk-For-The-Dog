@@ -9,10 +9,8 @@
 {% endblock stylesheet %}
 
 {% block content %}
-<div class="container">
-  <br>
-  <h3 style="text-align: center;"> Look through your profile {{ user.profile.name }}! </h3>
-  <div class="card mb-3" style="max-width: 540px;">
+  <h3 class="mt-3" style="text-align: center;"> Look through your profile <span class="font-weight-bold text-dark text-uppercase">{{ user.profile.name }}</span>! </h3>
+  <div class="card shadow-lg mb-3 w-75 mx-auto border-0">
     <div class="row no-gutters">
       <div class="col-md-4">
       <!-- <img src="https://i.picsum.photos/id/1006/3000/2000.jpg?hmac=x83pQQ7LW1UTo8HxBcIWuRIVeN_uCg0cG6keXvNvM8g" class="card-img" alt="avatar"> -->
@@ -23,7 +21,7 @@
         <div class="card-body">
           <!--<h5 class="card-title">Card title</h5>-->
           <p class="card-text">
-            <ul class="container details" >
+            <ul >
             <li>
               <p>
                 <span class="fa fa-user one" style="width:50px;">
@@ -55,7 +53,7 @@
             </li>
             <li>
               <p>
-                <a href="../update" style="text-decoration:none; color: black;">
+                <a href="../update" class="text-dark">
                   <span class="fa fa-edit" style="width:50px;"></span>
                   Edit your profile
                 </a>
@@ -63,7 +61,7 @@
             </li>
             <li>
               <p>
-                <a href="../change_ac_type" style="text-decoration:none;color: black;">
+                <a href="../change_ac_type" class="text-dark">
                   <span class="fa fa-exchange" style="width:50px;"></span>
                   Change account type
                 </a>
@@ -71,7 +69,7 @@
             </li>
             <li>
               <p>
-                <a href="../add_dog" style="text-decoration:none;color: black;">
+                <a href="../add_dog" class="text-dark">
                   <span class="fa fa-plus" style="width:50px;"></span>
                   Add dog
                 </a>
@@ -79,7 +77,7 @@
             </li>
             <li>
               <p>
-                <a href="../delete_profile/?request_user_id={{user.profile.id}}" style="text-decoration:none;color: black;">
+                <a href="../delete_profile/?request_user_id={{user.profile.id}}" class="text-dark">
                   <span class="fa fa-trash " style="width:50px;"></span>
                   Delete your account
                 </a>
@@ -115,7 +113,7 @@
           <ul class="container details" >
             <li>
               <p>
-                <span class="fas fa-paw fa-3px mr-3 text-primary fa-fw" style="width:20px;color:#F7934C"></span>
+                <span class="fas fa-paw fa-3px mr-3 text-primary fa-fw" style="width:20px;"></span>
                 {{dog.dog_name}}
               </p>
             </li>
@@ -133,7 +131,7 @@
             </li>
             <li>
               <p>
-                <a href="../edit_dog_profile/?request_dog_id={{dog.id}}" style="text-decoration:none;color: black;">
+                <a href="../edit_dog_profile/?request_dog_id={{dog.id}}" class="text-dark">
                   <span class="fa fa-edit mr-3 text-primary fa-fw" style="width:20px;"></span>
                   Edit profile
                 </a>
@@ -141,7 +139,7 @@
             </li>
             <li>
               <p>
-                <a href="../delete_dog/?request_dog_id={{dog.id}}" style="text-decoration:none;color: black;" >
+                <a href="../delete_dog/?request_dog_id={{dog.id}}" class="text-dark" >
                   <span class="fa fa-minus mr-3 text-primary fa-fw" style="width:20px;"></span>
                   Delete this dog
                 </a>
@@ -153,10 +151,9 @@
       </div>
 
     {% empty %}
-      You have not added any dog yet! Do it now!  </br>
+      <h5>You have not added any dog yet! Do it now! </h5> </br>
       <p>
-        <a href="../add_dog" style="text-decoration:none;color: black;">
-        </br> </br>
+        <a href="../add_dog" class="text-dark">
           <span class="fa fa-plus" style="width:50px;"></span>
               Add dog
         </a>
@@ -164,15 +161,13 @@
 	  {% endfor %}
   
       <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="pr"><span class="carousel-control-prev-icon" aria-hidden="true"></span></span>
         <span class="sr-only">Previous</span>
       </a>
       <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="ne"><span class="carousel-control-next-icon" aria-hidden="true"></span></span>
       <span class="sr-only">Next</span>
       </a>
     </div>
   </div>
-</div>
-
 {% endblock content %}
