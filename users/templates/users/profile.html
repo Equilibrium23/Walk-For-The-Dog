@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block stylesheet %}
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<!--link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"-->
 <!--<script src="https://use.fontawesome.com/49b98aaeb5.js"></script>-->
 <!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">-->
 <link rel="stylesheet" type="text/css" href="{% static 'users/profile.css' %}">
@@ -26,14 +26,14 @@
             <ul class="container details" >
             <li>
               <p>
-                <span class="glyphicon glyphicon-user one" style="width:50px;">
+                <span class="fa fa-user one" style="width:50px;">
                 </span>
                 {{ user.username }}
               </p>
             </li>
             <li>
               <p>
-                <span class="glyphicon glyphicon-envelope one" style="width:50px;">
+                <span class="fa fa-envelope one" style="width:50px;">
                 </span>
                 </span>
                {{ user.email }}
@@ -41,7 +41,7 @@
             </li>
             <li>
               <p>
-                <span class="glyphicon glyphicon-calendar" style="width:50px;">
+                <span class="fa fa-calendar" style="width:50px;">
                 </span>
                 Date Of Joining: {{ user.profile.joining_date }}
               </p>
@@ -56,7 +56,7 @@
             <li>
               <p>
                 <a href="../update" style="text-decoration:none; color: black;">
-                  <span class="glyphicon glyphicon-edit" style="width:50px;"></span>
+                  <span class="fa fa-edit" style="width:50px;"></span>
                   Edit your profile
                 </a>
               </p>
@@ -72,7 +72,7 @@
             <li>
               <p>
                 <a href="../add_dog" style="text-decoration:none;color: black;">
-                  <span class="glyphicon glyphicon-plus" style="width:50px;"></span>
+                  <span class="fa fa-plus" style="width:50px;"></span>
                   Add dog
                 </a>
               </p>
