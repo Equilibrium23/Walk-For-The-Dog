@@ -129,7 +129,7 @@ def change_ac_type(request):
 
         if ca_form.is_valid():
             ca_form.save()
-            messages.success(request, f'Your account type has been changed!')
+            messages.success(request, f'Your account type has been changed!!!')
             #close_old_connections()
             return redirect('profile')
     else:
