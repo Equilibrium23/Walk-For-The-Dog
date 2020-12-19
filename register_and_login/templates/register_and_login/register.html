@@ -10,23 +10,28 @@
 
 
 	<div class="content-section">
-    	<form method="POST" enctype="multipart/form-data">
-    		{% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="mb-4">Join Today</legend>
-                <hr/>
-                {{ form|crispy }}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Sign Up</button>
-            </div>
-    	</form>	
+        {% if not user.is_authenticated %}
+        	<form method="POST" enctype="multipart/form-data">
+        		{% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="mb-4">Join Today</legend>
+                    <hr/>
+                    {{ form|crispy }}
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-info" type="submit">Sign Up</button>
+                </div>
+        	</form>	
 
-    	<div class="pt-3">
-            <hr/>
-    		<small class="text-muted">
-    			Already Have An Account? <a class="ml-2" href="{% url 'login' %}"> Sign In </a>
-    		</small>
-    	</div>
+        	<div class="pt-3">
+                <hr/>
+        		<small class="text-muted">
+        			Already Have An Account? <a class="ml-2" href="{% url 'login' %}"> Sign In </a>
+        		</small>
+        	</div>
+        {%else%}
+            You are logged!
+        {%endif%}
+        
     </div>
 {% endblock content %}
