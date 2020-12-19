@@ -14,12 +14,11 @@ class UserRegisterForm(UserCreationForm):
 	account_type = forms.ChoiceField(choices=ACCOUNT_TYPES)
 	location = forms.CharField(required=True)
 	image = forms.ImageField(required=False)
-	joining_date = forms.DateField(initial=datetime.date.today)
+	joining_date = forms.DateField(initial=datetime.date.today, widget=forms.HiddenInput())
 
 	class Meta:
 		model = User
 		fields = ['username', 'name', 'email', 'password1', 'password2', 'account_type', 'location', 'image']
-
 
 class AddDogForm(forms.ModelForm):
 
