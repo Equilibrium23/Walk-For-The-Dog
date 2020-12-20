@@ -32,11 +32,6 @@
         		</small>
         	</div>
         {%else%}
-        {% block javascripts %}
-            <script type="text/javascript">
-                window.location.href = "{% url 'start_page' %}";
-            </script>
-        {% endblock javascripts %}
         You are logged!
         {%endif%}
 
