@@ -51,6 +51,6 @@ ul
 
 .carousel-inner .carousel-control-next , .carousel-control-prev
 {
-top: 100px;
-      bottom: 100px;
+top: 80px;
+      bottom: 120px;
 }
