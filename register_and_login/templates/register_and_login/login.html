@@ -31,8 +31,11 @@
         			Need An Account?  <a class="ml-2" href="{% url 'register' %}" > Sign Up </a>
         		</small>
         	</div>
-        {%else%}
-        You are logged!
+        {%else %}
+            <meta http-equiv="REFRESH" content="0;url={% url 'start_page' %}">
+            <div class="row h-100 justify-content-center align-items-center text-center">
+                <h2>You are already logged in!</h2>
+            </div>
         {%endif%}
 
     </div>
