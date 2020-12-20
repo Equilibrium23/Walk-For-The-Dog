@@ -48,7 +48,7 @@ def add_dog(request):
             size = form.cleaned_data['size']
             short_description = form.cleaned_data['short_description']
             image = form.cleaned_data['image']
-            cur_user = request.user
+            cur_user = request.user.profile
             d = Dog(dog_name=dog_name, breed=breed, size=size, short_description=short_description, image=image, owner_id=cur_user.id)
             d.save()
             messages.success(request, f'Your dog has been added!!')

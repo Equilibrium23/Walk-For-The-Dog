@@ -7,7 +7,7 @@ from .models import Profile, Dog, TimePeriod
 
 class UserRegisterForm(UserCreationForm):
 
-	ACCOUNT_TYPES = [("1", 'needy'), ("2", 'helper')]
+	ACCOUNT_TYPES = [("N", 'needy'), ("H", 'helper')]
 
 	email = forms.EmailField()
 	name = forms.CharField(required=True)
