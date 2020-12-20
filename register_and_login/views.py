@@ -136,6 +136,10 @@ def change_ac_type(request):
     else:
         ca_form = ChangeAccountForm(instance=request.user.profile)
 
+    context = {
+        'ca_form':ca_form
+    }
+
     return render(request, 'register_and_login/change_ac_type.html', context)
 
 
