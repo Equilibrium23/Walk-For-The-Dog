@@ -40,7 +40,7 @@ class Calendar(HTMLCalendar):
 		return header
 
 	def formatweekheaderforweek(self, startdate):
-		header ='<thead class="font-weight-bold text-uppercase"><tr><th span="col">time</th>'
+		header ='<thead class="font-weight-bold text-uppercase"><tr class="d-flex"><th span="col">time</th>'
 		weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 		dates = [startdate + timedelta(days=n) for n in range(7)]
 		for weekday, d in zip(weekdays, dates):
@@ -109,7 +109,7 @@ class Calendar(HTMLCalendar):
 		cal += f'<h2 class="font-weight-bold text-uppercase">'
 		cal += f'{dt.strftime("%A, %d %b %Y")} </h2></div>\n'
 		cal += f'<table class="table table-hover table-striped table-borderless p-5 small text-center calendarday">'
-		cal += f'<thead><tr class="text-uppercase"><th span="col">time</th><th span="col">Events</th></tr></thead>'
+		cal += f'<thead><tr class="text-uppercase d-flex"><th span="col">time</th><th span="col">Events</th></tr></thead>'
 		cal += f'<tbody>'
 
 		starthour = datetime(year=self.year, month=self.month, day=self.day, hour = 5, minute=0)

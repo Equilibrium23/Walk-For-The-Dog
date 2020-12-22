@@ -5,7 +5,7 @@ from register_and_login.models import Dog
 
 @login_required
 def profile(request):
-    context = { 'dogs' : Dog.objects.all().filter(owner_id=request.user.id) }
+    context = { 'dogs' : Dog.objects.all().filter(owner_id=request.user.profile.id) }
 
     return render(request, 'users/profile.html', context) 
 

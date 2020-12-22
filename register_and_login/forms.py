@@ -7,19 +7,18 @@ from .models import Profile, Dog, TimePeriod
 
 class UserRegisterForm(UserCreationForm):
 
-	ACCOUNT_TYPES = [("1", 'needy'), ("2", 'helper')]
+	ACCOUNT_TYPES = [("N", 'needy'), ("H", 'helper')]
 
 	email = forms.EmailField()
 	name = forms.CharField(required=True)
 	account_type = forms.ChoiceField(choices=ACCOUNT_TYPES)
 	location = forms.CharField(required=True)
 	image = forms.ImageField(required=False)
-	joining_date = forms.DateField(initial=datetime.date.today)
+	joining_date = forms.DateField(initial=datetime.date.today, widget=forms.HiddenInput())
 
 	class Meta:
 		model = User
 		fields = ['username', 'name', 'email', 'password1', 'password2', 'account_type', 'location', 'image']
-
 
 class AddDogForm(forms.ModelForm):
 
@@ -28,6 +27,7 @@ class AddDogForm(forms.ModelForm):
 	class Meta:
 		model = Dog
 		fields = ['dog_name', 'breed', 'size', 'short_description', 'image']
+
 
 class UserUpdateForm(forms.ModelForm):
 	email = forms.EmailField()

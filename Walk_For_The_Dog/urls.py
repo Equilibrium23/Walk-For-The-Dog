@@ -40,6 +40,13 @@ urlpatterns = [
     path('change_ac_type/', register_and_login_views.change_ac_type, name = "change_ac_type"),
     path('add_time_period/', register_and_login_views.add_time_period, name = "add_time_period"),
     path('edit_dog_profile/', register_and_login_views.edit_dog_profile, name = "edit_dog_profile"),
+<<<<<<< HEAD
+=======
+    path('delete_dog/', register_and_login_views.delete_dog, name = "delete_dog"),
+    path('delete_profile/', register_and_login_views.delete_profile, name = "delete_profile"),
+
+
+>>>>>>> origin/main
 ]
 
 if settings.DEBUG:

@@ -14,7 +14,8 @@ def login(request):
 
 
 def register(request):
-    
+    #if request.user.is_authenticated:
+    #   return redirect('start_page')
     if request.method == 'POST':
         form = UserRegisterForm(request.POST, request.FILES)
         if form.is_valid():
@@ -47,7 +48,7 @@ def add_dog(request):
             size = form.cleaned_data['size']
             short_description = form.cleaned_data['short_description']
             image = form.cleaned_data['image']
-            cur_user = request.user
+            cur_user = request.user.profile
             d = Dog(dog_name=dog_name, breed=breed, size=size, short_description=short_description, image=image, owner_id=cur_user.id)
             d.save()
             messages.success(request, f'Your dog has been added!!')
@@ -129,15 +130,16 @@ def change_ac_type(request):
 
         if ca_form.is_valid():
             ca_form.save()
-            messages.success(request, f'Your account type has been changed!')
+            messages.success(request, f'Your account type has been changed!!!')
             #close_old_connections()
             return redirect('profile')
     else:
         ca_form = ChangeAccountForm(instance=request.user.profile)
 
-    users = Profile.objects.all().filter(location__in=['Mielec', 'Tarnów', 'Kraków'])
-    us_am = Profile.objects.all().filter(location__in=['Mielec', 'Tarnów', 'Kraków']).count()
-   
+    context = {
+        'ca_form':ca_form
+    }
+
     return render(request, 'register_and_login/change_ac_type.html', context)
 
 
@@ -190,6 +192,32 @@ def add_time_period(request):
     return render(request, 'register_and_login/add_time_period.html', {'form':form})
 
 
+@login_required
+def delete_dog(request):
+
+    request_dog_id = request.GET.get("request_dog_id", "")
+    request_dog = Dog.objects.filter(id=request_dog_id).first()
+
+    if request.method == 'POST':
+        dog = Dog.objects.filter(id=request_dog_id).delete()
+        messages.success(request, f'Your dog has been deleted!!!')
+        return redirect('profile')
+  
+    return render(request, 'register_and_login/delete_dog.html', {'request_dog':request_dog})
 
 
+@login_required
+def delete_profile(request):
+
+    request_user_id = request.GET.get("request_user_id", "")
+    request_user = Profile.objects.filter(id=request_user_id).first()
+    user_id = request_user.user_id
+
+    if request.method == 'POST':
+        user = Profile.objects.filter(id=request_user_id).delete()
+        user2 = User.objects.filter(id=user_id).delete()
+        messages.success(request, f'Your profile has been deleted!!!')
+        return redirect('register')
+  
+    return render(request, 'register_and_login/delete_profile.html', {'request_user':request_user})
 

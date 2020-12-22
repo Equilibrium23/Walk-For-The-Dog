@@ -17,7 +17,7 @@ class Profile(models.Model):
 	joining_date = models.DateField(auto_now_add=True, blank=True)
 	helping_radius = models.IntegerField(choices=[(i,i) for i in range(1,11)], default=0)
 	max_dog_amount = models.IntegerField(choices=DOG_AMOUNT, default=0)
-	max_dog_size = models.CharField(max_length=5, choices=DOG_SIZE, default='N')
+	max_dog_size = models.CharField(max_length=5, choices=DOG_SIZE, default='S')
 	quarantine_time = models.IntegerField(choices=[(i,i) for i in range(0,15)], default=0)
 
 	def __str__(self):

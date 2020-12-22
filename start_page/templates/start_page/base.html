@@ -14,6 +14,7 @@
         <script src="https://use.fontawesome.com/49b98aaeb5.js"></script>
 		<link rel="shortcut icon" type="image/svg" href="{% static 'start_page/paw-print.svg' %}"/>
         {% block stylesheet %}{% endblock %}
+        {% block javascripts %}{% endblock %}
         {% if title %}
             <title>{{title}} - Walk For The Dog</title>
         {% else %}
@@ -50,12 +51,12 @@
                                     </div>
                                 </div>
                           
-                                <p class="text-gray font-weight-bold text-uppercase px-3 pb-4 mb-0">Main</p>
+                                <p class="text-gray font-weight-bold text-uppercase px-3 pb-4 mb-0">Menu</p>
                           
                                 <ul class="nav flex-column  mb-0">
                                     <li class="nav-item">
                                         <a href="{% url 'start_page'%}" class="nav-link text-dark font-italic ">
-                                            <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
+                                            <i class="fa fa fa-home mr-3 text-primary fa-fw"></i>
                                             Home
                                         </a>
                                     </li>
@@ -65,15 +66,9 @@
                                             Profile
                                         </a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a href="{% url 'logout' %}" class="nav-link text-dark font-italic">
-                                            <i class="fas fa-sign-out-alt mr-3 text-primary fa-fw"></i>
-                                            Log out
-                                        </a>
-                                    </li>
                                 </ul>
                           
-                                <p class="text-gray font-weight-bold text-uppercase px-3 py-4 mb-0">Dog walking menu</p>
+                                <!--p class="text-gray font-weight-bold text-uppercase px-3 py-4 mb-0">Dog walking menu</p-->
                           
                                 <ul class="nav flex-column  mb-0">
                                     <li class="nav-item">
@@ -90,8 +85,14 @@
                                     </li>
                                     <li class="nav-item">
                                         <a href="{% url 'calendar' %}" class="nav-link text-dark font-italic">
-                                            <i class="fas fa-plus-circle mr-3 text-primary fa-fw"></i>
+                                            <i class="fa fa-calendar mr-3 text-primary fa-fw"></i>
                                             Check your calendar
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{% url 'logout' %}" class="nav-link text-dark font-italic">
+                                            <i class="fas fa-sign-out-alt mr-3 text-primary fa-fw"></i>
+                                            Log out
                                         </a>
                                     </li>
                                 </ul>
