@@ -7,7 +7,7 @@ register_data = {
     'email':'testing@testing.pl',
     'password1':'pite12345678',
     'password2':'pite12345678',
-    'account_type':'1',
+    'account_type':'N',
     'location':'Krakow',
     'image':'',
     'joining_date':'2020-12-18'
