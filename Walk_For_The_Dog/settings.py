@@ -97,9 +97,6 @@ else:
             'PASSWORD': 'A0zqcSBOw9U_6z91ep6XQ_HhKmNBO6BR',
             'HOST': 'suleiman.db.elephantsql.com',
             'PORT': '5432',
-            # 'TEST': {
-            #     'NAME': 'idnrkogw',
-            # } #this may help with testing jj
         }
     }
 if os.environ.get('GITHUB_WORKFLOW'):
@@ -113,8 +110,6 @@ if os.environ.get('GITHUB_WORKFLOW'):
            'PORT': '5432',
         }
     }
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

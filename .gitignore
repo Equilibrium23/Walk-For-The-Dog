@@ -16,3 +16,6 @@ media/profile_pics/*
 #Test
 .coverage
 
+#helping utils
+activateVenv
+
