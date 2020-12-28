@@ -1,4 +1,4 @@
-GOOGLE_MAP_KEY = 'AIzaSyA108_naJOcONel1ZhwxrjhmVYDjiPU2Ps'
+
 import urllib.request
 import json
 
