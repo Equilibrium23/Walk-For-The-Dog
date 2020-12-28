@@ -7,15 +7,15 @@
 
 {% block content %}
 
-<div class="d-flex justify-content-between m-4">
+<div class="d-flex h-100 w-100 mx-0 px-0">
   <!-- przykladowe dane-->
 
-  <div class="row overflow-hidden shadow" style="border-radius :30px;">
+  <div class="row overflow-hidden ">
     <!-- uzytkownicy-->
-    <div class="col-5 px-0">
-      <div class="bg-white">
+    <div class="col-4 h-100 w-100 mx-0 px-0 users">
+      <div class="bg-white h-100">
 
-        <div class="bg-gray px-4 py-2 bg-light">
+        <div class="bg-gray px-5 py-2 bg-light">
           <p class="h6 mb-0 py-1">Recent</p>
         </div>
 
@@ -81,7 +81,7 @@
       </div>
     </div>
     <!-- Chat-->
-    <div class="col-7 px-0">
+    <div class="col-8 h-100 w-100 px-0 mx-0">
       <div class="px-4 py-5 chat-box bg-white">
         <!-- Sender Message-->
         <div class="media w-50 mb-3"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
@@ -146,14 +146,16 @@
       </div>
 
       <!-- Typing -->
+      <div class="typing">
       <form action="#" class="bg-light">
         <div class="input-group">
           <input type="text" placeholder="Type a message" aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-light">
           <div class="input-group-append">
-            <button id="button-addon2" type="submit" class="btn btn-link"> <i class="fa fa-paper-plane"></i></button>
+            <button id="button-addon2" type="submit" class="btn btn-link"> <i class="fa fa-paper-plane mr-3"></i></button>
           </div>
         </div>
       </form>
+    </div>
 
     </div>
   </div>

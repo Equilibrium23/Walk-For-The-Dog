@@ -2,7 +2,6 @@
   width: 5px;
 }
 
-
 ::-webkit-scrollbar-track {
   width: 5px;
  /* background: #f5f5f5;*/
@@ -26,12 +25,17 @@
 	font-size: 0.7rem;
 }
 
-
-.messages-box,
-.chat-box {
-  height: 510px;
-/* height:max-content;*/
+.messages-box{
+  height: 100%;
   overflow-y: scroll;
+}
+
+.chat-box {
+  height: 93.5%;
+  overflow-y: scroll;
+}
+.typing{
+  height: auto;
 }
 
 .rounded-lg {
