@@ -24,6 +24,7 @@
 {
 	font-size: 0.7rem;
 }
+textarea { resize: none; }
 
 .messages-box{
   height: 100%;
