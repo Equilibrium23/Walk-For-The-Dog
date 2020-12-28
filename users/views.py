@@ -9,6 +9,10 @@ def profile(request):
 
     return render(request, 'users/profile.html', context) 
 
+def chat(request):
+	return render(request, 'users/chat.html') 
+
+
 
 from datetime import datetime, timedelta, date
 from django.shortcuts import get_object_or_404
