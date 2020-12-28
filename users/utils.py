@@ -54,7 +54,7 @@ class Calendar(HTMLCalendar):
 		cal = f'<div class="d-flex align-items-center justify-content-center mb-2"><i class="fa fa-calendar fa-3x mr-3"></i>'
 		cal += f'<h2 class="font-weight-bold text-uppercase">'
 		cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}</h2></div>\n'
-		cal += f'<table class="table table-hover table-striped table-borderless p-2 mb-0 calendarmonth">'
+		cal += f'<table class="table table-hover table-striped table-borderless m-2 p-2 mb-0 calendarmonth">'
 		cal += f'{self.formatweekheader()}\n'
 		cal += f'<tbody>'
 		for week in self.monthdays2calendar(self.year, self.month):
@@ -81,7 +81,7 @@ class Calendar(HTMLCalendar):
 		cal = f'<div class="d-flex align-items-center justify-content-center mb-2"><i class="fa fa-calendar fa-3x mr-3"></i>'
 		cal += f'<h2 class="font-weight-bold text-uppercase">'
 		cal += f'{start.strftime("%d %b")} - {end.strftime("%d %b")} </h2></div>\n'
-		cal += f'<table class="table table-hover table-striped table-borderless p-5 small text-center calendarweek">'
+		cal += f'<table class="table table-hover table-striped table-borderless m-2 p-5 small text-center calendarweek">'
 		cal += f'{self.formatweekheaderforweek(start)}\n'
 		cal += f'<tbody>'
 
@@ -108,7 +108,7 @@ class Calendar(HTMLCalendar):
 		cal = f'<div class="d-flex align-items-center justify-content-center mb-2"><i class="fa fa-calendar fa-3x mr-3"></i>'
 		cal += f'<h2 class="font-weight-bold text-uppercase">'
 		cal += f'{dt.strftime("%A, %d %b %Y")} </h2></div>\n'
-		cal += f'<table class="table table-hover table-striped table-borderless p-5 small text-center calendarday">'
+		cal += f'<table class="table table-hover table-striped table-borderless m-2 p-5 small text-center calendarday">'
 		cal += f'<thead><tr class="text-uppercase d-flex"><th span="col">time</th><th span="col">Events</th></tr></thead>'
 		cal += f'<tbody>'
 
