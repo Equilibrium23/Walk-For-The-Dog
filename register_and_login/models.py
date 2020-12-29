@@ -50,11 +50,14 @@ class Dog(models.Model):
 
 class TimePeriod(models.Model):
 
+	TIME_TYPE = [('O', 'occupied'), ('F', 'free')]
 	
 	person = models.ForeignKey(User, on_delete=models.CASCADE)
 	day = models.DateField()
 	start_hour = models.TimeField()
 	end_hour = models.TimeField()
+	time_type = models.CharField(max_length=1, choices=TIME_TYPE, default='F')
+	time_name = models.CharField(max_length=100, default='')
 
 	class Meta:
 		unique_together = (("day", "start_hour"), ("day", "end_hour"), ("start_hour","end_hour"))

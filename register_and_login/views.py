@@ -156,28 +156,29 @@ def add_time_period(request):
             delta = datetime.timedelta(minutes=30)
             person = request.user
             end_hour = (datetime.datetime.combine(datetime.date(1,1,1),start_hour)+delta).time()
-            tp = TimePeriod(person=person, day=day, start_hour=start_hour, end_hour=end_hour)
+            tp = TimePeriod(person=person, day=day, start_hour=start_hour, end_hour=end_hour, time_type='F', time_name='')
             tp.save()
+
 
             if time_length == 60 or time_length == 90 or time_length == 120:
                 d1 = datetime.timedelta(minutes=30)
                 sh1 = (datetime.datetime.combine(datetime.date(1,1,1),start_hour)+d1).time()
                 eh1 = (datetime.datetime.combine(datetime.date(1,1,1),sh1)+delta).time()
-                tp1 = TimePeriod(person=person, day=day, start_hour=sh1, end_hour=eh1)
+                tp1 = TimePeriod(person=person, day=day, start_hour=sh1, end_hour=eh1, time_type='F', time_name='')
                 tp1.save()
 
             if time_length == 90 or time_length == 120:
                 d1 = datetime.timedelta(minutes=60)
                 sh1 = (datetime.datetime.combine(datetime.date(1,1,1),start_hour)+d1).time()
                 eh1 = (datetime.datetime.combine(datetime.date(1,1,1),sh1)+delta).time()
-                tp1 = TimePeriod(person=person, day=day, start_hour=sh1, end_hour=eh1)
+                tp1 = TimePeriod(person=person, day=day, start_hour=sh1, end_hour=eh1, time_type='F', time_name='')
                 tp1.save()
 
             if(time_length == 120):
                 d1 = datetime.timedelta(minutes=90)
                 sh1 = (datetime.datetime.combine(datetime.date(1,1,1),start_hour)+d1).time()
                 eh1 = (datetime.datetime.combine(datetime.date(1,1,1),sh1)+delta).time()
-                tp1 = TimePeriod(person=person, day=day, start_hour=sh1, end_hour=eh1)
+                tp1 = TimePeriod(person=person, day=day, start_hour=sh1, end_hour=eh1, time_type='F', time_name='')
                 tp1.save()
             
             if time_length == 30:
