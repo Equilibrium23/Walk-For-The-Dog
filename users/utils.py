@@ -12,8 +12,8 @@ def hourly_it(start, finish, minutesamount):
 def number_of_rows(start, end):
 	start_time = datetime(year=2020, month=12, day=11, hour = start.hour, minute=start.minute) - timedelta(minutes=start.minute % 30)
 	end_time = datetime(year=2020, month=12, day=11, hour = end.hour, minute=end.minute) + timedelta(minutes=30 - (end.minute % 30))
-	time = end_time - start_time
-	minutes = divmod(time.total_seconds(), 60)
+	countedtime = end_time - start_time
+	minutes = divmod(countedtime.total_seconds(), 60)
 	rows = minutes[0] / 30
 	return rows
 
