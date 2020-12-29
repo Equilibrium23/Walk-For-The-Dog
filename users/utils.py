@@ -98,6 +98,7 @@ class Calendar(HTMLCalendar):
 		cal = f'<div class="d-flex align-items-center justify-content-center mb-2"><i class="fa fa-calendar fa-3x mr-3"></i>'
 		cal += f'<h2 class="font-weight-bold text-uppercase">'
 		cal += f'{start.strftime("%d %b")} - {end.strftime("%d %b")} </h2></div>\n'
+
 		cal += f'<table class="table table-hover table-striped table-borderless m-2 p-5 small text-center calendarweek">'
 		cal += f'{self.formatweekheaderforweek(start)}\n'
 		cal += f'<tbody>'
@@ -105,7 +106,7 @@ class Calendar(HTMLCalendar):
 		starthour = datetime(year=2020, month=12, day=11, hour = 5, minute=0)
 		finishhour = datetime(year=2020, month=12, day=11, hour = 23, minute=0)
 		dates = [start + timedelta(days=n) for n in range(7)]
-
+		cal + '<div class="table-responsive">'
 		for hour in hourly_it(starthour, finishhour, 30):
 			cal += f'<tr><th scope="row">{hour.strftime("%H:%M")}</th>'
 			for day in dates:
@@ -120,7 +121,7 @@ class Calendar(HTMLCalendar):
 				else:
 					cal += '<td></td>'
 			cal += '</tr>\n'
-		cal += f'</tbody></table>'
+		cal += f'</tbody></table></div>'
 		return cal
 
 	def formatbyday(self, ev, withyear=True):
