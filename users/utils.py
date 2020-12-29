@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, date
-from calendar import HTMLCalendar
+from calendar import HTMLCalendar, monthrange
 
 from register_and_login.models import TimePeriod
 from django.contrib.auth.models import User
@@ -92,7 +92,7 @@ class Calendar(HTMLCalendar):
 		return cal
 
 	def formatbyweek(self, ev, withyear=True):
-		dt = date(self.year, self.month, self.day)
+		dt = datetime(self.year, self.month, self.day)
 		start = dt - timedelta(days=dt.weekday())
 		end = start + timedelta(days=6)
 		cal = f'<div class="d-flex align-items-center justify-content-center mb-2"><i class="fa fa-calendar fa-3x mr-3"></i>'
@@ -125,7 +125,7 @@ class Calendar(HTMLCalendar):
 		return cal
 
 	def formatbyday(self, ev, withyear=True):
-		dt = date(self.year, self.month, self.day)
+		dt = datetime(self.year, self.month, self.day)
 		events = ev.filter(day__year=self.year, day__month=self.month, day__day=self.day)
 		cal = f'<div class="d-flex align-items-center justify-content-center mb-2"><i class="fa fa-calendar fa-3x mr-3"></i>'
 		cal += f'<h2 class="font-weight-bold text-uppercase">'
@@ -154,35 +154,30 @@ class Calendar(HTMLCalendar):
 		cal += f'</tbody></table></div>'
 		return cal
 
-
-import datetime
 import pickle
 import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
-import datetime
-import calendar
-from register_and_login.models import TimePeriod
 
-def end_of_month(date):
+def end_of_month(datetext):
     """ for given date function checks month and returns end of this month in  isoformat"""
-    now = date.split("T")
+    now = datetext.split("T")
     date_now = [ int(x) for x in now[0].split("-") ] # today in format [year,month,day]
     now[1] = now[1][:-1] # delete Z to easy cast string -> int
     time_now = [ int(float(x)) for x in now[1].split(":") ] # "now" time in format [hour,minute,second]
-    end_of_month_day = calendar.monthrange(date_now[0],date_now[1])[1]
-    end_of_month_date = datetime.datetime(date_now[0],date_now[1],end_of_month_day,23,59,59).isoformat()
+    end_of_month_day = monthrange(date_now[0],date_now[1])[1]
+    end_of_month_date = datetime(date_now[0],date_now[1],end_of_month_day,23,59,59).isoformat()
     return end_of_month_date + 'Z'
 
 def save_data(request, start_event, end_event, name):
 	if 'T' in start_event and 'T' in end_event:
 		start_data = start_event.split('T')
 		end_data = end_event.split('T')
-		date = start_data[0]
+		date_s = start_data[0]
 		start_hour = start_data[1].split('+')[0]
 		end_hour = end_data[1].split('+')[0]
-		TimePeriod(person = request.user , day = date, start_hour = start_hour, end_hour = end_hour, time_type = 'O', time_name = name).save()
+		TimePeriod(person = request.user , day = date_s, start_hour = start_hour, end_hour = end_hour, time_type = 'O', time_name = name).save()
 
 def synchronize_with_google_calendar(request):
 	SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
@@ -192,7 +187,7 @@ def synchronize_with_google_calendar(request):
 	service = build('calendar', 'v3', credentials=creds)
     # Call the Calendar API
 	calendar_list = service.calendarList().list(showHidden = True).execute()
-	now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+	now = datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
 
 	for calendar in calendar_list['items']:
 		events_result = service.events().list(calendarId=calendar['id'], timeMin = now, timeMax = end_of_month(now), singleEvents=True, orderBy='startTime').execute()
