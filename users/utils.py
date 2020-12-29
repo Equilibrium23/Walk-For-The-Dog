@@ -4,10 +4,18 @@ from calendar import HTMLCalendar
 from register_and_login.models import TimePeriod
 from django.contrib.auth.models import User
 
-def hourly_it(start, finish):
+def hourly_it(start, finish, minutesamount):
 	while finish > start:
-		start = start + timedelta(minutes=30)
+		start = start + timedelta(minutes=minutesamount)
 		yield start
+
+def number_of_rows(start, end):
+	start_time = datetime(year=2020, month=12, day=11, hour = start.hour, minute=start.minute) - timedelta(minutes=start.minute % 30)
+	end_time = datetime(year=2020, month=12, day=11, hour = end.hour, minute=end.minute) + timedelta(minutes=30 - (end.minute % 30))
+	time = end_time - start_time
+	minutes = divmod(time.total_seconds(), 60)
+	rows = minutes[0] / 30
+	return rows
 
 def merge_time_ranges(data):
 	result = []
@@ -62,11 +70,20 @@ class Calendar(HTMLCalendar):
 			for day, weekday in week:
 				if day != 0:
 					events_per_day = events.filter(day__day=day)
-					eventsdata=''
-					dates = [(event.start_hour.strftime("%H:%M"), event.end_hour.strftime("%H:%M")) for event in events_per_day]
+					eventsdata = ''
+					events_per_day_free = events_per_day.filter(time_type='F')
+					events_per_day_occ = events_per_day.filter(time_type='O')
+					dates = [(event.start_hour.strftime("%H:%M"), event.end_hour.strftime("%H:%M")) for event in events_per_day_free]
 					e = merge_time_ranges(dates)
+					number = 0
 					for evnt in e:
-						eventsdata += f'<div class="bg-primary"> {evnt[0]}-{evnt[1]} </div>'
+						if number < 4:
+							eventsdata += f'<div class="bg-success"> {evnt[0]}-{evnt[1]}: free time</div>'
+							number+=1
+					for evnt in events_per_day_occ:
+						if number < 4:
+							eventsdata += f'<div class="bg-danger"> {evnt.start_hour.strftime("%H:%M")}-{evnt.end_hour.strftime("%H:%M")}: {evnt.time_name}</div>'
+							number+=1
 					cal += f'<td><a href="../calendar/?view=day&date={self.year}-{self.month}-{day}">{day}</a>{eventsdata}</td>'
 				else:
 					cal += f'<td></td>'
@@ -89,13 +106,17 @@ class Calendar(HTMLCalendar):
 		finishhour = datetime(year=2020, month=12, day=11, hour = 23, minute=0)
 		dates = [start + timedelta(days=n) for n in range(7)]
 
-		for hour in hourly_it(starthour, finishhour):
-			cal += f'<tr class="d-flex"><th scope="row">{hour.strftime("%H:%M")}</th>'
+		for hour in hourly_it(starthour, finishhour, 30):
+			cal += f'<tr><th scope="row">{hour.strftime("%H:%M")}</th>'
 			for day in dates:
 				events_per_day = ev.filter(day__year=day.year, day__month=day.month, day__day=day.day)
 				for event in events_per_day:
-					if(event.start_hour.hour==hour.hour and event.start_hour.minute==hour.minute):
-						cal += f'<td class="bg-primary">dog time</td>'
+					if event.time_type == 'F':
+						cal += f'<td class="bg-success"> free time </td>'
+					else:
+						rows = int(number_of_rows(event.start_hour, event.end_hour))
+						cal += f'<td rowspan="{rows}" class="bg-danger">{event.time_name}</td>'
+					break
 				else:
 					cal += '<td></td>'
 			cal += '</tr>\n'
@@ -108,6 +129,7 @@ class Calendar(HTMLCalendar):
 		cal = f'<div class="d-flex align-items-center justify-content-center mb-2"><i class="fa fa-calendar fa-3x mr-3"></i>'
 		cal += f'<h2 class="font-weight-bold text-uppercase">'
 		cal += f'{dt.strftime("%A, %d %b %Y")} </h2></div>\n'
+		cal + '<div class="table-responsive">'
 		cal += f'<table class="table table-hover table-striped table-borderless m-2 p-5 small text-center calendarday">'
 		cal += f'<thead><tr class="text-uppercase d-flex"><th span="col">time</th><th span="col">Events</th></tr></thead>'
 		cal += f'<tbody>'
@@ -115,14 +137,18 @@ class Calendar(HTMLCalendar):
 		starthour = datetime(year=self.year, month=self.month, day=self.day, hour = 5, minute=0)
 		finishhour = datetime(year=self.year, month=self.month, day=self.day, hour = 23, minute=0)
 
-		for hour in hourly_it(starthour, finishhour):
-			cal += f'<tr class="d-flex"><th scope="row">{hour.strftime("%H:%M")}</th>'
+		for hour in hourly_it(starthour, finishhour, 30):
+			cal += f'<tr><th scope="row">{hour.strftime("%H:%M")}</th>'
 			for event in events:
-				if(event.start_hour.hour==hour.hour and event.start_hour.minute==hour.minute):
-					cal += f'<td class="bg-primary">dog time</td>'
+				if event.start_hour.hour==hour.hour and event.start_hour.minute>=hour.minute and event.start_hour.minute<hour.minute+30:
+					if event.time_type == 'F':
+						cal += f'<td class="bg-success"> free time </td>'
+					else:
+						rows = int(number_of_rows(event.start_hour, event.end_hour))
+						cal += f'<td rowspan="{rows}" class="bg-danger">{event.time_name}</td>'
 					break
 			else:
 				cal += '<td></td>'
 			cal += '</tr>\n'
-		cal += f'</tbody></table>'
+		cal += f'</tbody></table></div>'
 		return cal
