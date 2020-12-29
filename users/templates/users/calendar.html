@@ -8,7 +8,9 @@
 
 {% block content %}
     <div class="d-flex justify-content-center mt-4">
-        <button type="button" class="btn btn-primary btn-sm left" onclick="">Sync calendar with Google Calendar</button>
+        <a href="{% url 'synchronize_calendar' %}">
+            <button type="button" class="btn btn-primary btn-sm left">Sync calendar with Google Calendar</button>
+        </a>
     </div>
     <div class="d-flex justify-content-between m-2">
         {% if request.GET.date %}

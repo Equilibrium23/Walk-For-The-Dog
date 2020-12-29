@@ -12,8 +12,6 @@ def profile(request):
 def chat(request):
 	return render(request, 'users/chat.html') 
 
-
-
 from datetime import datetime, timedelta, date
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
@@ -55,3 +53,9 @@ class CalendarView(generic.ListView):
 
         context['calendar'] = mark_safe(html_cal)
         return context
+
+from .utils import synchronize_with_google_calendar
+
+def synchronize_calendar(request):
+    synchronize_with_google_calendar(request)
+    return render(request, 'users/calendar.html') 

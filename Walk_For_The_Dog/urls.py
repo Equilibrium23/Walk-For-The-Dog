@@ -31,7 +31,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='register_and_login/logout.html'), name = "logout"),
     path('register/', register_and_login_views.register, name = "register"),
     path('profile/', users_views.profile, name = "profile"),
-	  path('chat/', users_views.chat, name = "chat"),
+	path('chat/', users_views.chat, name = "chat"),
     path('profile/calendar/', users_views.CalendarView.as_view(), name = "calendar"),
     #url(r'^calendar/$', users_views.CalendarView.as_view(), name = "calendar"),
     #path('profile/calendar/new/', users_views.event, name='event_new'), -> future
@@ -43,6 +43,7 @@ urlpatterns = [
     path('edit_dog_profile/', register_and_login_views.edit_dog_profile, name = "edit_dog_profile"),
     path('delete_dog/', register_and_login_views.delete_dog, name = "delete_dog"),
     path('delete_profile/', register_and_login_views.delete_profile, name = "delete_profile"),
+    path('profile/calendar/synchronize/',users_views.synchronize_calendar,name="synchronize_calendar"),
 
 
 ]
