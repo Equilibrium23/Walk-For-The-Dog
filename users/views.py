@@ -25,16 +25,30 @@ def check_location(location_A,location_B,helping_radius):
         # expected_time = [result['rows'][0]['elements'][0]['duration']['text'],{'s':result['rows'][0]['elements'][0]['duration']['value']}]
         return True if float(distance[1]['m']) <= float(helping_radius*1000) else False 
 
+def find_smallest_dog(list_of_dogs):
+    size_values = {'S':1,'M':2,'B':3}
+    smallest_dog = 'B'
+    for dog in list_of_dogs:
+        if size_values[dog.size] < size_values[smallest_dog]:
+            smallest_dog = dog.size
+    return smallest_dog
+
+def check_dog_size(temp_user_dog, helper_max_size_dog):
+    size_values = {'S':1,'M':2,'B':3}
+    return True if size_values[temp_user_dog] <= size_values[helper_max_size_dog] else False
 
 def chat(request):
     data = []
     temp_user = Profile.objects.all().filter(user = request.user)
+    temp_user_dogs = Dog.objects.all().filter(owner_id = temp_user[0].id)
+    smallest_dog_size = find_smallest_dog(temp_user_dogs)
+    temp_user_dogs_id = [ dog.id for dog in temp_user_dogs ] 
+
     helpers = Profile.objects.all().filter(account_type='H')
-    list_of_helpers = [ helpers[i].id for i in range(helpers.count()) if check_location( temp_user[0].location, helpers[i].location, helpers[i].helping_radius) ]
+    list_of_helpers_distance = [ helpers[i] for i in range(helpers.count()) if check_location( temp_user[0].location, helpers[i].location, helpers[i].helping_radius) ]
     
-    dogs = Dog.objects.all().filter(owner_id__in = list_of_helpers)
-    
-    return render(request, 'users/data.html',{'data':list_of_helpers}) 
+    list_of_helpers_dog_size = [ helper for helper in list_of_helpers_distance if check_dog_size(smallest_dog_size,helper.max_dog_size) ]
+    return render(request, 'users/data.html',{'data':list_of_helpers_dog_size}) 
 
 
 
