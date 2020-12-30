@@ -10,7 +10,32 @@ def profile(request):
     return render(request, 'users/profile.html', context) 
 
 def chat(request):
-	return render(request, 'users/chat.html') 
+    data = []
+    return render(request, 'users/data.html',{'data':data}) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 from datetime import datetime, timedelta, date
 from django.shortcuts import get_object_or_404
@@ -58,4 +83,5 @@ from .utils import synchronize_with_google_calendar
 
 def synchronize_calendar(request):
     synchronize_with_google_calendar(request)
+    ####
     return render(request, 'users/calendar.html') 
