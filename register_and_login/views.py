@@ -170,7 +170,7 @@ def add_time_period(request):
                 d = int(dog)
                 #d = Dog.objects.all().filter(owner_id=request.user.profile.id).filter(dog_id=dog.id).first()
                 for tp in time_list_id:
-                    DogTime(owner_id=request.user.id, dog_id=d, time_period_id=tp, match=False).save()
+                    DogTime(owner_id=request.user.profile.id, dog_id=d, time_period_id=tp, match=False).save()
                 
 
             if time_length == 30:

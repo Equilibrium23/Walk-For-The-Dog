@@ -31,6 +31,9 @@ def chat(request):
     temp_user = Profile.objects.all().filter(user = request.user)
     helpers = Profile.objects.all().filter(account_type='H')
     list_of_helpers = [ helpers[i].id for i in range(helpers.count()) if check_location( temp_user[0].location, helpers[i].location, helpers[i].helping_radius) ]
+    
+    dogs = Dog.objects.all().filter(owner_id__in = list_of_helpers)
+    
     return render(request, 'users/data.html',{'data':list_of_helpers}) 
 
 

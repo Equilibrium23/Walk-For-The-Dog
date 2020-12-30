@@ -66,7 +66,7 @@ class TimePeriod(models.Model):
 
 class DogTime(models.Model):
 
-	owner = models.ForeignKey(User, on_delete=models.CASCADE)
+	owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
 	dog = models.ForeignKey(Dog, on_delete=models.CASCADE)
 	time_period = models.ForeignKey(TimePeriod, on_delete=models.CASCADE)
 	match = models.BooleanField(default=False)
