@@ -37,19 +37,49 @@ def check_dog_size(temp_user_dog, helper_max_size_dog):
     size_values = {'S':1,'M':2,'B':3}
     return True if size_values[temp_user_dog] <= size_values[helper_max_size_dog] else False
 
+
+def check_time(helper, time_period_id):
+
+    helper_time_period = TimePeriod.objects.all().filter( person_id = helper.user_id ).filter(time_type = 'F')
+    needy_time_period = TimePeriod.objects.all().filter( id__in = time_period_id ).filter(time_type = 'F')
+
+    data = []
+    for helper_time in helper_time_period:
+        for needy_time in needy_time_period:
+            if (helper_time.day == needy_time.day) and (helper_time.start_hour == needy_time.start_hour ) and (helper_time.end_hour == needy_time.end_hour):
+                # data.append({'helper':helper_time,'needy':needy_time})
+                data.append(helper_time)
+    return data
+
+
+
 def chat(request):
     data = []
     temp_user = Profile.objects.all().filter(user = request.user)
     temp_user_dogs = Dog.objects.all().filter(owner_id = temp_user[0].id)
-    smallest_dog_size = find_smallest_dog(temp_user_dogs)
     temp_user_dogs_id = [ dog.id for dog in temp_user_dogs ] 
 
     helpers = Profile.objects.all().filter(account_type='H')
     list_of_helpers_distance = [ helpers[i] for i in range(helpers.count()) if check_location( temp_user[0].location, helpers[i].location, helpers[i].helping_radius) ]
 
-    time = DogTime.objects.all().filter(dog_id__in = temp_user_dogs_id)   
+    dogs = DogTime.objects.all().filter(dog_id__in = temp_user_dogs_id).filter(match = False) 
+    
+    smallest_dog_size = find_smallest_dog(Dog.objects.all().filter( id__in =  dogs ))
 
-    return render(request, 'users/data.html',{'data':time}) 
+    time_period_id = [ dog.time_period_id for dog in dogs ]
+
+    list_of_helpers_time = [ ]
+    match_time_data = []
+    for helper in list_of_helpers_distance:
+        data = check_time( helper, time_period_id )
+        if len(data) != 0:
+            list_of_helpers_time.append(helper)
+            match_time_data.append(data)
+
+    list_of_helpers_dogs_size = [ helper for helper in list_of_helpers_time if check_dog_size(smallest_dog_size ,helper.max_dog_size )]
+    
+
+    return render(request, 'users/data.html',{'data':list_of_helpers_time,'match':match_time_data}) 
 
 
 
