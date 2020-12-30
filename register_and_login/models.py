@@ -63,3 +63,13 @@ class TimePeriod(models.Model):
 		unique_together = (("day", "start_hour"), ("day", "end_hour"), ("start_hour","end_hour"))
 	def __str__(self):
 		return f'{self.day} -> {self.start_hour} - {self.end_hour} '
+
+class DogTime(models.Model):
+
+	owner = models.ForeignKey(User, on_delete=models.CASCADE)
+	dog = models.ForeignKey(Dog, on_delete=models.CASCADE)
+	time_period = models.ForeignKey(TimePeriod, on_delete=models.CASCADE)
+	match = models.BooleanField(default=False)
+
+	class Meta:
+		unique_together = ("dog", "time_period")

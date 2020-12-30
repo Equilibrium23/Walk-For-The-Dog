@@ -75,6 +75,15 @@ class AddTimePeriodForm(forms.ModelForm):
 	start_hour = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICE))
 	time_length = forms.IntegerField(widget=forms.Select(choices=TIME_DELTA_CHOICE))
 
+	def __init__(self, *args, **kwargs):
+		user = kwargs.pop('user')
+		super(AddTimePeriodForm, self).__init__(*args, **kwargs)
+		
+		DOG_CHOICE = []
+		dogs = Dog.objects.all().filter(owner_id=user.profile.id)
+		for d in dogs:
+			DOG_CHOICE.append((d.id, d.dog_name))
+		self.fields['dogs_choice'] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=DOG_CHOICE)
 
 	class Meta:
 		model = TimePeriod

@@ -3,7 +3,7 @@ from django.contrib import messages
 from .forms import UserRegisterForm, AddDogForm, UserUpdateForm, ProfileUpdateForm
 from .forms import NeedyForm, HelperForm, ChangeAccountForm, AddTimePeriodForm
 from django.contrib.auth.decorators import login_required
-from .models import Profile, Dog, TimePeriod
+from .models import Profile, Dog, TimePeriod, DogTime
 from django.contrib.auth.models import User
 from django.db import connection
 import datetime
@@ -147,50 +147,42 @@ def change_ac_type(request):
 def add_time_period(request):
 
     if request.method == 'POST':
-        form = AddTimePeriodForm(request.POST)
+        form = AddTimePeriodForm(request.POST, user=request.user)
         if form.is_valid():
             day = form.cleaned_data['day']
             start_hour = form.cleaned_data['start_hour']
             time_length = form.cleaned_data['time_length']
+            dogs = form.cleaned_data['dogs_choice']
 
             delta = datetime.timedelta(minutes=30)
             person = request.user
-            end_hour = (datetime.datetime.combine(datetime.date(1,1,1),start_hour)+delta).time()
-            tp = TimePeriod(person=person, day=day, start_hour=start_hour, end_hour=end_hour, time_type='F', time_name='')
-            tp.save()
 
-
-            if time_length == 60 or time_length == 90 or time_length == 120:
-                d1 = datetime.timedelta(minutes=30)
+            time_list_id=[]
+            for i in range(30, time_length+1, 30):
+                d1 = datetime.timedelta(minutes=i)
                 sh1 = (datetime.datetime.combine(datetime.date(1,1,1),start_hour)+d1).time()
                 eh1 = (datetime.datetime.combine(datetime.date(1,1,1),sh1)+delta).time()
                 tp1 = TimePeriod(person=person, day=day, start_hour=sh1, end_hour=eh1, time_type='F', time_name='')
                 tp1.save()
-
-            if time_length == 90 or time_length == 120:
-                d1 = datetime.timedelta(minutes=60)
-                sh1 = (datetime.datetime.combine(datetime.date(1,1,1),start_hour)+d1).time()
-                eh1 = (datetime.datetime.combine(datetime.date(1,1,1),sh1)+delta).time()
-                tp1 = TimePeriod(person=person, day=day, start_hour=sh1, end_hour=eh1, time_type='F', time_name='')
-                tp1.save()
-
-            if(time_length == 120):
-                d1 = datetime.timedelta(minutes=90)
-                sh1 = (datetime.datetime.combine(datetime.date(1,1,1),start_hour)+d1).time()
-                eh1 = (datetime.datetime.combine(datetime.date(1,1,1),sh1)+delta).time()
-                tp1 = TimePeriod(person=person, day=day, start_hour=sh1, end_hour=eh1, time_type='F', time_name='')
-                tp1.save()
+                time_list_id.append(tp1.id)
             
+            for dog in dogs:
+                d = int(dog)
+                #d = Dog.objects.all().filter(owner_id=request.user.profile.id).filter(dog_id=dog.id).first()
+                for tp in time_list_id:
+                    DogTime(owner_id=request.user.id, dog_id=d, time_period_id=tp, match=False).save()
+                
+
             if time_length == 30:
                 messages.success(request, f'Your time period has been added!!')
             else:
                 messages.success(request, f'Your time periods have been added!!')
 
-            #close_old_connections()
             return redirect('add_time_period')
     else:
-        form = AddTimePeriodForm()
+        form = AddTimePeriodForm(user=request.user)
     return render(request, 'register_and_login/add_time_period.html', {'form':form})
+
 
 
 @login_required
