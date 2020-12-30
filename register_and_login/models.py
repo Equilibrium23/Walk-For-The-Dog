@@ -60,16 +60,14 @@ class TimePeriod(models.Model):
 	time_name = models.CharField(max_length=100, default='')
 
 	class Meta:
-		unique_together = (("day", "start_hour"), ("day", "end_hour"), ("start_hour","end_hour"))
-	def __str__(self):
-		return f'{self.day} -> {self.start_hour} - {self.end_hour} '
+		constraints = [
+			models.UniqueConstraint(fields=["person","day", "start_hour","end_hour"], name='block duplicate')
+		]
 
 class DogTime(models.Model):
-
 	owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
 	dog = models.ForeignKey(Dog, on_delete=models.CASCADE)
 	time_period = models.ForeignKey(TimePeriod, on_delete=models.CASCADE)
 	match = models.BooleanField(default=False)
-
 	class Meta:
 		unique_together = ("dog", "time_period")

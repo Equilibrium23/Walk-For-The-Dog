@@ -46,9 +46,10 @@ def chat(request):
 
     helpers = Profile.objects.all().filter(account_type='H')
     list_of_helpers_distance = [ helpers[i] for i in range(helpers.count()) if check_location( temp_user[0].location, helpers[i].location, helpers[i].helping_radius) ]
-    
-    list_of_helpers_dog_size = [ helper for helper in list_of_helpers_distance if check_dog_size(smallest_dog_size,helper.max_dog_size) ]
-    return render(request, 'users/data.html',{'data':list_of_helpers_dog_size}) 
+
+    time = DogTime.objects.all().filter(dog_id__in = temp_user_dogs_id)   
+
+    return render(request, 'users/data.html',{'data':time}) 
 
 
 
@@ -82,7 +83,7 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 import calendar
 
-from register_and_login.models import TimePeriod
+from register_and_login.models import DogTime, TimePeriod
 from .utils import Calendar
 
 class CalendarView(generic.ListView):
