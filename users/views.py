@@ -148,8 +148,9 @@ class CalendarView(generic.ListView):
         return context
 
 from .utils import synchronize_with_google_calendar
+from django.http import HttpResponseRedirect
 
 def synchronize_calendar(request):
     synchronize_with_google_calendar(request)
-    ####
-    return render(request, 'users/calendar.html') 
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    #return render(request, 'users/calendar.html') 

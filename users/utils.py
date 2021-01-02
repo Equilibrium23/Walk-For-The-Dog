@@ -177,7 +177,10 @@ def save_data(request, start_event, end_event, name):
 		date_s = start_data[0]
 		start_hour = start_data[1].split('+')[0]
 		end_hour = end_data[1].split('+')[0]
-		TimePeriod(person = request.user , day = date_s, start_hour = start_hour, end_hour = end_hour, time_type = 'O', time_name = name).save()
+		temp = TimePeriod(person = request.user , day = date_s, start_hour = start_hour, end_hour = end_hour, time_type = 'O', time_name = name)
+		# if so there's no duplicates
+		if not TimePeriod.objects.filter(person = request.user , day = date_s, start_hour = start_hour, end_hour = end_hour, time_type = 'O', time_name = name).exists():
+			temp.save()
 
 def synchronize_with_google_calendar(request):
 	SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
