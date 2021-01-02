@@ -142,6 +142,7 @@ def change_ac_type(request):
 
     return render(request, 'register_and_login/change_ac_type.html', context)
 
+from django.db import IntegrityError
 
 @login_required
 def add_time_period(request):
@@ -158,13 +159,18 @@ def add_time_period(request):
             person = request.user
 
             time_list_id=[]
-            for i in range(30, time_length+1, 30):
+            for i in range(0, time_length, 30):
                 d1 = datetime.timedelta(minutes=i)
                 sh1 = (datetime.datetime.combine(datetime.date(1,1,1),start_hour)+d1).time()
                 eh1 = (datetime.datetime.combine(datetime.date(1,1,1),sh1)+delta).time()
                 tp1 = TimePeriod(person=person, day=day, start_hour=sh1, end_hour=eh1, time_type='F', time_name='')
-                tp1.save()
-                time_list_id.append(tp1.id)
+                try:
+                    tp1.save()
+                    time_list_id.append(tp1.id)
+                except IntegrityError as err:
+                    messages.error(request, 'You are already occupied this time!')
+                    return redirect('add_time_period')
+                
             
             for dog in dogs:
                 d = int(dog)
