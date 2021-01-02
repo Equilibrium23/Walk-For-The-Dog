@@ -24,21 +24,6 @@ def merge_time_ranges(data):
 		data.sort()
 		t_old = data[0]
 		for t in data[1:]:
-			if t_old[1] == t[0]:
-				t_old = ((min(t_old[0], t[0]), max(t_old[1], t[1])))
-			else:
-				result.append(t_old)
-				t_old = t
-		else:
-			result.append(t_old)
-	return result
-
-def merge_time_ranges_full(data):
-	result = []
-	if(len(data)>0):
-		data.sort()
-		t_old = data[0]
-		for t in data[1:]:
 			if t[3]=='O':
 				if t_old[1] >= t[0]:
 					t_old = (min(t_old[0], t[0]), max(t_old[1], t[1]), f'{t_old[2]}, <br> {t[2]}', t[3])
@@ -136,7 +121,7 @@ class Calendar(HTMLCalendar):
 					end_time = datetime(year=2020, month=12, day=11, hour = event.end_hour.hour, minute=event.end_hour.minute) + timedelta(minutes=30 - (event.end_hour.minute % 30))
 					dates_merge.append((start_time.strftime("%H:%M"), end_time.strftime("%H:%M"), event.time_name, event.time_type))
 
-				e = merge_time_ranges_full(dates_merge)
+				e = merge_time_ranges(dates_merge)
 
 				if not flag[n]:
 					if rows[n] > 2:
@@ -181,7 +166,7 @@ class Calendar(HTMLCalendar):
 			end_time = datetime(year=2020, month=12, day=11, hour = event.end_hour.hour, minute=event.end_hour.minute) + timedelta(minutes=30 - (event.end_hour.minute % 30))
 			dates.append((start_time.strftime("%H:%M"), end_time.strftime("%H:%M"), event.time_name, event.time_type))
 
-		e = merge_time_ranges_full(dates)
+		e = merge_time_ranges(dates)
 		flag = True
 		rows = 0
 		for hour in hourly_it(starthour, finishhour, 30):
