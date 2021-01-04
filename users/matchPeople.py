@@ -13,14 +13,14 @@ def check_dog_size(temp_user_dogs, helper_max_size_dog):
     return  ( matched_dogs, match )
 
 def check_time(helper, dogs):
-    helper_time_period = TimePeriod.objects.all().filter( person_id = helper.user_id ).filter(time_type = 'F') # to do person_id = helper.user_id -> person_id = helper.id
-    matched_dogs_and_time = {}
+    helper_time_period = TimePeriod.objects.all().filter( person_id = helper.user_id ).filter(time_type = 'F')
+    matched_dogs_and_time = {Dog.objects.get( id = dog.dog_id ):[] for dog in dogs}
     match = False
-    for helper_time in helper_time_period:
-        for dog in dogs:
-            dog_time_period = TimePeriod.objects.get( id = dog.time_period_id ) # czy trzeba sprawdzac czy ten czas jest typu F ?
+    for dog in dogs:
+        dog_time_period = TimePeriod.objects.get( id = dog.time_period_id )
+        for helper_time in helper_time_period:
             if (helper_time.day == dog_time_period.day) and (helper_time.start_hour == dog_time_period.start_hour ) and (helper_time.end_hour == dog_time_period.end_hour):
-                matched_dogs_and_time[Dog.objects.get( id = dog.dog_id )] = dog_time_period 
+                matched_dogs_and_time[Dog.objects.get( id = dog.dog_id )].append(dog_time_period)
                 match = True
     return (matched_dogs_and_time,match)
 

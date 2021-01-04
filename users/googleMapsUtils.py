@@ -1,6 +1,7 @@
 import urllib.request
 import json
 
+GOOGLE_MAP_KEY = 'AIzaSyBBcPbX-93uzhQq9qQosN7TzVYGtr3cFpg'
 
 def check_location(location_A,location_B,helping_radius):
     url = '''https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins={}&destinations={}&key={}'''.format(location_A,location_B,GOOGLE_MAP_KEY)

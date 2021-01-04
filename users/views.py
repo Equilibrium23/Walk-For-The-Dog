@@ -11,8 +11,8 @@ def profile(request):
 from .matchPeople import matchUsers
 
 def chat(request):
-    matchUsers(request)
-    return render(request, 'users/data.html') 
+    data = matchUsers(request)
+    return render(request, 'users/data.html',{'data':data}) 
 
 from datetime import datetime, timedelta, date
 from django.shortcuts import get_object_or_404
