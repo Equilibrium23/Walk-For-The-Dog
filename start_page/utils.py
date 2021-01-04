@@ -1,9 +1,6 @@
 from datetime import datetime
-from register_and_login.models import Dog, Profile, TimePeriod
-from django.contrib.auth.models import User
 
 def mergeTimes(data):
-    #matched_helper (from Profile table) : { dog (from Dog table) : time for walk (from TimePeriod table)
     merged = {}
     for person, info in data.items():
         merged[person] = {}

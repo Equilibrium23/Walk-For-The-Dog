@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.db import connection
-from register_and_login.models import Dog, Profile
 from users.matchPeople import matchUsers
 from .utils import mergeTimes
 
