@@ -9,7 +9,6 @@ def profile(request):
 
     return render(request, 'users/profile.html', context) 
 
-GOOGLE_MAP_KEY = 'AIzaSyBBcPbX-93uzhQq9qQosN7TzVYGtr3cFpg'
 import urllib.request
 import json
 
