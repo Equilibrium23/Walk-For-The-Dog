@@ -1,0 +1,11 @@
+.matches-container{
+	height: 95%;
+}
+
+.matches-title{
+	height: 8%;
+}
+.matches {
+	height: 90%;
+	overflow-y: scroll;
+}
