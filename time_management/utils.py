@@ -24,14 +24,11 @@ def merge_time_ranges(data):
 		data.sort()
 		t_old = data[0]
 		for t in data[1:]:
-			if t[3]=='O':
-				if t_old[1] >= t[0]:
-					t_old = (min(t_old[0], t[0]), max(t_old[1], t[1]), f'{t_old[2]}, <br> {t[2]}', t[3])
-				else:
-					result.append(t_old)
-					t_old = t
+			if t_old[1] >= t[0]:
+				t_old = (min(t_old[0], t[0]), max(t_old[1], t[1]), f'{t_old[2]}, <br> {t[2]}', t[3])
 			else:
-				result.append(t)
+				result.append(t_old)
+				t_old = t
 		else:
 			result.append(t_old)
 	return result
@@ -75,18 +72,15 @@ class Calendar(HTMLCalendar):
 				if day != 0:
 					events_per_day = events.filter(day__day=day)
 					eventsdata = ''
-					events_per_day_free = events_per_day.filter(time_type='F')
-					events_per_day_occ = events_per_day.filter(time_type='O')
-					dates = [(event.start_hour.strftime("%H:%M"), event.end_hour.strftime("%H:%M")) for event in events_per_day_free]
+					dates = [(event.start_hour.strftime("%H:%M"), event.end_hour.strftime("%H:%M"), event.time_name, event.time_type) for event in events_per_day]
 					e = merge_time_ranges(dates)
 					number = 0
 					for evnt in e:
 						if number < 4:
-							eventsdata += f'<div class="bg-success"> {evnt[0]}-{evnt[1]}: free time</div>'
-							number+=1
-					for evnt in events_per_day_occ:
-						if number < 4:
-							eventsdata += f'<div class="bg-danger"> {evnt.start_hour.strftime("%H:%M")}-{evnt.end_hour.strftime("%H:%M")}: {evnt.time_name}</div>'
+							if (evnt[3]=='F'):
+								eventsdata += f'<div class="bg-success"> {evnt[0]}-{evnt[1]}: free time</div>'
+							else:
+								eventsdata += f'<div class="bg-danger"> {evnt[0]}-{evnt[1]}: {evnt[2]}</div>'
 							number+=1
 					cal += f'<td><a href="../calendar/?view=day&date={self.year}-{self.month}-{day}">{day}</a>{eventsdata}</td>'
 				else:
@@ -133,11 +127,10 @@ class Calendar(HTMLCalendar):
 						start_time=strptime(event[0], "%H:%M")
 						end_time=strptime(event[1], "%H:%M")
 						if start_time.tm_hour==hour.hour and start_time.tm_min>=hour.minute and start_time.tm_min<hour.minute+30:
+							rows[n] = int(number_of_rows(datetime(year=2020, month=12, day=11, hour = start_time.tm_hour, minute=start_time.tm_min), datetime(year=2020, month=12, day=11, hour = end_time.tm_hour, minute=end_time.tm_min)))
 							if event[3] == 'F':
-								cal += f'<td class="bg-success"> free time </td>'
-								rows[n] = 1
+								cal += f'<td rowspan="{rows[n]-1}" class="bg-success"> free time </td>'
 							else:
-								rows[n] = int(number_of_rows(datetime(year=2020, month=12, day=11, hour = start_time.tm_hour, minute=start_time.tm_min), datetime(year=2020, month=12, day=11, hour = end_time.tm_hour, minute=end_time.tm_min)))
 								cal += f'<td rowspan="{rows[n]-1}" class="bg-danger">{event[2]}</td>'
 							flag[n] = False
 							break
@@ -181,11 +174,10 @@ class Calendar(HTMLCalendar):
 					start_time=strptime(event[0], "%H:%M")
 					end_time=strptime(event[1], "%H:%M")
 					if start_time.tm_hour==hour.hour and start_time.tm_min>=hour.minute and start_time.tm_min<hour.minute+30:
+						rows = int(number_of_rows(datetime(year=2020, month=12, day=11, hour = start_time.tm_hour, minute=start_time.tm_min), datetime(year=2020, month=12, day=11, hour = end_time.tm_hour, minute=end_time.tm_min)))
 						if event[3] == 'F':
-							cal += f'<td class="bg-success"> free time </td>'
-							rows = 1
+							cal += f'<td rowspan="{rows-1}" class="bg-success"> free time </td>'
 						else:
-							rows = int(number_of_rows(datetime(year=2020, month=12, day=11, hour = start_time.tm_hour, minute=start_time.tm_min), datetime(year=2020, month=12, day=11, hour = end_time.tm_hour, minute=end_time.tm_min)))
 							cal += f'<td rowspan="{rows-1}" class="bg-danger">{event[2]}</td>'
 						flag = False
 						break

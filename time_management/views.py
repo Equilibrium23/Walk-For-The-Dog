@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .models import TimePeriod, DogTime
 from django.contrib.auth.models import User
 from django.db import connection
-import datetime
+from datetime import datetime, timedelta, date
 from django.db import IntegrityError
 
 
@@ -20,14 +20,14 @@ def add_time_period(request):
             time_length = form.cleaned_data['time_length']
             dogs = form.cleaned_data['dogs_choice']
 
-            delta = datetime.timedelta(minutes=30)
+            delta = timedelta(minutes=30)
             person = request.user
 
             time_list_id=[]
             for i in range(0, time_length, 30):
-                d1 = datetime.timedelta(minutes=i)
-                sh1 = (datetime.datetime.combine(datetime.date(1,1,1),start_hour)+d1).time()
-                eh1 = (datetime.datetime.combine(datetime.date(1,1,1),sh1)+delta).time()
+                d1 = timedelta(minutes=i)
+                sh1 = (datetime.combine(date(1,1,1),start_hour)+d1).time()
+                eh1 = (datetime.combine(date(1,1,1),sh1)+delta).time()
                 tp1 = TimePeriod(person=person, day=day, start_hour=sh1, end_hour=eh1, time_type='F', time_name='')
                 try:
                     tp1.save()
@@ -54,15 +54,12 @@ def add_time_period(request):
         form = AddTimePeriodForm(user=request.user)
     return render(request, 'time_management/add_time_period.html', {'form':form})
 
-from datetime import datetime, timedelta, date
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import generic
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 import calendar
-
-from .models import DogTime, TimePeriod
 from .utils import Calendar
 
 class CalendarView(generic.ListView):
