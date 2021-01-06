@@ -7,7 +7,7 @@ from google.auth.transport.requests import Request
 from datetime import datetime
 from calendar import monthrange
 from time import strptime
-from register_and_login.models import TimePeriod
+from .models import TimePeriod
 
 def end_of_month(datetext):
     """ for given date function checks month and returns end of this month in  isoformat"""

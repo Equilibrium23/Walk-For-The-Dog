@@ -2,7 +2,7 @@ from datetime import datetime, timedelta, date
 from calendar import HTMLCalendar, monthrange
 from time import strptime
 
-from register_and_login.models import TimePeriod
+from .models import TimePeriod
 from django.contrib.auth.models import User
 
 def hourly_it(start, finish, minutesamount):

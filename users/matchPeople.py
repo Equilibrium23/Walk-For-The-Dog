@@ -1,5 +1,7 @@
 from .googleMapsUtils import check_location
-from register_and_login.models import Dog, Profile, TimePeriod, DogTime
+from register_and_login.models import Profile
+from dog_editing.models import Dog
+from time_management.models import TimePeriod, DogTime
 
 def check_dog_size(temp_user_dogs, helper_max_size_dog):
     size_values = {'S':1,'M':2,'B':3}
