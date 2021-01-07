@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import sys
 import os
 import django_heroku
  
@@ -84,16 +85,35 @@ WSGI_APPLICATION = 'Walk_For_The_Dog.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'idnrkogw',
-        'USER': 'idnrkogw',
-        'PASSWORD': 'A0zqcSBOw9U_6z91ep6XQ_HhKmNBO6BR',
-        'HOST': 'suleiman.db.elephantsql.com',
-        'PORT': '5432',
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'idnrkogw',
+            'USER': 'idnrkogw',
+            'PASSWORD': 'A0zqcSBOw9U_6z91ep6XQ_HhKmNBO6BR',
+            'HOST': 'suleiman.db.elephantsql.com',
+            'PORT': '5432',
+        }
+    }
+if os.environ.get('GITHUB_WORKFLOW'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'github_actions',
+            'USER': 'postgres',
+            'PASSWORD': 'postgres',
+            'HOST': '127.0.0.1',
+            'PORT': '5432',
+        }
+    }
 
 
 

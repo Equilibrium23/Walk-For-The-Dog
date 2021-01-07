@@ -21,14 +21,14 @@ from dog_editing import views as dog_editing_views
 from profile_editing import views as profile_editing_views
 from time_management import views as time_management_views
 from users import views as users_views
+from start_page import views as start_page_views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import url
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('start_page.urls')),
-
+    path('admin/', admin.site.urls, name = "admin"),
+    path('', start_page_views.start_page,name = ""),
     path('login/', auth_views.LoginView.as_view(template_name='register_and_login/login.html'), name = "login"),
     path('logout/', auth_views.LogoutView.as_view(template_name='register_and_login/logout.html'), name = "logout"),
     path('register/', register_and_login_views.register, name = "register"),
@@ -43,8 +43,6 @@ urlpatterns = [
     path('delete_dog/', dog_editing_views.delete_dog, name = "delete_dog"),
     path('delete_profile/', profile_editing_views.delete_profile, name = "delete_profile"),
     path('calendar/synchronize/',time_management_views.synchronize_calendar,name="synchronize_calendar"),
-
-
 ]
 
 if settings.DEBUG:
