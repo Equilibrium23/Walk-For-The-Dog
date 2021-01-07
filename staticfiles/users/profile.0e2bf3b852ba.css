@@ -1,0 +1,56 @@
+.card-body{
+	text-align: left;
+	margin:auto;
+}
+/*
+.card-title{   
+	text-align: center;
+}*/
+
+.card {
+   background-color:rgba(238, 85, 34, 0.25)!important;
+    float: none;
+    margin:auto;
+    /*border:2px solid #F68B2A;*/
+    border-radius: 30px;
+    /*margin-top: 20px;*/
+    
+}
+
+.d-block w-100{
+	border-radius: 20px;
+}
+
+ul{
+    list-style-type:none;
+}
+
+
+.card-img{
+	width:  30vh;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 30px;
+
+}
+
+#carouselExampleCaptions{
+	margin:auto;
+	padding: 10px;
+	width: 50%;
+	height: auto;
+}
+
+.carousel-inner .carousel-control-next , .carousel-control-prev{
+    top: 80px;
+    bottom: 120px;
+}
+
+
+.pr, .ne{
+    padding-top: 2px;
+    width: 25px;
+    height: 25px;
+    background-image: radial-gradient(rgba(0, 0, 0, 0.15) 30%,  rgba(255, 255, 255, 0) 70%);
+    background-repeat: no-repeat;
+}

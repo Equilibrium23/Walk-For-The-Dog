@@ -28,7 +28,7 @@ from django.conf.urls import url
 
 urlpatterns = [
     path('admin/', admin.site.urls, name = "admin"),
-    path('', start_page_views.start_page,name = ""),
+    path('', start_page_views.start_page,name = "start_page"),
     path('login/', auth_views.LoginView.as_view(template_name='register_and_login/login.html'), name = "login"),
     path('logout/', auth_views.LogoutView.as_view(template_name='register_and_login/logout.html'), name = "logout"),
     path('register/', register_and_login_views.register, name = "register"),

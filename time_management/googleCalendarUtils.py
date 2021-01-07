@@ -44,7 +44,6 @@ def synchronize_with_google_calendar(request):
     for calendar in calendar_list['items']:
         events_result = service.events().list(calendarId=calendar['id'], timeMin = now, timeMax = end_of_month(now), singleEvents=True, orderBy='startTime').execute()
         events = events_result.get('items', [])
-        print('Calendar - {}'.format(calendar['summary']))
         if not events:
             print('No upcoming events found.')
         else:

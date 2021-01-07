@@ -12,6 +12,6 @@ def profile(request):
 from .matchPeople import matchUsers
 
 def chat(request):
-    data = matchUsers(request)
-    return render(request, 'users/data.html',{'data':data}) 
+    # data = matchUsers(request)
+    return render(request, 'users/chat.html') 
 
