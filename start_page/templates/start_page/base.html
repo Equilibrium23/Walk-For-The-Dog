@@ -72,7 +72,7 @@
                           
                                 <ul class="nav flex-column  mb-0">
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link text-dark font-italic">
+                                        <a href="{% url 'chat' %}" class="nav-link text-dark font-italic">
                                             <i class="fas fa-comments mr-3 text-primary fa-fw"></i>
                                             Messages
                                         </a>
@@ -102,7 +102,7 @@
                     </div>  
                     <div class="col-sm-1 col-md-1"></div>      
                 {% endif %}
-                <div class="col-sm-6 col-md-8" id="content-section">
+                <div class="col-sm-6 col-md-8 w-100 mx-0 px-0" id="content-section">
                     <div class="custom-scrollbar-css">
                         {% if messages %}
                             {% for message in messages %}

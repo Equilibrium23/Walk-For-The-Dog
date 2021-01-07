@@ -2,13 +2,17 @@
 {% load static %}
 
 {% block stylesheet %}
-<link href="{% static 'users/calendar.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'time_management/calendar.css' %}" rel="stylesheet" type="text/css"/>
 {% endblock stylesheet %}
 
 
 {% block content %}
-
-    <div class="d-flex justify-content-between m-4">
+    <div class="d-flex justify-content-center mt-4">
+        <a href="{% url 'synchronize_calendar' %}">
+            <button type="button" class="btn btn-primary btn-sm left">Sync calendar with Google Calendar</button>
+        </a>
+    </div>
+    <div class="d-flex justify-content-between m-2">
         {% if request.GET.date %}
             {% with date_param=request.GET.date%}
                 <a href="{% url 'calendar' %}?view=month&date={{ date_param }}">

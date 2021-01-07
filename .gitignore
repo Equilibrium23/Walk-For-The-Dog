@@ -19,4 +19,6 @@ media/profile_pics/*
 #helping utils
 activateVenv
 
+#google
+credentials.json
 
