@@ -18,7 +18,7 @@ from start_page.views import start_page
 class TestUrls(SimpleTestCase):
 
     def test_start_page_is_resolved(self):
-        url = reverse('')
+        url = reverse('start_page')
         self.assertEquals(resolve(url).func, start_page)
 
     def test_login_is_resolved(self):
