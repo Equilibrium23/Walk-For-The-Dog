@@ -1,8 +1,11 @@
-from django.test import TestCase
+from django.test import TestCase, SimpleTestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
+#######################################################
+from .googleMapsUtils import check_location
+#######################################################
 
-class TestStartPageViews(TestCase):
+class TestUsersViews(TestCase):
     def setUp(self):
         self.test_username = 'test'
         self.test_password = 'test'
@@ -21,3 +24,27 @@ class TestStartPageViews(TestCase):
         response = self.client.get(url)
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response,'users/chat.html')
+
+class TestGoogleMatrixApi(SimpleTestCase):
+    #################### check_location(location_A,location_B,helping_radius) #################### 
+    def test_good_distance(self):
+        location_A = 'Krakow'
+        location_B = 'Krakow'
+        distance = 100
+        result = check_location(location_A,location_B,distance)
+        self.assertEquals(result,True)
+        
+    def test_bad_distance(self):
+        location_A = 'Krakow'
+        location_B = 'Warszawa'
+        distance = 10
+        result = check_location(location_A,location_B,distance)
+        self.assertEquals(result,False)
+    
+    def test_negative_distance(self):
+        location_A = 'Krakow'
+        location_B = 'Warszawa'
+        distance = -1
+        result = check_location(location_A,location_B,distance)
+        self.assertEquals(result,False)
+

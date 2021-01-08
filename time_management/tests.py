@@ -1,3 +1,69 @@
 from django.test import TestCase
+from datetime import datetime
+from .googleCalendarUtils import end_of_month, save_data, synchronize_with_google_calendar
+import random
+from django.http import HttpRequest
+from django.contrib.auth.models import User
+from django.urls import reverse
 
-# Create your tests here.
+class TestGoogleCalendarsUtils(TestCase):
+    def setUp(self):
+        self.test_username = 'test'
+        self.test_password = 'test'
+        self.test_user = User.objects.create_user(username=self.test_username, password=self.test_password)
+        self.test_user.save()
+        self.client.login(username='test', password='test')
+    #################### end_of_month(datetext) #################### 
+    def test_end_of_january_2021(self):
+        input_year = 2021 
+        input_month = 1
+        input_day = 5
+        input_hour = random.randint(0,23)
+        input_minute = random.randint(0,59)
+        input_second = random.randint(0,59)
+        test_date = datetime(input_year,input_month,input_day,input_hour,input_minute,input_second).isoformat()+'Z'
+        #################################################################
+        end_of_january_2021_day = 31
+        expected_day = datetime(input_year,input_month,end_of_january_2021_day,23,59,59).isoformat()+'Z'
+        result = end_of_month(test_date)
+        self.assertEquals(result,expected_day)
+        
+    #################### save_data(request, start_event, end_event, name) #################### 
+    def test_saving_good_data_from_calendar_api(self):
+        request = HttpRequest()
+        request.method = 'GET'
+        request.user = self.test_user
+        start_event = '2021-01-29T11:00:00+01:00'
+        end_event = '2021-01-29T12:00:00+01:00'
+        event_name = 'test'
+        result = save_data(request,start_event,end_event,event_name)
+        self.assertEquals(result,True)
+
+    def test_saving_bad_data_from_calendar_api(self):
+        request = HttpRequest()
+        request.method = 'GET'
+        request.user = self.test_user
+        start_event = '2021-01-29 11:00:00+01:00'
+        end_event = '2021-01-29 12:00:00+01:00'
+        event_name = 'test'
+        result = save_data(request,start_event,end_event,event_name)
+        self.assertEquals(result,False)
+    
+    def test_saving_duplicated_data_from_calendar_api(self):
+        request = HttpRequest()
+        request.method = 'GET'
+        request.user = self.test_user
+        start_event = '2021-01-29T11:00:00+01:00'
+        end_event = '2021-01-29T12:00:00+01:00'
+        event_name = 'test'
+        result = True
+        for _ in range(2):
+            if save_data(request,start_event,end_event,event_name) == False:
+                result = False
+        self.assertEquals(result,False)
+    #################### synchronize_with_google_calendar(request) #################### 
+    def test_get_synchronize_with_google_calendar(self):
+        url = reverse('synchronize_calendar')
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 302)           
+

@@ -1,4 +1,5 @@
 import pickle
+from django.shortcuts import redirect
 import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -21,16 +22,20 @@ def end_of_month(datetext):
 
 
 def save_data(request, start_event, end_event, name):
-	if 'T' in start_event and 'T' in end_event:
-		start_data = start_event.split('T')
-		end_data = end_event.split('T')
-		date_s = start_data[0]
-		start_hour = start_data[1].split('+')[0]
-		end_hour = end_data[1].split('+')[0]
-		temp = TimePeriod(person = request.user , day = date_s, start_hour = start_hour, end_hour = end_hour, time_type = 'O', time_name = name)
-		# if so there's no duplicates
-		if not TimePeriod.objects.filter(person = request.user , day = date_s, start_hour = start_hour, end_hour = end_hour, time_type = 'O', time_name = name).exists():
-			temp.save()
+    if 'T' in start_event and 'T' in end_event:
+        start_data = start_event.split('T')
+        end_data = end_event.split('T')
+        date_s = start_data[0]
+        start_hour = start_data[1].split('+')[0]
+        end_hour = end_data[1].split('+')[0]
+        temp = TimePeriod(person = request.user , day = date_s, start_hour = start_hour, end_hour = end_hour, time_type = 'O', time_name = name)
+        # if so there's no duplicates
+        if not TimePeriod.objects.filter(person = request.user , day = date_s, start_hour = start_hour, end_hour = end_hour, time_type = 'O', time_name = name).exists():
+            temp.save()
+            return True
+    return False
+
+        
 
 def synchronize_with_google_calendar(request):
     SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']

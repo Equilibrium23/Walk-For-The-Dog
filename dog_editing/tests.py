@@ -5,18 +5,6 @@ from .models import Dog
 from register_and_login.models import Profile
 from django.contrib.auth import get_user_model
 
-
-# przed
-# dog_editing/__init__.py                          0      0   100%
-# dog_editing/admin.py                             3      0   100%
-# dog_editing/apps.py                              3      0   100%
-# dog_editing/forms.py                            11      0   100%
-# dog_editing/migrations/0001_initial.py           6      0   100%
-# dog_editing/migrations/__init__.py               0      0   100%
-# dog_editing/models.py                           15      1    93%
-# dog_editing/tests.py                             1      0   100%
-# dog_editing/views.py                            50     37    26%
-
 class TestDogEditingViews(TestCase):
     def setUp(self):
         self.test_username = 'test'
