@@ -81,3 +81,6 @@ class TestDogEditingViews(TestCase):
     #     response = self.client.post(url+"?request_dog_id="+self.dog_id,edit_dog_data)
     #     self.assertEquals(response.status_code, 302)
     #     self.assertTemplateUsed(response,'dog_editing/add_dog.html')
+
+    ######################### delete_dog(request) ########################################
+    # problem bedzie ten sam -> nie wiem jak utworzyc obiekt psa to nie mam co usuwac w testach :(

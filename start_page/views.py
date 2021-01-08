@@ -4,7 +4,6 @@ from users.matchPeople import matchUsers
 from .utils import mergeTimes
 
 def start_page(request):
-	#close_old_connections()
 	if request.user.is_authenticated:
 		matches = mergeTimes(matchUsers(request))
 		context = { 'matches' : matches }

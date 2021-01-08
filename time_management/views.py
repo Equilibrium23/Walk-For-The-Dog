@@ -11,7 +11,6 @@ from django.db import IntegrityError
 
 @login_required
 def add_time_period(request):
-
     if request.method == 'POST':
         form = AddTimePeriodForm(request.POST, user=request.user)
         if form.is_valid():

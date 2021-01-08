@@ -29,7 +29,6 @@ def update(request):
             messages.success(request, f'Your account has been updated!')
             #close_old_connections()
             return redirect('profile')
-
     else:
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
@@ -42,7 +41,6 @@ def update(request):
         'n_form': n_form,
         'h_form': h_form,
     }
-
     return render(request, 'profile_editing/update.html', context)
 
 @login_required
