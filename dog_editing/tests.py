@@ -80,7 +80,19 @@ class TestDogEditingViews(TestCase):
         }
         response = self.client.post(url+"?request_dog_id="+str(self.test_dog_id),edit_dog_data)
         self.assertEquals(response.status_code, 302)
-        self.assertTemplateUsed(response,'dog_editing/edit_dog_profile.html')
+        redirect_url = reverse('profile')
+        self.assertRedirects(response, redirect_url)
 
     ######################### delete_dog(request) ########################################
-    # problem bedzie ten sam -> nie wiem jak utworzyc obiekt psa to nie mam co usuwac w testach :(
+    def test_delete_dog_get_site(self):
+        url = reverse('delete_dog')
+        response = self.client.get(url,{'request_dog_id':self.test_dog_id})
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response,'dog_editing/delete_dog.html')
+    
+    def test_delete_dog_good_data_posted(self):
+        url = reverse('delete_dog')
+        response = self.client.post(url+"?request_dog_id="+str(self.test_dog_id))
+        self.assertEquals(response.status_code, 302)
+        redirect_url = reverse('profile')
+        self.assertRedirects(response, redirect_url)
