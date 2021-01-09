@@ -7,14 +7,13 @@ from datetime import datetime,date,time
 from .utils import hourly_it, number_of_rows, Calendar
 
 
-class TestTimeManagementViews(TestCase):
+class TestTimeManagementViewsAndUtils(TestCase):
     def setUp(self):
         self.test_username = 'test'
         self.test_password = 'test'
         self.test_user = User.objects.create_user(username=self.test_username, password=self.test_password)
         self.test_user.save()
         self.client.login(username='test', password='test')
-        dog_owner = Profile.objects.get(user=self.test_user)
 
     def test_add_time_period_get_site(self):
         url = reverse('add_time_period')
@@ -22,7 +21,7 @@ class TestTimeManagementViews(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'time_management/add_time_period.html')
 
-    def test_add_dog_good_data_posted(self):
+    def test_add_time_period_data_posted(self):
         url = reverse('add_time_period')
         add_period_data = {
             'csrfmiddlewaretoken':'TtGVEhVsVewJkhI9vRFE0rUus4KPhbRw8KCpz8ZPXu15S2Jp5uuihn31tGwPoZ5P',
@@ -33,10 +32,8 @@ class TestTimeManagementViews(TestCase):
         }
         response = self.client.post(url, add_period_data)
         self.assertEquals(response.status_code, 200)
-        print(response)
         self.assertTemplateUsed(response, 'time_management/add_time_period.html')
-        # redirect_url = reverse('add_time_period')
-        # self.assertRedirects(response, redirect_url)
+
 
     def test_hourly_it(self):
         starthour = datetime(year=2020, month=12, day=11, hour=5, minute=0)
@@ -85,7 +82,6 @@ class TestTimeManagementViews(TestCase):
         self.assertTrue('''<div class="bg-success"> 06:30-07:00: free time</div>''' in result)
 
     def test_formatbyweek(self):
-        #d = datetime(year=2020, month=12, day=11, hour=5, minute=0)
         calendar = Calendar(2021, 1, 9)
         TimePeriod.objects.create(person=self.test_user, day=date(2021, 1, 10), start_hour=time(6, 30),
                                   end_hour=time(7, 00))
@@ -98,9 +94,6 @@ class TestTimeManagementViews(TestCase):
         self.assertTrue('''<tr><th scope="row">08:30</th><td></td><td></td><td></td><td></td><td></td><td></td><td rowspan="2" class="bg-success"> free time </td></tr>''' in result)
 
     def test_formatbyday(self):
-        # d = datetime.now()
-        # print(d)
-        # calendar = Calendar(d.year, d.month, d.day)
         calendar = Calendar(2021, 1, 9)
         TimePeriod.objects.create(person=self.test_user, day=date(2021, 1, 7), start_hour=time(6, 30),
                                   end_hour=time(7, 00))

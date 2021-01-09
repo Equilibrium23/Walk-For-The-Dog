@@ -13,8 +13,8 @@ class TestDogEditingViews(TestCase):
         self.test_user.save()
         self.client.login(username='test', password='test')
         dog_owner = Profile.objects.get(user=self.test_user)
-        test_dog = Dog.objects.create(dog_name='test', breed='kundel',short_description = 'piekny pies',owner = dog_owner )
-        self.test_dog_id = test_dog.id
+        self.test_dog = Dog.objects.create(dog_name='test', breed='kundel',short_description = 'piekny pies',owner = dog_owner )
+        self.test_dog_id = self.test_dog.id
 
     ######################## add_dog(request) ########################################
     def test_add_dog_get_site(self):
@@ -84,3 +84,6 @@ class TestDogEditingViews(TestCase):
         self.assertEquals(response.status_code, 302)
         redirect_url = reverse('profile')
         self.assertRedirects(response, redirect_url)
+
+    def test_dog_model_str(self):
+        self.assertEquals(self.test_dog.__str__(), 'test')
