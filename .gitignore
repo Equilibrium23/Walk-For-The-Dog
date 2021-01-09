@@ -15,6 +15,7 @@ media/profile_pics/*
 
 #Test
 .coverage
+htmlcov/
 
 #helping utils
 activateVenv

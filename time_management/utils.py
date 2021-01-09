@@ -5,11 +5,13 @@ from time import strptime
 from .models import TimePeriod
 from django.contrib.auth.models import User
 
+#iterates over hours every minutesamout(ex. 30min)
 def hourly_it(start, finish, minutesamount):
 	while finish > start:
 		start = start + timedelta(minutes=minutesamount)
 		yield start
 
+#how many 30 mins slots an event takes
 def number_of_rows(start, end):
 	start_time = datetime(year=2020, month=12, day=11, hour = start.hour, minute=start.minute) - timedelta(minutes=start.minute % 30)
 	end_time = datetime(year=2020, month=12, day=11, hour = end.hour, minute=end.minute) + timedelta(minutes=30 - (end.minute % 30))
@@ -18,6 +20,7 @@ def number_of_rows(start, end):
 	rows = minutes[0] / 30
 	return rows
 
+#glues overlapping events into longer event
 def merge_time_ranges(data):
 	result = []
 	if(len(data)>0):
