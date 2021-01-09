@@ -62,8 +62,8 @@ class TestGoogleCalendarsUtils(TestCase):
                 result = False
         self.assertEquals(result,False)
     #################### synchronize_with_google_calendar(request) #################### 
-    def test_get_synchronize_with_google_calendar(self):
-        url = reverse('synchronize_calendar')
-        response = self.client.get(url)
-        self.assertEquals(response.status_code, 302)           
+    # def test_get_synchronize_with_google_calendar(self):
+    #     url = reverse('synchronize_calendar')
+    #     response = self.client.get(url)
+    #     self.assertEquals(response.status_code, 302)
 

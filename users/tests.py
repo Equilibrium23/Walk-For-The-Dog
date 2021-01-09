@@ -27,19 +27,19 @@ class TestUsersViews(TestCase):
 
 class TestGoogleMatrixApi(SimpleTestCase):
     #################### check_location(location_A,location_B,helping_radius) #################### 
-    def test_good_distance(self):
-        location_A = 'Krakow'
-        location_B = 'Krakow'
-        distance = 100
-        result = check_location(location_A,location_B,distance)
-        self.assertEquals(result,True)
+    # def test_good_distance(self):
+    #     location_A = 'Krakow'
+    #     location_B = 'Krakow'
+    #     distance = 100
+    #     result = check_location(location_A,location_B,distance)
+    #     self.assertEquals(result,True)
         
-    def test_bad_distance(self):
-        location_A = 'Krakow'
-        location_B = 'Warszawa'
-        distance = 10
-        result = check_location(location_A,location_B,distance)
-        self.assertEquals(result,False)
+    # def test_bad_distance(self):
+    #     location_A = 'Krakow'
+    #     location_B = 'Warszawa'
+    #     distance = 10
+    #     result = check_location(location_A,location_B,distance)
+    #     self.assertEquals(result,False)
     
     def test_negative_distance(self):
         location_A = 'Krakow'
