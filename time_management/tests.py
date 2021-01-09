@@ -1,129 +1,69 @@
 from django.test import TestCase
+from datetime import datetime
+from .googleCalendarUtils import end_of_month, save_data, synchronize_with_google_calendar
+import random
+from django.http import HttpRequest
 from django.contrib.auth.models import User
 from django.urls import reverse
-from .models import TimePeriod
-from register_and_login.models import Profile
-from datetime import datetime,date,time
-#import datetime
-from .utils import hourly_it, number_of_rows, Calendar
-import re
-import html
 
-# Create your tests here.
-
-
-class TestTimeManagementViews(TestCase):
+class TestGoogleCalendarsUtils(TestCase):
     def setUp(self):
         self.test_username = 'test'
         self.test_password = 'test'
         self.test_user = User.objects.create_user(username=self.test_username, password=self.test_password)
         self.test_user.save()
         self.client.login(username='test', password='test')
-        dog_owner = Profile.objects.get(user=self.test_user)
-        #test_dog = Dog.objects.create(dog_name='test', breed='kundel',short_description = 'piekny pies',owner = dog_owner )
-        #self.test_dog_id = test_dog.id
+    #################### end_of_month(datetext) #################### 
+    def test_end_of_january_2021(self):
+        input_year = 2021 
+        input_month = 1
+        input_day = 5
+        input_hour = random.randint(0,23)
+        input_minute = random.randint(0,59)
+        input_second = random.randint(0,59)
+        test_date = datetime(input_year,input_month,input_day,input_hour,input_minute,input_second).isoformat()+'Z'
+        #################################################################
+        end_of_january_2021_day = 31
+        expected_day = datetime(input_year,input_month,end_of_january_2021_day,23,59,59).isoformat()+'Z'
+        result = end_of_month(test_date)
+        self.assertEquals(result,expected_day)
+        
+    #################### save_data(request, start_event, end_event, name) #################### 
+    def test_saving_good_data_from_calendar_api(self):
+        request = HttpRequest()
+        request.method = 'GET'
+        request.user = self.test_user
+        start_event = '2021-01-29T11:00:00+01:00'
+        end_event = '2021-01-29T12:00:00+01:00'
+        event_name = 'test'
+        result = save_data(request,start_event,end_event,event_name)
+        self.assertEquals(result,True)
 
-    def test_add_time_period_get_site(self):
-        url = reverse('add_time_period')
+    def test_saving_bad_data_from_calendar_api(self):
+        request = HttpRequest()
+        request.method = 'GET'
+        request.user = self.test_user
+        start_event = '2021-01-29 11:00:00+01:00'
+        end_event = '2021-01-29 12:00:00+01:00'
+        event_name = 'test'
+        result = save_data(request,start_event,end_event,event_name)
+        self.assertEquals(result,False)
+    
+    def test_saving_duplicated_data_from_calendar_api(self):
+        request = HttpRequest()
+        request.method = 'GET'
+        request.user = self.test_user
+        start_event = '2021-01-29T11:00:00+01:00'
+        end_event = '2021-01-29T12:00:00+01:00'
+        event_name = 'test'
+        result = True
+        for _ in range(2):
+            if save_data(request,start_event,end_event,event_name) == False:
+                result = False
+        self.assertEquals(result,False)
+    #################### synchronize_with_google_calendar(request) #################### 
+    def test_get_synchronize_with_google_calendar(self):
+        url = reverse('synchronize_calendar')
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'time_management/add_time_period.html')
-
-    def test_add_dog_good_data_posted(self):
-        url = reverse('add_time_period')
-        add_period_data = {
-            'csrfmiddlewaretoken':'TtGVEhVsVewJkhI9vRFE0rUus4KPhbRw8KCpz8ZPXu15S2Jp5uuihn31tGwPoZ5P',
-            'day':'datetime.date(2021, 1, 7)',
-            'start_hour':'datetime.time(6, 0)',
-            'time_length':'datetime.time(6, 30)',
-            'dogs_choice':''
-        }
-        response = self.client.post(url, add_period_data)
-        self.assertEquals(response.status_code, 200)
-        print(response)
-        self.assertTemplateUsed(response, 'time_management/add_time_period.html')
-        # redirect_url = reverse('add_time_period')
-        # self.assertRedirects(response, redirect_url)
-
-    def test_hourly_it(self):
-        starthour = datetime(year=2020, month=12, day=11, hour=5, minute=0)
-        finishhour = datetime(year=2020, month=12, day=11, hour=23, minute=0)
-        compare = datetime(year=2020, month=12, day=11, hour=5, minute=30)
-
-        x = hourly_it(starthour, finishhour, 30)
-        self.assertEquals(next(x), compare)
-
-    def test_number_of_rows(self):
-        starthour = datetime(year=2020, month=12, day=11, hour=5, minute=0)
-        finishhour = datetime(year=2020, month=12, day=11, hour=6, minute=0)
-        compare = 3
-        x = number_of_rows(starthour, finishhour)
-        self.assertEquals(x, compare)
-
-    def test_formatweekheader(self):
-        calendar = Calendar()
-        result = calendar.formatweekheader()
-        self.assertEquals(result,'''<thead class="font-weight-bold text-uppercase"><tr><th span="col"> Mon </th><th span="col"> Tue </th><th span="col"> Wed </th><th span="col"> Thu </th><th span="col"> Fri </th><th span="col"> Sat </th><th span="col"> Sun </th></tr></thead>''')
-
-    def test_formatweekheaderforweek(self):
-        starthour = datetime(year=2020, month=12, day=11, hour=5, minute=0)
-        calendar = Calendar()
-        result = calendar.formatweekheaderforweek(starthour)
-        self.assertEquals(result,'''<thead><tr class="text-uppercase"><th span="col">time</th><th span="col"><a href="../calendar/?view=day&date=2020-12-11"> Mon 11 </a></th>
-<th span="col"><a href="../calendar/?view=day&date=2020-12-12"> Tue 12 </a></th>
-<th span="col"><a href="../calendar/?view=day&date=2020-12-13"> Wed 13 </a></th>
-<th span="col"><a href="../calendar/?view=day&date=2020-12-14"> Thu 14 </a></th>
-<th span="col"><a href="../calendar/?view=day&date=2020-12-15"> Fri 15 </a></th>
-<th span="col"><a href="../calendar/?view=day&date=2020-12-16"> Sat 16 </a></th>
-<th span="col"><a href="../calendar/?view=day&date=2020-12-17"> Sun 17 </a></th>
-</tr></thead>''')
-
-    def test_formatmonth(self):
-        d = datetime.now()
-        calendar = Calendar(d.year, d.month, d.day)
-        TimePeriod.objects.create(person=self.test_user, day=date(2021, 1, 7), start_hour=time(6, 30),
-                                  end_hour=time(7, 00))
-        TimePeriod.objects.create(person=self.test_user, day=date(2021, 1, 7), start_hour=time(8, 30),
-                                  end_hour=time(9, 00))
-
-        events = TimePeriod.objects.filter(person=self.test_user)
-        result = calendar.formatmonth(events)
-        self.assertTrue('''<div class="bg-success"> 08:30-09:00: free time</div>''' in result)
-        self.assertTrue('''<div class="bg-success"> 06:30-07:00: free time</div>''' in result)
-
-    def test_formatbyweek(self):
-        #d = datetime(year=2020, month=12, day=11, hour=5, minute=0)
-        calendar = Calendar(2021, 1, 9)
-        TimePeriod.objects.create(person=self.test_user, day=date(2021, 1, 10), start_hour=time(6, 30),
-                                  end_hour=time(7, 00))
-        TimePeriod.objects.create(person=self.test_user, day=date(2021, 1, 10), start_hour=time(8, 30),
-                                  end_hour=time(9, 00))
-        events = TimePeriod.objects.filter(person=self.test_user)
-
-        result = calendar.formatbyweek(events)
-        self.assertTrue('''<tr><th scope="row">06:30</th><td></td><td></td><td></td><td></td><td></td><td></td><td rowspan="2" class="bg-success"> free time </td></tr>''' in result)
-        self.assertTrue('''<tr><th scope="row">08:30</th><td></td><td></td><td></td><td></td><td></td><td></td><td rowspan="2" class="bg-success"> free time </td></tr>''' in result)
-
-    def test_formatbyday(self):
-        # d = datetime.now()
-        # print(d)
-        # calendar = Calendar(d.year, d.month, d.day)
-        calendar = Calendar(2021, 1, 9)
-        TimePeriod.objects.create(person=self.test_user, day=date(2021, 1, 7), start_hour=time(6, 30),
-                                  end_hour=time(7, 00))
-        TimePeriod.objects.create(person=self.test_user, day=date(2021, 1, 7), start_hour=time(8, 30),
-                                  end_hour=time(9, 00))
-        events = TimePeriod.objects.filter(person=self.test_user)
-
-        result = calendar.formatbyday(events)
-        self.assertTrue('''Saturday, 09 Jan 2021''' in result)
-        calendar = Calendar(2021, 1, 7)
-        result = calendar.formatbyday(events)
-        self.assertTrue('''<tr><th scope="row">06:30</th><td rowspan="2" class="bg-success"> free time </td></tr>''' in result)
-
-
-
-
-
-
+        self.assertEquals(response.status_code, 302)           
 

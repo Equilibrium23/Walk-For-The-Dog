@@ -1,6 +1,7 @@
-from django.test import TestCase
+from django.test import TestCase, SimpleTestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
+
 register_data = {
     'csrfmiddlewaretoken':'TtGVEhVsVewJkhI9vRFE0rUus4KPhbRw8KCpz8ZPXu15S2Jp5uuihn31tGwPoZ5P',
     'username':'testing',
