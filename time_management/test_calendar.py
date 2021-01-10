@@ -25,9 +25,9 @@ class TestTimeManagementViewsAndUtils(TestCase):
         url = reverse('add_time_period')
         add_period_data = {
             'csrfmiddlewaretoken':'TtGVEhVsVewJkhI9vRFE0rUus4KPhbRw8KCpz8ZPXu15S2Jp5uuihn31tGwPoZ5P',
-            'day':'datetime.date(2021, 1, 7)',
-            'start_hour':'datetime.time(6, 0)',
-            'time_length':'datetime.time(6, 30)',
+            'day':date(2021, 1, 7),
+            'start_hour':time(6, 0),
+            'time_length':time(6, 30),
             'dogs_choice':''
         }
         response = self.client.post(url, add_period_data)
