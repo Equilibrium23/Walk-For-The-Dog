@@ -63,7 +63,7 @@ def matchUsers(request):
 
 def getMatches(request):
     owner = Profile.objects.get(user = request.user)
-    matches = Match.objects.all().filter( owner_id = owner.id )
+    matches = Match.objects.all().filter( owner_id = owner.id ).filter(is_match_accepted = False)
     return_data = {}
     for match in matches:
         helper = Profile.objects.get(id = match.helper_id)
@@ -71,6 +71,7 @@ def getMatches(request):
         return_data[helper] = { dog: [] }
 
     for match in matches:
+        helper = Profile.objects.get(id = match.helper_id)
         time = TimePeriod.objects.get( id = match.owner_time_period_id )
         dog = Dog.objects.get(id = match.dog_id)
         return_data[helper][dog].append(time)

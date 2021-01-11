@@ -7,7 +7,6 @@ from .utils import mergeTimes
 from .utils import get_helper_matches
 
 def start_page(request):
-	#close_old_connections()
 	if request.user.is_authenticated:
 		user_profile = Profile.objects.all().get(user = request.user)
 		if user_profile.account_type == 'N':
@@ -17,7 +16,12 @@ def start_page(request):
 			context = { 'matches' : matches }
 			return render(request,'start_page/start_page.html', context)
 		elif user_profile.account_type == 'H':
-			pass
+			match_data = get_helper_matches(request)
+			matches = mergeTimes(match_data)
+			#############################################
+			context = { 'matches' : matches }
+			return render(request,'start_page/start_page.html', context)
+			#############################################
 	else:
 		return render(request,'start_page/start_page.html')
 
