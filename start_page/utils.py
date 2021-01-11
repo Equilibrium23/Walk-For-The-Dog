@@ -33,3 +33,6 @@ def mergeTimes(data):
                 merged[person][dog][date]=fixed_result
 
     return merged
+
+def get_helper_matches(request):
+    pass
