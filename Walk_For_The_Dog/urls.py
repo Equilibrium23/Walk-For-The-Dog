@@ -43,6 +43,7 @@ urlpatterns = [
     path('delete_dog/', dog_editing_views.delete_dog, name = "delete_dog"),
     path('delete_profile/', profile_editing_views.delete_profile, name = "delete_profile"),
     path('calendar/synchronize/',time_management_views.synchronize_calendar,name="synchronize_calendar"),
+    path('calendar/oauth2callback/',time_management_views.load_calendar_data,name="oauth2callback"),
 ]
 
 if settings.DEBUG:

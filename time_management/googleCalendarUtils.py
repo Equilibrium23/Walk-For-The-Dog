@@ -9,6 +9,8 @@ from datetime import datetime
 from calendar import monthrange
 from time import strptime
 from .models import TimePeriod
+import google.oauth2.credentials
+import google_auth_oauthlib.flow
 
 def end_of_month(datetext):
     """ for given date function checks month and returns end of this month in  isoformat"""
@@ -35,24 +37,44 @@ def save_data(request, start_event, end_event, name):
             return True
     return False
 
-        
 
 def synchronize_with_google_calendar(request):
-    SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
-    flow = InstalledAppFlow.from_client_secrets_file('users/credentials.json', SCOPES)
-    creds = flow.run_local_server(host='localhost', port=8888)
-    service = build('calendar', 'v3', credentials=creds)
-    # Call the Calendar API
-    calendar_list = service.calendarList().list(showHidden = True).execute()
-    now = datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
+    'time_management/credentials.json',
+    scopes=['https://www.googleapis.com/auth/drive.metadata.readonly'])
+    flow.redirect_uri = 'https://walkk-for-the-dog.herokuapp.com/calendar/oauth2callback/'
+    authorization_url, state = flow.authorization_url(
+    access_type='online',
+    include_granted_scopes='true')
+    return authorization_url
 
-    for calendar in calendar_list['items']:
-        events_result = service.events().list(calendarId=calendar['id'], timeMin = now, timeMax = end_of_month(now), singleEvents=True, orderBy='startTime').execute()
-        events = events_result.get('items', [])
-        if not events:
-            print('No upcoming events found.')
-        else:
-            for event in events:
-                start = event['start'].get('dateTime', event['start'].get('date'))
-                end_event = event['end'].get('dateTime', event['end'].get('date'))
-                save_data(request, start, end_event, event['summary'])
+CLIENT_SECRETS_FILE = "time_management/credentials.json"
+SCOPES = ['http://www.googleapis.com/auth/drive.metadata.readonly']
+API_SERVICE_NAME = 'calendar'
+API_VERSION = 'v3'
+
+def load_data(request):
+    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
+        CLIENT_SECRETS_FILE, scopes=SCOPES)
+
+    # Use the authorization server's response to fetch the OAuth 2.0 tokens.
+    authorization_response = request.build_absolute_uri()
+    print(authorization_response)
+    flow.fetch_token(authorization_response=authorization_response)
+    credentials = flow.credentials
+    print(credentials)
+
+    # Call the Calendar API
+    # calendar_list = service.calendarList().list(showHidden = True).execute()
+    # now = datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+
+    # for calendar in calendar_list['items']:
+    #     events_result = service.events().list(calendarId=calendar['id'], timeMin = now, timeMax = end_of_month(now), singleEvents=True, orderBy='startTime').execute()
+    #     events = events_result.get('items', [])
+    #     if not events:
+    #         print('No upcoming events found.')
+    #     else:
+    #         for event in events:
+    #             start = event['start'].get('dateTime', event['start'].get('date'))
+    #             end_event = event['end'].get('dateTime', event['end'].get('date'))
+    #             save_data(request, start, end_event, event['summary'])
