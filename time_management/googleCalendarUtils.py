@@ -1,16 +1,16 @@
-import pickle
-from django.shortcuts import redirect
 import os.path
 from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
-
 from datetime import datetime
 from calendar import monthrange
-from time import strptime
 from .models import TimePeriod
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
+
+SCOPES = ['https://www.googleapis.com/auth/calendar.readonly','https://www.googleapis.com/auth/drive.metadata.readonly']
+CLIENT_SECRETS_FILE = "time_management/credentials.json"
+API_SERVICE_NAME = 'calendar'
+API_VERSION = 'v3'
 
 def end_of_month(datetext):
     """ for given date function checks month and returns end of this month in  isoformat"""
@@ -37,15 +37,8 @@ def save_data(request, start_event, end_event, name):
             return True
     return False
 
-SCOPES = ['https://www.googleapis.com/auth/calendar.readonly','https://www.googleapis.com/auth/drive.metadata.readonly']
-CLIENT_SECRETS_FILE = "time_management/credentials.json"
-API_SERVICE_NAME = 'calendar'
-API_VERSION = 'v3'
-
-def synchronize_with_google_calendar(request):
-    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
-    'time_management/credentials.json',
-    scopes=SCOPES)
+def get_google_authentication_url(request):
+    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('time_management/credentials.json',scopes=SCOPES)
     flow.redirect_uri = 'https://walkk-for-the-dog.herokuapp.com/calendar/oauth2callback/'
     authorization_url, state = flow.authorization_url(
     access_type='online',
@@ -53,10 +46,8 @@ def synchronize_with_google_calendar(request):
     return authorization_url
 
 def load_data(request):
-    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
-        CLIENT_SECRETS_FILE, scopes=SCOPES)
+    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(CLIENT_SECRETS_FILE, scopes=SCOPES)
     flow.redirect_uri = "https://walkk-for-the-dog.herokuapp.com/calendar/oauth2callback/"
-    # Use the authorization server's response to fetch the OAuth 2.0 tokens.
     authorization_response = request.build_absolute_uri()
     flow.fetch_token(authorization_response=authorization_response)
     creds = flow.credentials

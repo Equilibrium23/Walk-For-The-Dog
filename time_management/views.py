@@ -4,10 +4,15 @@ from .forms import AddTimePeriodForm
 from django.contrib.auth.decorators import login_required
 from .models import TimePeriod, DogTime
 from django.contrib.auth.models import User
-from django.db import connection
 from datetime import datetime, timedelta, date
 from django.db import IntegrityError
+from django.views import generic
+from django.utils.safestring import mark_safe
 
+import calendar
+from .utils import Calendar
+from .googleCalendarUtils import get_google_authentication_url
+from .googleCalendarUtils import load_data
 
 @login_required
 def add_time_period(request):
@@ -42,7 +47,6 @@ def add_time_period(request):
                 for tp in time_list_id:
                     DogTime(owner_id=request.user.profile.id, dog_id=d, time_period_id=tp, match=False).save()
                 
-
             if time_length == 30:
                 messages.success(request, f'Your time period has been added!!')
             else:
@@ -53,13 +57,7 @@ def add_time_period(request):
         form = AddTimePeriodForm(user=request.user)
     return render(request, 'time_management/add_time_period.html', {'form':form})
 
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
-from django.views import generic
-from django.urls import reverse
-from django.utils.safestring import mark_safe
-import calendar
-from .utils import Calendar
+
 
 class CalendarView(generic.ListView):
     model = TimePeriod
@@ -92,11 +90,10 @@ class CalendarView(generic.ListView):
         context['calendar'] = mark_safe(html_cal)
         return context
 
-from .googleCalendarUtils import synchronize_with_google_calendar
-from .googleCalendarUtils import load_data
+
 
 def synchronize_calendar(request):
-    url = synchronize_with_google_calendar(request)
+    url = get_google_authentication_url(request)
     return redirect(url)
 
 def load_calendar_data(request):
