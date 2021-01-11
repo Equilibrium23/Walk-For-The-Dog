@@ -1,7 +1,7 @@
 import urllib.request
 import json
 
-GOOGLE_MAP_KEY = 'AIzaSyBBcPbX-93uzhQq9qQosN7TzVYGtr3cFpg'
+GOOGLE_MAP_KEY = 'AIzaSyBUJ5hDZY_HMEZZAVuSc7tv38aQHa0xTNU'
 
 def check_location(location_A,location_B,helping_radius):
     if helping_radius > 0:
