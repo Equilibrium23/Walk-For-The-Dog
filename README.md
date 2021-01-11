@@ -1,5 +1,7 @@
 # Walk For The Dog
 
+## Link to our demo app deployed on heroku
+# https://walkk-for-the-dog.herokuapp.com/
 ### Content
 * [App Description](#app-description)
 * [User Stories](#user-stories)
