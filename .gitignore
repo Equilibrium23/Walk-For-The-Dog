@@ -11,6 +11,15 @@ venv/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
-staticfiles/*
 media/profile_pics/*
+
+#Test
+.coverage
+htmlcov/
+
+#helping utils
+activateVenv
+
+#google
+#credentials.json
 

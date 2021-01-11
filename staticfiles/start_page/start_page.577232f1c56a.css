@@ -1,0 +1,143 @@
+body
+{
+	background-color: #ee5522;
+	background-image: url("Sun-Tornado.aea355951a79.svg");
+	background-attachment: fixed;
+	background-size: cover;
+	font-family: 'Lato', sans-serif;
+}
+
+.footer
+{
+	background-image: linear-gradient(to bottom, rgba(255,0,0,0),  rgb(246, 185, 59, .5));
+}
+
+#box
+{
+	margin-top: 3%;
+}
+
+#content-section
+{
+	background-color:#FDE2A7;;
+	padding-right: 0 ; 
+	border-radius: 5%;
+	height: 90vh;
+	overflow: hidden;
+	text-align: justify;
+	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.custom-scrollbar-css {
+	padding-right: 15px ;
+	height: inherit;
+	overflow-y: auto;
+}
+
+.custom-scrollbar-css::-webkit-scrollbar {
+	width: 5px;
+}
+
+.custom-scrollbar-css::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+	background-color: rgba(255, 255, 255, .7);
+	border-radius: 2px;
+}
+
+.custom-scrollbar-css::-webkit-scrollbar-thumb {
+	border-radius: 1rem;
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+	background-image: -webkit-linear-gradient(330deg, #ee5522 0%, #ffb832 100%);
+	background-image: linear-gradient(120deg, #ee5522 0%, #ffb832 100%);
+}
+
+#logo-nav
+{
+	height: 90vh;
+	display: inline;
+	overflow: hidden;
+	border-radius: 5%;
+	background-color:#FDE2A7;
+}
+
+#dog-cont
+{
+	width: inherit;
+	position: relative;
+	overflow: hidden;
+	border-radius: 50%;
+}
+
+#dog-pic
+{
+	display: block;
+	margin:0 -25%;
+	width: 140%;
+}
+
+.vertical-nav
+{
+	position: relative;
+	display: inline;
+}
+
+#nav
+{
+	display: inline;
+	width: inherit;
+	height: 90vh;
+	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+#dog-menu
+{
+	display: flex;
+    align-items: flex-end;
+	bottom: 0;
+	margin: -10% -20%;
+	width: 140%;
+	z-index:-1;
+}
+
+
+#logo-im
+{
+	width: 20%;
+	height: auto;
+	border-radius: 50%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#logo-image
+{
+	margin-top: 2%;
+	width: 20%;
+	height: auto;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.reg_log_btn
+{
+	color: #494949;
+	text-decoration: none;
+	background: #ffffff;
+	padding: 20px;
+	border: 4px solid grey;
+	display: inline-block;
+	transition: all 0.4s ease 0s;
+	margin: 20px;
+	border-radius: 25px;	
+}
+
+.reg_log_btn:hover
+{
+	color: #ffffff;
+	background: #ff944d;
+	border-color: #f6b93b;
+	transition: all 0.4s ease 0s;
+}
+

@@ -1,0 +1,26 @@
+{% extends "start_page/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block stylesheet %}
+
+{% endblock stylesheet %}
+
+{% block content %}
+    <div class="row h-100 justify-content-center align-items-center text-center">
+        <form class="col-12" method="POST">
+            {% csrf_token %}
+            
+            <h2 class="text-danger">
+                <span class="font-weight-bold text-uppercase">{{request_user.name}}</span>, are you sure you want to delete your account?
+            </h2>
+            <p class="text-muted">
+                Deleting your account is permanent and will remove all content. <br/> Are you sure you want to delete your account?
+            </p>
+            <button class="btn btn-danger btn-lg" type="submit">
+                Yes, I am sure.<br/>
+                Delete my profile.
+            </button>
+        </form> 
+    </div>
+{% endblock content %}

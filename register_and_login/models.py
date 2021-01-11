@@ -33,30 +33,3 @@ class Profile(models.Model):
 			img.save(self.image.path)
 
 
-class Dog(models.Model):
-
-	DOG_SIZE = [('S', 'small'), ('M', 'medium'), ('B', 'big')]
-
-	dog_name = models.CharField(max_length=50)
-	breed = models.CharField(max_length=100)
-	size = models.CharField(max_length=1, choices=DOG_SIZE, default='S')
-	short_description = models.CharField(max_length=300)
-	image = models.ImageField(default='profile_pics/dog_default.jpg', upload_to='profile_pics/')
-	owner = models.ForeignKey(Profile, on_delete=models.CASCADE) 
-	
-	def __str__(self):
-		return self.dog_name
-
-
-class TimePeriod(models.Model):
-
-	
-	person = models.ForeignKey(User, on_delete=models.CASCADE)
-	day = models.DateField()
-	start_hour = models.TimeField()
-	end_hour = models.TimeField()
-
-	class Meta:
-		unique_together = (("day", "start_hour"), ("day", "end_hour"), ("start_hour","end_hour"))
-	def __str__(self):
-		return f'{self.day} -> {self.start_hour} - {self.end_hour} '
