@@ -37,44 +37,40 @@ def save_data(request, start_event, end_event, name):
             return True
     return False
 
+SCOPES = ['https://www.googleapis.com/auth/calendar.readonly','https://www.googleapis.com/auth/drive.metadata.readonly']
+CLIENT_SECRETS_FILE = "time_management/credentials.json"
+API_SERVICE_NAME = 'calendar'
+API_VERSION = 'v3'
 
 def synchronize_with_google_calendar(request):
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
     'time_management/credentials.json',
-    scopes=['https://www.googleapis.com/auth/drive.metadata.readonly'])
+    scopes=SCOPES)
     flow.redirect_uri = 'https://walkk-for-the-dog.herokuapp.com/calendar/oauth2callback/'
     authorization_url, state = flow.authorization_url(
     access_type='online',
     include_granted_scopes='true')
     return authorization_url
 
-CLIENT_SECRETS_FILE = "time_management/credentials.json"
-SCOPES = ['http://www.googleapis.com/auth/drive.metadata.readonly']
-API_SERVICE_NAME = 'calendar'
-API_VERSION = 'v3'
-
 def load_data(request):
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
         CLIENT_SECRETS_FILE, scopes=SCOPES)
-
+    flow.redirect_uri = "https://walkk-for-the-dog.herokuapp.com/calendar/oauth2callback/"
     # Use the authorization server's response to fetch the OAuth 2.0 tokens.
     authorization_response = request.build_absolute_uri()
-    print(authorization_response)
     flow.fetch_token(authorization_response=authorization_response)
-    credentials = flow.credentials
-    print(credentials)
+    creds = flow.credentials
+    service = build('calendar', 'v3', credentials=creds)
+    calendar_list = service.calendarList().list(showHidden = True).execute()
+    now = datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
 
-    # Call the Calendar API
-    # calendar_list = service.calendarList().list(showHidden = True).execute()
-    # now = datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-
-    # for calendar in calendar_list['items']:
-    #     events_result = service.events().list(calendarId=calendar['id'], timeMin = now, timeMax = end_of_month(now), singleEvents=True, orderBy='startTime').execute()
-    #     events = events_result.get('items', [])
-    #     if not events:
-    #         print('No upcoming events found.')
-    #     else:
-    #         for event in events:
-    #             start = event['start'].get('dateTime', event['start'].get('date'))
-    #             end_event = event['end'].get('dateTime', event['end'].get('date'))
-    #             save_data(request, start, end_event, event['summary'])
+    for calendar in calendar_list['items']:
+        events_result = service.events().list(calendarId=calendar['id'], timeMin = now, timeMax = end_of_month(now), singleEvents=True, orderBy='startTime').execute()
+        events = events_result.get('items', [])
+        if not events:
+            print('No upcoming events found.')
+        else:
+            for event in events:
+                start = event['start'].get('dateTime', event['start'].get('date'))
+                end_event = event['end'].get('dateTime', event['end'].get('date'))
+                save_data(request, start, end_event, event['summary'])
