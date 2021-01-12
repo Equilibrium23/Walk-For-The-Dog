@@ -5,6 +5,7 @@ from users.matchPeople import matchUsers
 from users.matchPeople import getMatches
 from users.models import Match
 from register_and_login.models import Profile
+from time_management.models import TimePeriod
 # from .utils import mergeTimes
 from .utils import get_helper_matches
 
@@ -30,22 +31,41 @@ def start_page(request):
 
 def accept(request):
 	
-	
-	
-	#matchUsers_obj = Match.objects.get(id=match_id)
-	#matchUsers_obj.value = 'true'
-	#matchUsers_obj.save()
+	ownertimeperiodid = request.GET.get("timeperiodid", None)
+	helperid = request.GET.get("helperid", None)
+	dogid = request.GET.get("dogid", None)
 
-	messages.success(request, f'Accept-success')
+	match = Match.objects.filter(dog_id=dogid).filter(helper_id=helperid).filter(owner_time_period_id=ownertimeperiodid).first()
+	matchid = match.id
+	
+	owntimeperiod = TimePeriod.objects.get(id=ownertimeperiodid)
+	owntimeperiod.time_type = 'O'
+	owntimeperiod.save()
+
+	helptimeperiod = TimePeriod.objects.filter(person_id=helperid).filter(day=owntimeperiod.day).filter(start_hour=owntimeperiod.start_hour).first()
+	helptimeperiod.time_type = 'O'
+	helptimeperiod.save()
+
+	matchUsers_obj = Match.objects.get(id=matchid)
+	matchUsers_obj.is_match_accepted = True
+	matchUsers_obj.save()
+	
+	messages.success(request, f'The match is accepted!')
 	return redirect('start_page')
 
 	
 def decline(request):
-	#matchUsers.objects.get(id=match_id).delete()
 
-	messages.success(request, f'Decline-success')
+	ownertimeperiodid = request.GET.get("timeperiodid", None)
+	helperid = request.GET.get("helperid", None)
+	dogid = request.GET.get("dogid", None)
+
+	match = Match.objects.filter(dog_id=dogid).filter(helper_id=helperid).filter(owner_time_period_id=ownertimeperiodid).first()
+	matchid = match.id
+	Match.objects.get(id=matchid).delete()
+
+	messages.success(request, f'The match is declined!')
 	return redirect('start_page')
 
-	#time_id = request.GET.get("","") #owner time period id
 
 			

@@ -50,10 +50,10 @@
 										  			<h6 class="card-subtitle mb-2 text-muted">
 														{% for time in times %}
 														<span class="fa fa-calendar-o" style="width:20px;"></span>{{ time.day }}, {{time.start_hour}}-{{time.end_hour}}
-															<a href="{% url 'accept' %}">
+															<a href="{% url 'accept' %}?dogid={{dog.id}}&helperid={{matched_user.id}}&timeperiodid={{time.id}}">
 																<button type="submit" class="btn btn-sm btn-success ml-3">Accept</button>
 															</a>
-															<a href="{% url 'decline' %}">
+															<a href="{% url 'decline' %}?dogid={{dog.id}}&helperid={{matched_user.id}}&timeperiodid={{time.id}}">
 															 <button type="button" class="btn btn-sm btn-danger">Decline</button>
 															</a>
 														</br>	
