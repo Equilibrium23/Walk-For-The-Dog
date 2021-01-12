@@ -5,7 +5,7 @@ from users.matchPeople import matchUsers
 from users.matchPeople import getMatches
 from users.models import Match
 from register_and_login.models import Profile
-from .utils import mergeTimes
+# from .utils import mergeTimes
 from .utils import get_helper_matches
 
 def start_page(request):
@@ -14,14 +14,12 @@ def start_page(request):
 		if user_profile.account_type == 'N':
 			matchUsers(request)
 			match_data = getMatches(request)
-			matches = mergeTimes(match_data)
-			context = { 'matches' : matches }
+			context = { 'matches' : match_data }
 			return render(request,'start_page/start_page.html', context)
 		elif user_profile.account_type == 'H':
 			match_data = get_helper_matches(request)
-			matches = mergeTimes(match_data)
 			#############################################
-			context = { 'matches' : matches }
+			context = { 'matches' : match_data }
 			return render(request,'start_page/start_page.html', context)
 			#############################################
 		

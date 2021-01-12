@@ -48,19 +48,15 @@
 												<div class="media-body">
 										  			<h5 class="card-title">{{dog.dog_name}}</h5>
 										  			<h6 class="card-subtitle mb-2 text-muted">
-														{% for date, time in times.items %}
-														<span class="fa fa-calendar-o" style="width:20px;"></span> Matched Date: {{ date }}</br>
-															{% for hm in time%}
-															<span class="fas fa-clock" style="width:20px;"></span> Matched Time: {{ hm.0 }} - {{ hm.1 }} 
-															
+														{% for time in times %}
+														<span class="fa fa-calendar-o" style="width:20px;"></span>{{ time.day }}, {{time.start_hour}}-{{time.end_hour}}
 															<a href="{% url 'accept' %}">
-																<button type="submit" class="btn btn-success">Accept the match</button>
+																<button type="submit" class="btn btn-sm btn-success ml-3">Accept</button>
 															</a>
 															<a href="{% url 'decline' %}">
-															 <button type="button" class="btn btn-danger">Dismissed the match</button>
+															 <button type="button" class="btn btn-sm btn-danger">Decline</button>
 															</a>
-															
-															{% endfor %}
+														</br>	
 														{% endfor %}
 													</h6>
 												</div>
