@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import AddTimePeriodForm
+from .forms import AddTimePeriodForm, AddTimePeriodFormN
 from django.contrib.auth.decorators import login_required
 from .models import TimePeriod, DogTime
 from django.contrib.auth.models import User
@@ -12,7 +12,10 @@ from django.db import IntegrityError
 @login_required
 def add_time_period(request):
     if request.method == 'POST':
-        form = AddTimePeriodForm(request.POST, user=request.user)
+        if request.user.profile.account_type=='N':
+            form = AddTimePeriodFormN(request.POST, user=request.user)
+        else:
+            form = AddTimePeriodForm(request.POST, user=request.user)
         if form.is_valid():
             day = form.cleaned_data['day']
             start_hour = form.cleaned_data['start_hour']
@@ -35,12 +38,12 @@ def add_time_period(request):
                     messages.error(request, 'You are already occupied this time!')
                     return redirect('add_time_period')
                 
-            
-            for dog in dogs:
-                d = int(dog)
-                #d = Dog.objects.all().filter(owner_id=request.user.profile.id).filter(dog_id=dog.id).first()
-                for tp in time_list_id:
-                    DogTime(owner_id=request.user.profile.id, dog_id=d, time_period_id=tp, match=False).save()
+            if request.user.profile.account_type=='N':
+                for dog in dogs:
+                    d = int(dog)
+                    #d = Dog.objects.all().filter(owner_id=request.user.profile.id).filter(dog_id=dog.id).first()
+                    for tp in time_list_id:
+                        DogTime(owner_id=request.user.profile.id, dog_id=d, time_period_id=tp, match=False).save()
                 
 
             if time_length == 30:
@@ -50,7 +53,10 @@ def add_time_period(request):
 
             return redirect('add_time_period')
     else:
-        form = AddTimePeriodForm(user=request.user)
+        if request.user.profile.account_type=='N':
+            form = AddTimePeriodFormN(user=request.user)
+        else:
+            form = AddTimePeriodForm(user=request.user)
     return render(request, 'time_management/add_time_period.html', {'form':form})
 
 from django.shortcuts import get_object_or_404

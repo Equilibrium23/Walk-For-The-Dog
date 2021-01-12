@@ -52,6 +52,14 @@
 														<span class="fa fa-calendar-o" style="width:20px;"></span> Matched Date: {{ date }}</br>
 															{% for hm in time%}
 															<span class="fas fa-clock" style="width:20px;"></span> Matched Time: {{ hm.0 }} - {{ hm.1 }} 
+															
+															<a href="{% url 'accept' %}">
+																<button type="submit" class="btn btn-success">Accept the match</button>
+															</a>
+															<a href="{% url 'decline' %}">
+															 <button type="button" class="btn btn-danger">Dismissed the match</button>
+															</a>
+															
 															{% endfor %}
 														{% endfor %}
 													</h6>
@@ -62,9 +70,16 @@
 								  	</div>
 								</div>
 								<div class="text-right">
-									<button type="button" onclick="" class="btn btn-success">Accept the match</button>
-									<button type="button" onclick="" class="btn btn-danger">Dismiss the match</button>
-								</div>
+									
+									<!--
+								<form class="col-12" action="/" method="POST">
+									{% csrf_token %}
+									
+									<input type="submit" name="accept" value="Accept the match" class="btn btn-success">
+									<input type="submit" name="dismiss" value="Dismiss the match" class="btn btn-danger">
+									
+								</form>
+								-->	
 							</div>
 						</div>
 					{% empty %}
