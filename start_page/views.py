@@ -6,7 +6,6 @@ from users.matchPeople import getMatches
 from users.models import Match
 from register_and_login.models import Profile
 from time_management.models import TimePeriod
-# from .utils import mergeTimes
 from .utils import get_helper_matches
 
 def start_page(request):
@@ -40,10 +39,12 @@ def accept(request):
 	
 	owntimeperiod = TimePeriod.objects.get(id=ownertimeperiodid)
 	owntimeperiod.time_type = 'O'
+	owntimeperiod.time_name = 'Dog walking'
 	owntimeperiod.save()
 
 	helptimeperiod = TimePeriod.objects.filter(person_id=helperid).filter(day=owntimeperiod.day).filter(start_hour=owntimeperiod.start_hour).first()
 	helptimeperiod.time_type = 'O'
+	helptimeperiod.time_name = 'Dog walking'
 	helptimeperiod.save()
 
 	matchUsers_obj = Match.objects.get(id=matchid)

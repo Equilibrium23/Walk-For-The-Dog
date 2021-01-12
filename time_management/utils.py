@@ -81,9 +81,9 @@ class Calendar(HTMLCalendar):
 					for evnt in e:
 						if number < 4:
 							if (evnt[3]=='F'):
-								eventsdata += f'<div class="bg-success"> {evnt[0]}-{evnt[1]}: free time</div>'
+								eventsdata += f'<div class="bg-success"><small> {evnt[0]}-{evnt[1]}: free time</small></div>'
 							else:
-								eventsdata += f'<div class="bg-danger"> {evnt[0]}-{evnt[1]}: {evnt[2]}</div>'
+								eventsdata += f'<div class="bg-danger"><small> {evnt[0]}-{evnt[1]}: {evnt[2]}</small></div>'
 							number+=1
 					cal += f'<td><a href="../calendar/?view=day&date={self.year}-{self.month}-{day}">{day}</a>{eventsdata}</td>'
 				else:
@@ -132,9 +132,9 @@ class Calendar(HTMLCalendar):
 						if start_time.tm_hour==hour.hour and start_time.tm_min>=hour.minute and start_time.tm_min<hour.minute+30:
 							rows[n] = int(number_of_rows(datetime(year=2020, month=12, day=11, hour = start_time.tm_hour, minute=start_time.tm_min), datetime(year=2020, month=12, day=11, hour = end_time.tm_hour, minute=end_time.tm_min)))
 							if event[3] == 'F':
-								cal += f'<td rowspan="{rows[n]-1}" class="bg-success"> free time </td>'
+								cal += f'<td rowspan="{rows[n]-1}" class="bg-success"><small> free time </small></td>'
 							else:
-								cal += f'<td rowspan="{rows[n]-1}" class="bg-danger">{event[2]}</td>'
+								cal += f'<td rowspan="{rows[n]-1}" class="bg-danger"><small> {event[2]} </small></td>'
 							flag[n] = False
 							break
 					else:

@@ -29,19 +29,18 @@
 				</h2>
 			</div>
 			<div class="matches m-0">
-				{% if user.profile.account_type == 'N' %} 
-					{% for matched_user, matched_info in matches.items %}
-						<div class="card m-4 rounded">
-							<div class="card-body">
-							  	<div class="media align-items-center">
-									<img src="{{ matched_user.image.url }}" alt="..." width="100" class="mr-3 rounded-circle img-thumbnail shadow-sm">
-									<div class="media-body">
-								  		<h4 class="card-title">{{ matched_user.user.username }}</h4>
-								  		<h6 class="card-subtitle mb-2 text-muted">
-									  		<span class="fa fa-calendar" style="width:20px;"></span> Date Of Joining: {{ matched_user.joining_date }}</br>
-											<span class="fas fa-map-marker-alt" style="width:20px;"></span> Location: {{ matched_user.location }}
-										</h6>
-										{% for dog, times in matched_info.items %}
+				{% for matched_user, matched_info in matches.items %}
+					<div class="card m-4 rounded">
+						<div class="card-body">
+							<div class="media align-items-center">
+								<img src="{{ matched_user.image.url }}" alt="..." width="100" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+								<div class="media-body">
+								  	<h4 class="card-title">{{ matched_user.user.username }}</h4>
+								  	<h6 class="card-subtitle mb-2 text-muted">
+									  	<span class="fa fa-calendar" style="width:20px;"></span> Date Of Joining: {{ matched_user.joining_date }}</br>
+										<span class="fas fa-map-marker-alt" style="width:20px;"></span> Location: {{ matched_user.location }}
+									</h6>
+									{% for dog, times in matched_info.items %}
 								  		<div class="card-text">
 											<div class="media align-items-center">
 												<img src="{{ dog.image.url }}" alt="..." width="50" class="mr-3 rounded-circle img-thumbnail shadow-sm">
@@ -50,40 +49,27 @@
 										  			<h6 class="card-subtitle mb-2 text-muted">
 														{% for time in times %}
 														<span class="fa fa-calendar-o" style="width:20px;"></span>{{ time.day }}, {{time.start_hour}}-{{time.end_hour}}
-															<a href="{% url 'accept' %}?dogid={{dog.id}}&helperid={{matched_user.id}}&timeperiodid={{time.id}}">
-																<button type="submit" class="btn btn-sm btn-success ml-3">Accept</button>
-															</a>
-															<a href="{% url 'decline' %}?dogid={{dog.id}}&helperid={{matched_user.id}}&timeperiodid={{time.id}}">
-															 <button type="button" class="btn btn-sm btn-danger">Decline</button>
-															</a>
+															{% if user.profile.account_type == 'N' %} 
+																<a href="{% url 'accept' %}?dogid={{dog.id}}&helperid={{matched_user.id}}&timeperiodid={{time.id}}">
+																	<button type="submit" class="btn btn-sm btn-success ml-3">Accept</button>
+																</a>
+																<a href="{% url 'decline' %}?dogid={{dog.id}}&helperid={{matched_user.id}}&timeperiodid={{time.id}}">
+															 	<button type="button" class="btn btn-sm btn-danger">Decline</button>
+																</a>
+															{% endif %}
 														</br>	
 														{% endfor %}
 													</h6>
 												</div>
 											</div>
 										</div>
-										{% endfor %}
-								  	</div>
+									{% endfor %}
 								</div>
-								<div class="text-right">
-									
-									<!--
-								<form class="col-12" action="/" method="POST">
-									{% csrf_token %}
-									
-									<input type="submit" name="accept" value="Accept the match" class="btn btn-success">
-									<input type="submit" name="dismiss" value="Dismiss the match" class="btn btn-danger">
-									
-								</form>
-								-->	
 							</div>
 						</div>
 					{% empty %}
 						<h3 class="m-3">There's no matches yet</h3>
-					{% endfor %}
-				{% else %}
-					<h3 class="m-3">Soon :D</h3>
-				{% endif %}
+				{% endfor %}
 			</div>
 		</div>
 	{% endif %}	
