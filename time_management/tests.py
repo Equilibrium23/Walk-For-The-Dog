@@ -6,6 +6,10 @@ from django.http import HttpRequest
 from django.contrib.auth.models import User
 from django.urls import reverse
 from register_and_login.models import Profile
+from dog_editing.models import Dog
+from django.db import IntegrityError
+from django.contrib import messages
+
 
 class TestGoogleCalendarsUtils(TestCase):
     def setUp(self):
@@ -62,11 +66,11 @@ class TestGoogleCalendarsUtils(TestCase):
             if save_data(request,start_event,end_event,event_name) == False:
                 result = False
         self.assertEquals(result,False)
-    #################### synchronize_with_google_calendar(request) #################### 
-    # def test_get_synchronize_with_google_calendar(self):
-    #     url = reverse('synchronize_calendar')
-    #     response = self.client.get(url)
-    #     self.assertEquals(response.status_code, 302)
+    ################### synchronize_with_google_calendar(request) #################### 
+    def test_get_synchronize_with_google_calendar(self):
+        url = reverse('synchronize_calendar')
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 302)
 
 class TestTimeManagementViews(TestCase):
     def setUp(self):
@@ -97,7 +101,36 @@ class TestTimeManagementViews(TestCase):
         self.assertEquals(response.status_code, 302)
         redirect_url = reverse('add_time_period')
         self.assertRedirects(response, redirect_url)
-    # def test_post_bad_data_add_time_period(self):
+
+    def test_post_good_data_add_time_period_needy(self):
+        user_profile = Profile.objects.get(user=self.test_user)
+        user_profile.account_type = 'N'
+        user_profile.save()
+        user_dog = Dog.objects.create(dog_name='test', breed='kundel',short_description = 'piekny pies',owner = user_profile )
+        url = reverse('add_time_period')
+        add_time_period_data = {
+            "csrfmiddlewaretoken": "CGzzJeUQIAYJ7DvHnDMv0xLMmzKmjd7J61AGGZpGYrmDYMMGcMmsP6c9uviAnCMz",
+            "day": "2021-01-17",
+            "start_hour": "06:00:00",
+            "time_length": "30",
+            "dogs_choice": "{}".format(user_dog.id)
+        }
+        response = self.client.post(url, add_time_period_data)
+        self.assertEquals(response.status_code, 302)
+        redirect_url = reverse('add_time_period')
+        self.assertRedirects(response, redirect_url)
+
+    def test_post_bad_data_add_time_period(self):
+        url = reverse('add_time_period')
+        add_time_period_data = {
+            "csrfmiddlewaretoken": "CGzzJeUQIAYJ7DvHnDMv0xLMmzKmjd7J61AGGZpGYrmDYMMGcMmsP6c9uviAnCMz",
+            "day": "2021-01-17",
+            "test": "06:00:00",
+            "time_length": "30",
+        }
+        response = self.client.post(url, add_time_period_data)
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'time_management/add_time_period.html')
 
     def get_load_calendar_data(self):
         url = reverse('oauth2callback')
