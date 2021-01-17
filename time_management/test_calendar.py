@@ -78,8 +78,7 @@ class TestTimeManagementViewsAndUtils(TestCase):
 
         events = TimePeriod.objects.filter(person=self.test_user)
         result = calendar.formatmonth(events)
-        self.assertTrue('''<div class="bg-success"> 08:30-09:00: free time</div>''' in result)
-        self.assertTrue('''<div class="bg-success"> 06:30-07:00: free time</div>''' in result)
+        self.assertTrue('''<div class="bg-success"><small> 06:30-07:00: free time</small></div>''' in result)
 
     def test_formatbyweek(self):
         calendar = Calendar(2021, 1, 9)
@@ -90,8 +89,9 @@ class TestTimeManagementViewsAndUtils(TestCase):
         events = TimePeriod.objects.filter(person=self.test_user)
 
         result = calendar.formatbyweek(events)
-        self.assertTrue('''<tr><th scope="row">06:30</th><td></td><td></td><td></td><td></td><td></td><td></td><td rowspan="2" class="bg-success"> free time </td></tr>''' in result)
-        self.assertTrue('''<tr><th scope="row">08:30</th><td></td><td></td><td></td><td></td><td></td><td></td><td rowspan="2" class="bg-success"> free time </td></tr>''' in result)
+        #print(result)
+        self.assertTrue('''<tr><th scope="row">08:30</th><td></td><td></td><td></td><td></td><td></td><td></td><td rowspan="2" class="bg-success"><small> free time </small></td></tr>''' in result)
+        self.assertTrue('''<tr><th scope="row">06:30</th><td></td><td></td><td></td><td></td><td></td><td></td><td rowspan="2" class="bg-success"><small> free time </small></td></tr>''' in result)
 
     def test_formatbyday(self):
         calendar = Calendar(2021, 1, 9)
