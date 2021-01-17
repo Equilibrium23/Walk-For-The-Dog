@@ -20,8 +20,7 @@ def add_time_period(request):
             day = form.cleaned_data['day']
             start_hour = form.cleaned_data['start_hour']
             time_length = form.cleaned_data['time_length']
-            dogs = form.cleaned_data['dogs_choice']
-
+            
             delta = timedelta(minutes=30)
             person = request.user
 
@@ -39,6 +38,7 @@ def add_time_period(request):
                     return redirect('add_time_period')
                 
             if request.user.profile.account_type=='N':
+                dogs = form.cleaned_data['dogs_choice']
                 for dog in dogs:
                     d = int(dog)
                     #d = Dog.objects.all().filter(owner_id=request.user.profile.id).filter(dog_id=dog.id).first()
