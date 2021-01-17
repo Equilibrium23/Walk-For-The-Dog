@@ -20,8 +20,7 @@ def add_time_period(request):
             day = form.cleaned_data['day']
             start_hour = form.cleaned_data['start_hour']
             time_length = form.cleaned_data['time_length']
-
-
+            
             delta = timedelta(minutes=30)
             person = request.user
 

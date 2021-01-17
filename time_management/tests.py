@@ -5,6 +5,7 @@ import random
 from django.http import HttpRequest
 from django.contrib.auth.models import User
 from django.urls import reverse
+from register_and_login.models import Profile
 
 class TestGoogleCalendarsUtils(TestCase):
     def setUp(self):
@@ -67,3 +68,41 @@ class TestGoogleCalendarsUtils(TestCase):
     #     response = self.client.get(url)
     #     self.assertEquals(response.status_code, 302)
 
+class TestTimeManagementViews(TestCase):
+    def setUp(self):
+        self.test_username = 'test'
+        self.test_password = 'test'
+        self.test_user = User.objects.create_user(username=self.test_username, password=self.test_password)
+        self.test_user.save()
+        self.client.login(username='test', password='test')
+        user_profile = Profile.objects.get(user=self.test_user)
+        user_profile.account_type = 'H'
+        user_profile.save()
+
+    def test_get_add_time_period(self):
+        url = reverse('add_time_period')
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response,'time_management/add_time_period.html')
+
+    def test_post_good_data_add_time_period_helper(self):
+        url = reverse('add_time_period')
+        add_time_period_data = {
+            "csrfmiddlewaretoken": "CGzzJeUQIAYJ7DvHnDMv0xLMmzKmjd7J61AGGZpGYrmDYMMGcMmsP6c9uviAnCMz",
+            "day": "2021-01-17",
+            "start_hour": "06:00:00",
+            "time_length": "30",
+        }
+        response = self.client.post(url, add_time_period_data)
+        self.assertEquals(response.status_code, 302)
+        redirect_url = reverse('add_time_period')
+        self.assertRedirects(response, redirect_url)
+    # def test_post_bad_data_add_time_period(self):
+
+    def get_load_calendar_data(self):
+        url = reverse('oauth2callback')
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 200)
+        self.assertRedirects(response,'calendar')
+    
+    
