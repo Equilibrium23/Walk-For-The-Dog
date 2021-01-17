@@ -24,12 +24,12 @@ class TestTimeManagementViewsAndUtils(TestCase):
     def test_add_time_period_data_posted(self):
         url = reverse('add_time_period')
         add_period_data = {
-            'csrfmiddlewaretoken':'TtGVEhVsVewJkhI9vRFE0rUus4KPhbRw8KCpz8ZPXu15S2Jp5uuihn31tGwPoZ5P',
-            'day':date(2021, 1, 7),
-            'start_hour':time(6, 0),
-            'time_length':time(6, 30),
-            'dogs_choice':''
-        }
+    "csrfmiddlewaretoken": "CGzzJeUQIAYJ7DvHnDMv0xLMmzKmjd7J61AGGZpGYrmDYMMGcMmsP6c9uviAnCMz",
+    "day": "2021-01-17",
+    "start_hour": "06:00:00",
+    "time_length": "30",
+    "dogs_choice": "5"
+}
         response = self.client.post(url, add_period_data)
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'time_management/add_time_period.html')
