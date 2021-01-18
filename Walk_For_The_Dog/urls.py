@@ -25,6 +25,7 @@ from start_page import views as start_page_views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import url
+from django.views.static import serve 
 
 urlpatterns = [
     path('admin/', admin.site.urls, name = "admin"),
@@ -46,6 +47,8 @@ urlpatterns = [
     path('delete_profile/', profile_editing_views.delete_profile, name = "delete_profile"),
     path('calendar/synchronize/',time_management_views.synchronize_calendar,name="synchronize_calendar"),
     path('calendar/oauth2callback/',time_management_views.load_calendar_data,name="oauth2callback"),
+    url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}), 
+    url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}), 
 ]
 
 if settings.DEBUG:
