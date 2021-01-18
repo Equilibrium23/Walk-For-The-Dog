@@ -31,8 +31,6 @@ SECRET_KEY = '*u$!rvj#=)et2#cae0ohjc-jr%8!$#s5ei!r!$)*7rj3=)a&#s'
 DEBUG = False
 
 ALLOWED_HOSTS = ['walk-for-the-dog.herokuapp.com','127.0.0.1']
-
-
 # Application definition
 
 INSTALLED_APPS = [
