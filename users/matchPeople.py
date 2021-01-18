@@ -66,6 +66,7 @@ def getMatches(request):
     matches = Match.objects.all().filter( owner_id = owner.id ).filter(is_match_accepted = False)
     return_data = {}
     for match in matches:
+        helper = Profile.objects.get(id = match.helper_id)
         return_data[helper] = {}
 
     for match in matches:
