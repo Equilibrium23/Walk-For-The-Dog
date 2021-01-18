@@ -2,6 +2,7 @@ from .googleMapsUtils import check_location
 from register_and_login.models import Profile
 from dog_editing.models import Dog
 from time_management.models import TimePeriod, DogTime
+from .models import Match
 
 def check_dog_size(temp_user_dogs, helper_max_size_dog):
     size_values = {'S':1,'M':2,'B':3}
@@ -26,6 +27,17 @@ def check_time(helper, dogs):
                 match = True
     return (matched_dogs_and_time,match)
 
+def saveMatch(matchData):
+    for user,dog_and_time in matchData.items():
+        for dog,time_periods in dog_and_time.items():
+            for time in time_periods:
+                helper_time = TimePeriod.objects.all().filter( person_id = user.user_id ).filter(day = time.day).filter(start_hour = time.start_hour)
+                helper_time_id = helper_time[0].id
+                try:
+                    Match(dog_id = dog.id , owner_time_period_id = time.id , owner_id = dog.owner_id , helper_time_period_id = helper_time_id, helper_id = user.id ).save()
+                except:
+                    pass
+    
 def matchUsers(request):
     temp_user = Profile.objects.all().filter(user = request.user)
     temp_user_dogs_need_walk = DogTime.objects.all().filter(owner_id = temp_user[0].id).filter(match = False)
@@ -47,5 +59,20 @@ def matchUsers(request):
     #####################################################################################################################
     #match temp user with helpers by distance 
     list_of_helpers_distance = { helper:data for helper,data in dict_of_helpers_time.items() if check_location( temp_user[0].location, helper.location, helper.helping_radius) }
-    #####################################################################################################################
-    return list_of_helpers_distance
+    saveMatch(list_of_helpers_distance)
+
+def getMatches(request):
+    owner = Profile.objects.get(user = request.user)
+    matches = Match.objects.all().filter( owner_id = owner.id ).filter(is_match_accepted = False)
+    return_data = {}
+    for match in matches:
+        helper = Profile.objects.get(id = match.helper_id)
+        dog = Dog.objects.get(id = match.dog_id)
+        return_data[helper] = { dog: [] }
+
+    for match in matches:
+        helper = Profile.objects.get(id = match.helper_id)
+        time = TimePeriod.objects.get( id = match.owner_time_period_id )
+        dog = Dog.objects.get(id = match.dog_id)
+        return_data[helper][dog].append(time)
+    return return_data

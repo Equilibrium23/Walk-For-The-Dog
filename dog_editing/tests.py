@@ -16,7 +16,6 @@ class TestDogEditingViews(TestCase):
         self.test_dog = Dog.objects.create(dog_name='test', breed='kundel',short_description = 'piekny pies',owner = dog_owner )
         self.test_dog_id = self.test_dog.id
 
-    ######################## add_dog(request) ########################################
     def test_add_dog_get_site(self):
         url = reverse('add_dog')
         response = self.client.get(url)
@@ -43,7 +42,7 @@ class TestDogEditingViews(TestCase):
         self.assertEquals(response.status_code, 302)
         redirect_url = reverse('profile')
         self.assertRedirects(response, redirect_url)
-    ######################### edit_dog_profile(request) ########################################
+
     def test_edit_dog_profile_get_site(self):
         url = reverse('edit_dog_profile')
         response = self.client.get(url,{'request_dog_id':self.test_dog_id})
@@ -71,7 +70,6 @@ class TestDogEditingViews(TestCase):
         redirect_url = reverse('profile')
         self.assertRedirects(response, redirect_url)
 
-    ######################### delete_dog(request) ########################################
     def test_delete_dog_get_site(self):
         url = reverse('delete_dog')
         response = self.client.get(url,{'request_dog_id':self.test_dog_id})

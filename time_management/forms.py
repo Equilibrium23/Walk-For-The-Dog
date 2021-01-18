@@ -25,12 +25,24 @@ class AddTimePeriodForm(forms.ModelForm):
 		user = kwargs.pop('user')
 		super(AddTimePeriodForm, self).__init__(*args, **kwargs)
 		
+		'''DOG_CHOICE = []
+		dogs = Dog.objects.all().filter(owner_id=user.profile.id)
+		for d in dogs:
+			DOG_CHOICE.append((d.id, d.dog_name))
+		self.fields['dogs_choice'] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=DOG_CHOICE)
+'''
+	class Meta:
+		model = TimePeriod
+		fields = ['day', 'start_hour']
+
+class AddTimePeriodFormN(AddTimePeriodForm):
+
+	def __init__(self, *args, **kwargs):
+		user = kwargs.pop('user')
+		super(AddTimePeriodForm, self).__init__(*args, **kwargs)
+
 		DOG_CHOICE = []
 		dogs = Dog.objects.all().filter(owner_id=user.profile.id)
 		for d in dogs:
 			DOG_CHOICE.append((d.id, d.dog_name))
 		self.fields['dogs_choice'] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=DOG_CHOICE)
-
-	class Meta:
-		model = TimePeriod
-		fields = ['day', 'start_hour']

@@ -10,7 +10,6 @@ class TestProfileEditingViews(TestCase):
         self.test_user.save()
         self.client.login(username='test', password='test')
 
-    ######################### update(request) ########################################
     def test_update_get_site(self):
         url = reverse('update')
         response = self.client.get(url)
@@ -38,7 +37,6 @@ class TestProfileEditingViews(TestCase):
         redirect_url = reverse('profile')
         self.assertRedirects(response,redirect_url)
     
-    ######################### change_ac_type(request) ########################################
     def test_change_ac_type_get_site(self):
         url = reverse('change_ac_type')
         response = self.client.get(url)
@@ -62,7 +60,6 @@ class TestProfileEditingViews(TestCase):
         redirect_url = reverse('profile')
         self.assertRedirects(response,redirect_url)
 
-    ######################### delete_profile(request) ########################################
     def test_delete_profile_get_site(self):
         url = reverse('delete_profile')
         response = self.client.get(url+'?request_user_id={}'.format(self.test_user.id))

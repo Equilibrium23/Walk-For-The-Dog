@@ -21,7 +21,7 @@ class TestRegisterAndLoginViews(TestCase):
         self.test_password = 'test'
         user = User.objects.create_user(username=self.test_username, password=self.test_password)
         user.save()
-##################### register ######################################################
+
     def test_register_get_site_response(self):
         url = reverse('register')
         response = self.client.get(url)
@@ -42,7 +42,7 @@ class TestRegisterAndLoginViews(TestCase):
         url = reverse('register')
         response = self.client.post(url)
         self.assertTemplateUsed(response,'register_and_login/register.html')
-##################### login ######################################################
+        
     def test_login_used_template(self):
         url = reverse('login')
         response = self.client.get(url)
