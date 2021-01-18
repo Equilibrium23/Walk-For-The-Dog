@@ -66,9 +66,12 @@ def getMatches(request):
     matches = Match.objects.all().filter( owner_id = owner.id ).filter(is_match_accepted = False)
     return_data = {}
     for match in matches:
+        return_data[helper] = {}
+
+    for match in matches:
         helper = Profile.objects.get(id = match.helper_id)
         dog = Dog.objects.get(id = match.dog_id)
-        return_data[helper] = { dog: [] }
+        return_data[helper].update({dog:[]})
 
     for match in matches:
         helper = Profile.objects.get(id = match.helper_id)
