@@ -47,9 +47,6 @@ urlpatterns = [
     path('delete_profile/', profile_editing_views.delete_profile, name = "delete_profile"),
     path('calendar/synchronize/',time_management_views.synchronize_calendar,name="synchronize_calendar"),
     path('calendar/oauth2callback/',time_management_views.load_calendar_data,name="oauth2callback"),
-    url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}), 
-    url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}), 
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
