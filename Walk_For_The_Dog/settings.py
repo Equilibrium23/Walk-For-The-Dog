@@ -28,7 +28,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '*u$!rvj#=)et2#cae0ohjc-jr%8!$#s5ei!r!$)*7rj3=)a&#s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['walk-for-the-dog.herokuapp.com','127.0.0.1']
 
